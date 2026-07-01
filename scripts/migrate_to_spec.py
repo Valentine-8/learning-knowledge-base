@@ -64,20 +64,20 @@ def main() -> None:
     for d in dirs:
         ensure_dir(ROOT / d)
 
-    move_files(ROOT / "技术成长/数据与中间件/MySQL", ROOT / "03-Database/02-MySQL")
-    move_files(ROOT / "技术成长/数据与中间件/Redis", ROOT / "04-Redis")
-    move_files(ROOT / "技术成长/数据与中间件/消息队列", ROOT / "05-Message-Queue")
-    move_files(ROOT / "技术成长/数据与中间件/Elasticsearch", ROOT / "06-Middleware/01-Elasticsearch")
+    move_files(ROOT / "技术成长/02-数据与中间件/01-MySQL", ROOT / "03-Database/02-MySQL")
+    move_files(ROOT / "技术成长/02-数据与中间件/03-Redis", ROOT / "04-Redis")
+    move_files(ROOT / "技术成长/02-数据与中间件/04-消息队列", ROOT / "05-Message-Queue")
+    move_files(ROOT / "技术成长/02-数据与中间件/05-Elasticsearch", ROOT / "06-Middleware/01-Elasticsearch")
 
-    move_files(ROOT / "技术成长/计算机基础/算法与数据结构", ROOT / "16-Computer-Science/01-算法与数据结构")
-    move_files(ROOT / "技术成长/计算机基础/计算机网络", ROOT / "16-Computer-Science/02-计算机网络")
-    move_files(ROOT / "技术成长/计算机基础/操作系统", ROOT / "16-Computer-Science/03-操作系统")
-    move_files(ROOT / "技术成长/计算机基础/安全", ROOT / "16-Computer-Science/04-安全")
+    move_files(ROOT / "技术成长/04-计算机基础/01-算法与数据结构", ROOT / "16-Computer-Science/01-算法与数据结构")
+    move_files(ROOT / "技术成长/04-计算机基础/02-计算机网络", ROOT / "16-Computer-Science/02-计算机网络")
+    move_files(ROOT / "技术成长/04-计算机基础/03-操作系统", ROOT / "16-Computer-Science/03-操作系统")
+    move_files(ROOT / "技术成长/04-计算机基础/04-安全", ROOT / "16-Computer-Science/04-安全")
 
     move_files(ROOT / "技术成长/AI工程", ROOT / "18-AI-Engineering")
-    move_files(ROOT / "技术成长/Java/笔记/phase1-集合", ROOT / "01-Java/03-集合框架")
+    move_files(ROOT / "技术成长/01-Java/笔记/phase1-集合", ROOT / "01-Java/03-集合框架")
 
-    java_io = ROOT / "技术成长/Java/笔记/Java语言与IO"
+    java_io = ROOT / "技术成长/01-Java/笔记/Java语言与IO"
     mappings = [
         (java_io / "01-面向对象与泛型.md", ROOT / "01-Java/02-面向对象/01-面向对象与泛型.md"),
         (java_io / "02-注解反射与异常.md", ROOT / "01-Java/06-注解与反射/02-注解反射与异常.md"),
@@ -90,35 +90,35 @@ def main() -> None:
         git_mv(src, dst)
 
     phase_moves = [
-        ("技术成长/Java/笔记/phase2-JVM/复习手册.md", "08-JVM/01-JVM基础/00-复习手册汇总.md"),
-        ("技术成长/Java/笔记/phase2-JVM/README.md", "08-JVM/01-JVM基础/README-phase2.md"),
-        ("技术成长/Java/笔记/phase3-并发/复习手册.md", "09-Concurrency/01-并发基础/00-复习手册汇总.md"),
-        ("技术成长/Java/笔记/phase3-并发/README.md", "09-Concurrency/01-并发基础/README-phase3.md"),
-        ("技术成长/Java/笔记/phase4-Spring/复习手册.md", "02-Spring-Ecosystem/01-Spring-Framework/00-复习手册汇总.md"),
-        ("技术成长/Java/笔记/phase4-Spring/README.md", "02-Spring-Ecosystem/01-Spring-Framework/README-phase4.md"),
-        ("技术成长/Java/笔记/phase5-数据库/复习手册.md", "03-Database/01-数据库基础/00-复习手册汇总.md"),
-        ("技术成长/Java/笔记/phase5-数据库/README.md", "03-Database/01-数据库基础/README-phase5.md"),
-        ("技术成长/Java/笔记/phase6-分布式/复习手册.md", "10-Distributed-Systems/01-分布式基础/00-复习手册汇总.md"),
-        ("技术成长/Java/笔记/phase6-分布式/README.md", "10-Distributed-Systems/01-分布式基础/README-phase6.md"),
-        ("技术成长/Java/笔记/phase7-架构/复习手册.md", "11-Architecture/01-架构基础/00-复习手册汇总.md"),
-        ("技术成长/Java/笔记/phase7-架构/README.md", "11-Architecture/01-架构基础/README-phase7.md"),
-        ("技术成长/Java/笔记/phase8-DevOps/复习手册.md", "15-DevOps/01-Git与协作/00-复习手册汇总.md"),
-        ("技术成长/Java/笔记/phase8-DevOps/README.md", "15-DevOps/01-Git与协作/README-phase8.md"),
+        ("技术成长/01-Java/笔记/phase2-JVM/00-00-复习手册.md", "08-JVM/01-JVM基础/00-复习手册汇总.md"),
+        ("技术成长/01-Java/笔记/phase2-JVM/README.md", "08-JVM/01-JVM基础/README-phase2.md"),
+        ("技术成长/01-Java/笔记/phase3-并发/00-00-复习手册.md", "09-Concurrency/01-并发基础/00-复习手册汇总.md"),
+        ("技术成长/01-Java/笔记/phase3-并发/README.md", "09-Concurrency/01-并发基础/README-phase3.md"),
+        ("技术成长/01-Java/笔记/phase4-Spring/00-00-复习手册.md", "02-Spring-Ecosystem/01-Spring-Framework/00-复习手册汇总.md"),
+        ("技术成长/01-Java/笔记/phase4-Spring/README.md", "02-Spring-Ecosystem/01-Spring-Framework/README-phase4.md"),
+        ("技术成长/01-Java/笔记/phase5-数据库/00-00-复习手册.md", "03-Database/01-数据库基础/00-复习手册汇总.md"),
+        ("技术成长/01-Java/笔记/phase5-数据库/README.md", "03-Database/01-数据库基础/README-phase5.md"),
+        ("技术成长/01-Java/笔记/phase6-分布式/00-00-复习手册.md", "10-Distributed-Systems/01-分布式基础/00-复习手册汇总.md"),
+        ("技术成长/01-Java/笔记/phase6-分布式/README.md", "10-Distributed-Systems/01-分布式基础/README-phase6.md"),
+        ("技术成长/01-Java/笔记/phase7-架构/00-00-复习手册.md", "11-Architecture/01-架构基础/00-复习手册汇总.md"),
+        ("技术成长/01-Java/笔记/phase7-架构/README.md", "11-Architecture/01-架构基础/README-phase7.md"),
+        ("技术成长/01-Java/笔记/phase8-DevOps/00-00-复习手册.md", "15-DevOps/01-Git与协作/00-复习手册汇总.md"),
+        ("技术成长/01-Java/笔记/phase8-DevOps/README.md", "15-DevOps/01-Git与协作/README-phase8.md"),
     ]
     for src, dst in phase_moves:
         git_mv(ROOT / src, ROOT / dst)
 
     meta_moves = [
-        ("技术成长/Java/7年工程师技能全景索引.md", "00-Governance/03-Learning-Roadmaps/07-技能全景索引.md"),
-        ("技术成长/Java/7年Java工程师技能清单.md", "00-Governance/03-Learning-Roadmaps/08-技能清单.md"),
-        ("技术成长/Java/7年Java工程师学习路线.md", "00-Governance/03-Learning-Roadmaps/01-Java-Backend-Roadmap.md"),
-        ("技术成长/Java/java学习.md", "01-Java/00-学习导航.md"),
-        ("技术成长/Java/项目经历面试手册.md", "21-Interview/05-项目面试/01-项目经历面试手册.md"),
-        ("技术成长/Java/面试题大全Q&A.md", "21-Interview/02-Java面试/06-面试题大全Q&A.md"),
-        ("技术成长/Java/面试前速查.md", "21-Interview/02-Java面试/07-面试前速查.md"),
-        ("技术成长/Java/系统设计练手.md", "21-Interview/04-架构面试/05-系统设计练手.md"),
-        ("技术成长/Java/简历.md", "21-Interview/06-简历与求职/06-简历-Java.md"),
-        ("技术成长/扩展技能全景.md", "00-Governance/03-Learning-Roadmaps/09-扩展技能全景.md"),
+        ("技术成长/01-Java/02-7年工程师技能全景索引.md", "00-Governance/03-Learning-Roadmaps/07-技能全景索引.md"),
+        ("技术成长/01-Java/01-7年Java工程师技能清单.md", "00-Governance/03-Learning-Roadmaps/08-技能清单.md"),
+        ("技术成长/01-Java/03-7年Java工程师学习路线.md", "00-Governance/03-Learning-Roadmaps/01-Java-Backend-Roadmap.md"),
+        ("技术成长/01-Java/04-java学习.md", "01-Java/00-学习导航.md"),
+        ("技术成长/01-Java/06-项目经历面试手册.md", "21-Interview/05-项目面试/01-06-项目经历面试手册.md"),
+        ("技术成长/01-Java/07-面试题大全Q&A.md", "21-Interview/02-Java面试/06-07-面试题大全Q&A.md"),
+        ("技术成长/01-Java/08-面试前速查.md", "21-Interview/02-Java面试/07-08-面试前速查.md"),
+        ("技术成长/01-Java/09-系统设计练手.md", "21-Interview/04-架构面试/05-09-系统设计练手.md"),
+        ("技术成长/01-Java/05-简历.md", "21-Interview/06-简历与求职/06-简历-Java.md"),
+        ("技术成长/01-扩展技能全景.md", "00-Governance/03-Learning-Roadmaps/09-01-扩展技能全景.md"),
     ]
     for src, dst in meta_moves:
         git_mv(ROOT / src, ROOT / dst)
@@ -136,19 +136,19 @@ def main() -> None:
                     git_mv(f, ROOT / "19-Cpp/01-语言与嵌入式" / f.name)
 
     growth_moves = [
-        ("技术成长/00-通用/工程素养-复习手册.md", "90-Growth/02-工程素养/01-工程素养复习手册.md"),
-        ("技术成长/00-通用/阅读指南.md", "90-Growth/01-学习方法/00-阅读指南.md"),
-        ("技术成长/00-通用/学习进度追踪.md", "90-Growth/01-学习方法/06-学习进度追踪.md"),
-        ("技术成长/00-通用/个人基线评估.md", "90-Growth/01-学习方法/07-个人基线评估.md"),
-        ("技术成长/00-通用/统一主路线.md", "90-Growth/01-学习方法/08-统一主路线.md"),
-        ("技术成长/00-通用/错题与易忘概念.md", "90-Growth/01-学习方法/09-错题与易忘概念.md"),
-        ("技术成长/00-通用/算法刷题记录.md", "90-Growth/01-学习方法/10-算法刷题记录.md"),
-        ("技术成长/00-通用/Cursor操作手册.md", "90-Growth/01-学习方法/11-Cursor操作手册.md"),
-        ("技术成长/00-通用/项目实战清单.md", "90-Growth/03-职业发展/06-项目实战清单.md"),
-        ("技术成长/00-通用/周复盘模板.md", "90-Growth/04-个人模板/01-周复盘模板.md"),
-        ("技术成长/00-通用/资源书签.md", "90-Growth/01-学习方法/12-资源书签.md"),
-        ("技术成长/00-通用/求职追踪.md", "21-Interview/06-简历与求职/04-求职追踪.md"),
-        ("技术成长/00-通用/面试与晋升素材库.md", "21-Interview/01-面试方法论/06-面试与晋升素材库.md"),
+        ("技术成长/00-通用/11-11-工程素养-00-复习手册.md", "90-Growth/02-工程素养/01-工程素养00-复习手册.md"),
+        ("技术成长/00-通用/01-01-阅读指南.md", "90-Growth/01-学习方法/01-阅读指南.md"),
+        ("技术成长/00-通用/03-03-学习进度追踪.md", "90-Growth/01-学习方法/06-03-学习进度追踪.md"),
+        ("技术成长/00-通用/04-04-个人基线评估.md", "90-Growth/01-学习方法/07-04-个人基线评估.md"),
+        ("技术成长/00-通用/02-02-统一主路线.md", "90-Growth/01-学习方法/08-02-统一主路线.md"),
+        ("技术成长/00-通用/05-05-错题与易忘概念.md", "90-Growth/01-学习方法/09-05-错题与易忘概念.md"),
+        ("技术成长/00-通用/06-06-算法刷题记录.md", "90-Growth/01-学习方法/10-06-算法刷题记录.md"),
+        ("技术成长/00-通用/07-07-Cursor操作手册.md", "90-Growth/01-学习方法/11-07-Cursor操作手册.md"),
+        ("技术成长/00-通用/12-12-项目实战清单.md", "90-Growth/03-职业发展/06-12-项目实战清单.md"),
+        ("技术成长/00-通用/13-13-周复盘模板.md", "90-Growth/04-个人模板/01-13-周复盘模板.md"),
+        ("技术成长/00-通用/08-08-资源书签.md", "90-Growth/01-学习方法/12-08-资源书签.md"),
+        ("技术成长/00-通用/09-09-求职追踪.md", "21-Interview/06-简历与求职/04-09-求职追踪.md"),
+        ("技术成长/00-通用/10-10-面试与晋升素材库.md", "21-Interview/01-面试方法论/06-10-面试与晋升素材库.md"),
     ]
     for src, dst in growth_moves:
         git_mv(ROOT / src, ROOT / dst)

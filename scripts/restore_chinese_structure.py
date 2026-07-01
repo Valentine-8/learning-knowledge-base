@@ -83,23 +83,23 @@ def main() -> None:
         src = ROOT / src_sub
         dst = tg / f"Java/笔记/{phase}"
         ensure_dir(dst)
-        git_mv(src / "00-复习手册汇总.md", dst / "复习手册.md")
+        git_mv(src / "00-复习手册汇总.md", dst / "00-复习手册.md")
         readme = list(src.glob("README-phase*.md"))
         if readme:
             git_mv(readme[0], dst / "README.md")
 
     # --- Java 元文档 ---
     meta = [
-        ("01-Java/00-学习导航.md", "Java/java学习.md"),
-        ("00-Governance/03-Learning-Roadmaps/07-技能全景索引.md", "Java/7年工程师技能全景索引.md"),
-        ("00-Governance/03-Learning-Roadmaps/08-技能清单.md", "Java/7年Java工程师技能清单.md"),
-        ("00-Governance/03-Learning-Roadmaps/01-Java-Backend-Roadmap.md", "Java/7年Java工程师学习路线.md"),
-        ("00-Governance/03-Learning-Roadmaps/09-扩展技能全景.md", "扩展技能全景.md"),
-        ("21-Interview/05-项目面试/01-项目经历面试手册.md", "Java/项目经历面试手册.md"),
-        ("21-Interview/02-Java面试/06-面试题大全Q&A.md", "Java/面试题大全Q&A.md"),
-        ("21-Interview/02-Java面试/07-面试前速查.md", "Java/面试前速查.md"),
-        ("21-Interview/04-架构面试/05-系统设计练手.md", "Java/系统设计练手.md"),
-        ("21-Interview/06-简历与求职/06-简历-Java.md", "Java/简历.md"),
+        ("01-Java/00-学习导航.md", "Java/04-java学习.md"),
+        ("00-Governance/03-Learning-Roadmaps/07-技能全景索引.md", "Java/02-7年工程师技能全景索引.md"),
+        ("00-Governance/03-Learning-Roadmaps/08-技能清单.md", "Java/01-7年Java工程师技能清单.md"),
+        ("00-Governance/03-Learning-Roadmaps/01-Java-Backend-Roadmap.md", "Java/03-7年Java工程师学习路线.md"),
+        ("00-Governance/03-Learning-Roadmaps/09-01-扩展技能全景.md", "01-扩展技能全景.md"),
+        ("21-Interview/05-项目面试/01-06-项目经历面试手册.md", "Java/06-项目经历面试手册.md"),
+        ("21-Interview/02-Java面试/06-07-面试题大全Q&A.md", "Java/07-面试题大全Q&A.md"),
+        ("21-Interview/02-Java面试/07-08-面试前速查.md", "Java/08-面试前速查.md"),
+        ("21-Interview/04-架构面试/05-09-系统设计练手.md", "Java/09-系统设计练手.md"),
+        ("21-Interview/06-简历与求职/06-简历-Java.md", "Java/05-简历.md"),
     ]
     for s, d in meta:
         git_mv(ROOT / s, tg / d)
@@ -109,26 +109,26 @@ def main() -> None:
     ensure_dir(cpp)
     move_files(ROOT / "19-Cpp/01-语言与嵌入式", cpp)
     git_mv(ROOT / "19-Cpp/02-笔记", cpp / "notes")
-    for f in ["简历-C++嵌入式.md", "面试前速查-C++嵌入式.md", "面试题大全-C++专题.md", "公司与岗位准备-广东宏大.md"]:
+    for f in ["07-简历-C++嵌入式.md", "08-面试前速查-C++嵌入式.md", "09-面试题大全-C++专题.md", "01-公司与岗位准备-广东宏大.md"]:
         git_mv(ROOT / "21-Interview/06-简历与求职" / f, cpp / f)
 
     # --- 00-通用（恢复原名，去掉编号前缀）---
     common = tg / "00-通用"
     ensure_dir(common)
     growth_map = [
-        ("90-Growth/02-工程素养/01-工程素养复习手册.md", "工程素养-复习手册.md"),
-        ("90-Growth/01-学习方法/00-阅读指南.md", "阅读指南.md"),
-        ("90-Growth/01-学习方法/06-学习进度追踪.md", "学习进度追踪.md"),
-        ("90-Growth/01-学习方法/07-个人基线评估.md", "个人基线评估.md"),
-        ("90-Growth/01-学习方法/08-统一主路线.md", "统一主路线.md"),
-        ("90-Growth/01-学习方法/09-错题与易忘概念.md", "错题与易忘概念.md"),
-        ("90-Growth/01-学习方法/10-算法刷题记录.md", "算法刷题记录.md"),
-        ("90-Growth/01-学习方法/11-Cursor操作手册.md", "Cursor操作手册.md"),
-        ("90-Growth/01-学习方法/12-资源书签.md", "资源书签.md"),
-        ("90-Growth/03-职业发展/06-项目实战清单.md", "项目实战清单.md"),
-        ("90-Growth/04-个人模板/01-周复盘模板.md", "周复盘模板.md"),
-        ("21-Interview/06-简历与求职/04-求职追踪.md", "求职追踪.md"),
-        ("21-Interview/01-面试方法论/06-面试与晋升素材库.md", "面试与晋升素材库.md"),
+        ("90-Growth/02-工程素养/01-工程素养00-复习手册.md", "11-工程素养-00-复习手册.md"),
+        ("90-Growth/01-学习方法/01-阅读指南.md", "01-阅读指南.md"),
+        ("90-Growth/01-学习方法/06-03-学习进度追踪.md", "03-学习进度追踪.md"),
+        ("90-Growth/01-学习方法/07-04-个人基线评估.md", "04-个人基线评估.md"),
+        ("90-Growth/01-学习方法/08-02-统一主路线.md", "02-统一主路线.md"),
+        ("90-Growth/01-学习方法/09-05-错题与易忘概念.md", "05-错题与易忘概念.md"),
+        ("90-Growth/01-学习方法/10-06-算法刷题记录.md", "06-算法刷题记录.md"),
+        ("90-Growth/01-学习方法/11-07-Cursor操作手册.md", "07-Cursor操作手册.md"),
+        ("90-Growth/01-学习方法/12-08-资源书签.md", "08-资源书签.md"),
+        ("90-Growth/03-职业发展/06-12-项目实战清单.md", "12-项目实战清单.md"),
+        ("90-Growth/04-个人模板/01-13-周复盘模板.md", "13-周复盘模板.md"),
+        ("21-Interview/06-简历与求职/04-09-求职追踪.md", "09-求职追踪.md"),
+        ("21-Interview/01-面试方法论/06-10-面试与晋升素材库.md", "10-面试与晋升素材库.md"),
     ]
     for s, d in growth_map:
         git_mv(ROOT / s, common / d)
