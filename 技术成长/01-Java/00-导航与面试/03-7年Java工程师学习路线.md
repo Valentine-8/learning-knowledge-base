@@ -10,14 +10,14 @@
 
 | 文档 | 用途 |
 |------|------|
-| [README.md](../README.md) | 总入口 |
+| [README.md](../../README.md) | 总入口 |
 | [01-7年Java工程师技能清单.md](./01-7年Java工程师技能清单.md) | 技能目标 |
-| [02-统一主路线.md](../00-通用/02-统一主路线.md) | Java + AI 并行时间表 |
-| [03-学习进度追踪.md](../00-通用/03-学习进度追踪.md) | **按 Phase 勾选任务** |
-| [12-项目实战清单.md](../00-通用/12-项目实战清单.md) | Demo 与综合项目 |
-| [04-个人基线评估.md](../00-通用/04-个人基线评估.md) | Phase 0 自评 |
-| [notes/](./笔记/) | 分 Phase 笔记 |
-| [08-资源书签.md](../00-通用/08-资源书签.md) | 学习链接 |
+| [02-统一主路线.md](../../00-通用/02-统一主路线.md) | Java + AI 并行时间表 |
+| [03-学习进度追踪.md](../../00-通用/03-学习进度追踪.md) | **按 Phase 勾选任务** |
+| [12-项目实战清单.md](../../00-通用/12-项目实战清单.md) | Demo 与综合项目 |
+| [04-个人基线评估.md](../../00-通用/04-个人基线评估.md) | Phase 0 自评 |
+| [notes/](../笔记/) | 分 Phase 笔记 |
+| [08-资源书签.md](../../00-通用/08-资源书签.md) | 学习链接 |
 
 ---
 
@@ -735,10 +735,10 @@ Kafka + Flink + Redis + MySQL，侧重流处理与大数据方向。
 
 ## 与现有笔记的衔接
 
-[notes/phase1-集合/01-ArrayList.md](./笔记/phase1-集合/01-ArrayList.md) 已有 ArrayList 源码分析，建议：
-1. 按 Phase 1 补齐 HashMap、ConcurrentHashMap 同等深度笔记（见 [notes/phase1-集合/](./笔记/phase1-集合/)）  
-2. DevOps 见 Phase 8 与 [notes/phase8-DevOps/](./笔记/phase8-DevOps/)  
-3. 每完成 Phase，更新 [04-个人基线评估.md](../00-通用/04-个人基线评估.md) 与 [03-学习进度追踪.md](../00-通用/03-学习进度追踪.md)  
+[notes/phase1-集合/01-ArrayList.md](../笔记/phase1-集合/01-ArrayList.md) 已有 ArrayList 源码分析，建议：
+1. 按 Phase 1 补齐 HashMap、ConcurrentHashMap 同等深度笔记（见 [notes/phase1-集合/](../笔记/phase1-集合/)）  
+2. DevOps 见 Phase 8 与 [notes/phase8-DevOps/](../笔记/phase8-DevOps/)  
+3. 每完成 Phase，更新 [04-个人基线评估.md](../../00-通用/04-个人基线评估.md) 与 [03-学习进度追踪.md](../../00-通用/03-学习进度追踪.md)  
 
 ---
 

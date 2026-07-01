@@ -109,15 +109,15 @@ def main() -> None:
         git_mv(ROOT / src, ROOT / dst)
 
     meta_moves = [
-        ("技术成长/01-Java/02-7年工程师技能全景索引.md", "00-Governance/03-Learning-Roadmaps/07-技能全景索引.md"),
-        ("技术成长/01-Java/01-7年Java工程师技能清单.md", "00-Governance/03-Learning-Roadmaps/08-技能清单.md"),
-        ("技术成长/01-Java/03-7年Java工程师学习路线.md", "00-Governance/03-Learning-Roadmaps/01-Java-Backend-Roadmap.md"),
-        ("技术成长/01-Java/04-java学习.md", "01-Java/00-学习导航.md"),
-        ("技术成长/01-Java/06-项目经历面试手册.md", "21-Interview/05-项目面试/01-06-项目经历面试手册.md"),
-        ("技术成长/01-Java/07-面试题大全Q&A.md", "21-Interview/02-Java面试/06-07-面试题大全Q&A.md"),
-        ("技术成长/01-Java/08-面试前速查.md", "21-Interview/02-Java面试/07-08-面试前速查.md"),
-        ("技术成长/01-Java/09-系统设计练手.md", "21-Interview/04-架构面试/05-09-系统设计练手.md"),
-        ("技术成长/01-Java/05-简历.md", "21-Interview/06-简历与求职/06-简历-Java.md"),
+        ("技术成长/01-Java/00-导航与面试/02-7年工程师技能全景索引.md", "00-Governance/03-Learning-Roadmaps/07-技能全景索引.md"),
+        ("技术成长/01-Java/00-导航与面试/01-7年Java工程师技能清单.md", "00-Governance/03-Learning-Roadmaps/08-技能清单.md"),
+        ("技术成长/01-Java/00-导航与面试/03-7年Java工程师学习路线.md", "00-Governance/03-Learning-Roadmaps/01-Java-Backend-Roadmap.md"),
+        ("技术成长/01-Java/00-导航与面试/04-java学习.md", "01-Java/00-学习导航.md"),
+        ("技术成长/01-Java/00-导航与面试/06-项目经历面试手册.md", "21-Interview/05-项目面试/01-06-项目经历面试手册.md"),
+        ("技术成长/01-Java/00-导航与面试/07-面试题大全Q&A.md", "21-Interview/02-Java面试/06-07-面试题大全Q&A.md"),
+        ("技术成长/01-Java/00-导航与面试/08-面试前速查.md", "21-Interview/02-Java面试/07-08-面试前速查.md"),
+        ("技术成长/01-Java/00-导航与面试/09-系统设计练手.md", "21-Interview/04-架构面试/05-09-系统设计练手.md"),
+        ("技术成长/01-Java/00-导航与面试/05-简历.md", "21-Interview/06-简历与求职/06-简历-Java.md"),
         ("技术成长/01-扩展技能全景.md", "00-Governance/03-Learning-Roadmaps/09-01-扩展技能全景.md"),
     ]
     for src, dst in meta_moves:

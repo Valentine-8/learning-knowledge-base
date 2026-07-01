@@ -1,7 +1,7 @@
 # Java 与 Python 对照速查
 
 > **读者**：会 Java，Python 0 基础。写 Python 时随时翻这张表。
-> 系统学习 → [00-Java开发者学习指南](./00-Java开发者学习指南.md) → 01～15 章
+> 系统学习 → [00-Java开发者学习指南](./00-入门/01-Java开发者学习指南.md) → 01～15 章
 
 ---
 
@@ -179,4 +179,4 @@ match status:
 
 ---
 
-← [00-Java开发者学习指南](./00-Java开发者学习指南.md) · [Python 目录](./README.md)
+← [00-Java开发者学习指南](./00-入门/01-Java开发者学习指南.md) · [Python 目录](./README.md)

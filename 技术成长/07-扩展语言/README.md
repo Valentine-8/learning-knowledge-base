@@ -11,7 +11,8 @@
 
 | 文档 | 说明 |
 |------|------|
-| [01-Python/16-复习手册.md](./01-Python/16-复习手册.md) | **主文档**（语法、标准库、AI 生态、两周计划） |
+| [01-Python/00-入门/01-Java开发者学习指南.md](./01-Python/00-入门/01-Java开发者学习指南.md) | **先读** · 会 Java 怎么学 Python |
+| [01-Python/16-复习手册.md](./01-Python/16-复习手册.md) | 章节索引 |
 | [01-Python/00-速查总览.md](./01-Python/00-速查总览.md) | 10 分钟速查 |
 | [01-Python/99-附录-Java与Python对照.md](./01-Python/99-附录-Java与Python对照.md) | 从 Java 迁移查表 |
 

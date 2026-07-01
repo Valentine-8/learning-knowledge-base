@@ -10,4 +10,4 @@
 | [02-HashMap.md](./02-HashMap.md) | put/resize、树化 |
 | [03-ConcurrentHashMap.md](./03-ConcurrentHashMap.md) | JDK8 锁机制 |
 
-← [java学习 索引](../../04-java学习.md)
+← [java学习 索引](../../00-导航与面试/04-java学习.md)
