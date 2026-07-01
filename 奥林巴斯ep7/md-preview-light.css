@@ -1,0 +1,71 @@
+/* Markdown 预览：米色护眼（覆盖 VS Code 深色主题变量） */
+:root {
+  --vscode-editor-background: #f5f0e6 !important;
+  --vscode-editor-foreground: #3d3a33 !important;
+  --vscode-textLink-foreground: #5c7a4a !important;
+  --vscode-textPreformat-foreground: #3d3a33 !important;
+  --vscode-textPreformat-background: #ebe4d8 !important;
+  --vscode-textBlockQuote-background: #efe9dd !important;
+  --vscode-textBlockQuote-border: #c9bfa8 !important;
+  --vscode-textCodeBlock-background: #ebe4d8 !important;
+  --vscode-widget-border: #d9d0c0 !important;
+  --vscode-panel-border: #d9d0c0 !important;
+}
+
+html,
+body,
+.vscode-body,
+.markdown-body {
+  background-color: #f5f0e6 !important;
+  color: #3d3a33 !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #2c2a24 !important;
+  border-bottom-color: #ddd5c5 !important;
+}
+
+p, li, td, th, span, div {
+  color: #3d3a33 !important;
+}
+
+a {
+  color: #5c7a4a !important;
+}
+
+pre {
+  background-color: #ebe4d8 !important;
+  border: 1px solid #d9d0c0 !important;
+}
+
+code {
+  background-color: #ebe4d8 !important;
+  color: #3d3a33 !important;
+}
+
+blockquote {
+  border-left-color: #c9bfa8 !important;
+  color: #6b6558 !important;
+  background-color: #efe9dd !important;
+}
+
+table th,
+table td {
+  border-color: #d9d0c0 !important;
+}
+
+table tr:nth-child(2n) {
+  background-color: #efe9dd !important;
+}
+
+table th {
+  background-color: #ebe4d8 !important;
+}
+
+hr {
+  border-color: #d9d0c0 !important;
+}
+
+img {
+  background-color: transparent !important;
+}

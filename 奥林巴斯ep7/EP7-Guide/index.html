@@ -1,0 +1,8558 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>从零开始使用 Olympus PEN E-P7 · 网页版</title>
+<style>
+:root{
+  --paper:#f5f0e6; --ink:#2c2a24; --muted:#6b6355; --line:#d8cfbf;
+  --brown:#8a7f6e; --accent:#5c7a4a; --warm:#b5651d; --card:#fffdf8;
+  --sidebar:#efe8da; --code-bg:#2b2a26; --code-ink:#f0ead9;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:"Microsoft YaHei","PingFang SC","Segoe UI",system-ui,sans-serif;
+  line-height:1.75; font-size:16px;
+}
+a{color:var(--warm); text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* Layout */
+.app{display:flex; min-height:100vh}
+.sidebar{
+  width:290px; flex:0 0 290px; background:var(--sidebar);
+  border-right:1px solid var(--line); position:sticky; top:0; height:100vh;
+  overflow-y:auto; padding:22px 16px 60px;
+}
+.brand{font-weight:700; font-size:18px; margin:4px 8px 6px; color:var(--ink)}
+.brand small{display:block; font-weight:400; font-size:12px; color:var(--muted); margin-top:4px}
+.nav-title{font-size:12px; letter-spacing:.12em; color:var(--muted); margin:18px 10px 6px; text-transform:uppercase}
+.nav-group{list-style:none; margin:0; padding:0}
+.nav-group li{margin:1px 0}
+.nav-link{
+  display:block; padding:8px 12px; border-radius:8px; color:var(--ink);
+  font-size:14px; transition:background .15s, color .15s;
+}
+.nav-link:hover{background:#e4dbca; text-decoration:none}
+.nav-link.active{background:var(--brown); color:#fff}
+
+.main{flex:1 1 auto; min-width:0; display:flex; justify-content:center}
+.reader{width:100%; max-width:860px; padding:40px 44px 120px}
+
+.topbar{
+  display:none; position:sticky; top:0; z-index:20; background:var(--sidebar);
+  border-bottom:1px solid var(--line); padding:10px 16px; align-items:center; gap:12px;
+}
+.topbar .t{font-weight:700}
+.menu-btn{
+  border:1px solid var(--brown); background:transparent; color:var(--ink);
+  border-radius:8px; padding:6px 12px; font-size:14px; cursor:pointer;
+}
+
+/* Chapter content */
+.chapter{display:none; animation:fade .25s ease}
+.chapter.active{display:block}
+@keyframes fade{from{opacity:0; transform:translateY(6px)}to{opacity:1; transform:none}}
+.chapter h1{font-size:30px; line-height:1.3; border-bottom:3px solid var(--brown); padding-bottom:14px; margin:0 0 22px}
+.chapter h2{font-size:23px; margin:36px 0 12px; color:var(--ink); border-left:5px solid var(--accent); padding-left:12px}
+.chapter h3{font-size:18px; margin:26px 0 10px; color:var(--warm)}
+.chapter p{margin:12px 0}
+.chapter img{max-width:100%; height:auto; display:block; margin:18px auto; border-radius:10px; box-shadow:0 4px 16px rgba(0,0,0,.08); background:#fff}
+
+.chapter blockquote{
+  margin:16px 0; padding:12px 18px; background:var(--card);
+  border-left:4px solid var(--warm); border-radius:0 8px 8px 0; color:var(--muted);
+}
+.chapter blockquote p{margin:6px 0}
+
+.chapter code{background:#ece4d4; padding:2px 6px; border-radius:5px; font-size:.9em; font-family:"Cascadia Code",Consolas,monospace}
+.chapter pre{background:var(--code-bg); color:var(--code-ink); padding:16px 18px; border-radius:10px; overflow-x:auto; line-height:1.6}
+.chapter pre code{background:transparent; color:inherit; padding:0}
+
+.chapter table{border-collapse:collapse; width:100%; margin:18px 0; font-size:14.5px; background:var(--card); border-radius:10px; overflow:hidden; box-shadow:0 2px 10px rgba(0,0,0,.05)}
+.chapter th,.chapter td{border:1px solid var(--line); padding:9px 12px; text-align:left; vertical-align:top}
+.chapter th{background:var(--brown); color:#fff; font-weight:600}
+.chapter tr:nth-child(even) td{background:#faf6ee}
+
+.chapter hr{border:none; border-top:1px dashed var(--line); margin:30px 0}
+.chapter ul,.chapter ol{padding-left:26px}
+.chapter li{margin:5px 0}
+
+.pager{display:flex; justify-content:space-between; margin-top:60px; gap:12px}
+.pager a{
+  flex:1; padding:14px 18px; background:var(--card); border:1px solid var(--line);
+  border-radius:10px; color:var(--ink); font-size:14px;
+}
+.pager a:hover{border-color:var(--brown); text-decoration:none}
+.pager a.next{text-align:right}
+.pager .lbl{display:block; font-size:12px; color:var(--muted)}
+.pager a.disabled{visibility:hidden}
+
+.scrolltop{
+  position:fixed; right:26px; bottom:26px; width:46px; height:46px; border-radius:50%;
+  background:var(--brown); color:#fff; border:none; font-size:20px; cursor:pointer;
+  box-shadow:0 4px 14px rgba(0,0,0,.2); display:none;
+}
+
+@media (max-width:900px){
+  .sidebar{position:fixed; z-index:30; transform:translateX(-100%); transition:transform .25s; box-shadow:4px 0 20px rgba(0,0,0,.15)}
+  .sidebar.open{transform:none}
+  .topbar{display:flex}
+  .reader{padding:24px 18px 100px}
+  .chapter h1{font-size:24px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">Olympus PEN E-P7<small>从零开始 · 新手实用教程（网页版）</small></div>
+    <nav id="nav">
+      <ul class="nav-group"><li><a class="nav-link" data-target="home" href="#home">首页 · 总览</a></li></ul>
+      <div class="nav-title">基础篇</div>
+      <ul class="nav-group"><li><a class="nav-link" data-target="ch01" href="#ch01">第一次拿到 EP7</a></li><li><a class="nav-link" data-target="ch02" href="#ch02">认识 EP7</a></li><li><a class="nav-link" data-target="ch03" href="#ch03">第一次开机设置</a></li><li><a class="nav-link" data-target="ch04" href="#ch04">模式转盘详解</a></li><li><a class="nav-link" data-target="ch05" href="#ch05">14-42mm EZ 镜头使用指南</a></li><li><a class="nav-link" data-target="ch06" href="#ch06">40-150mm R 镜头使用指南</a></li><li><a class="nav-link" data-target="ch07" href="#ch07">第一次出去拍照</a></li><li><a class="nav-link" data-target="ch08" href="#ch08">拍人像</a></li><li><a class="nav-link" data-target="ch09" href="#ch09">拍风景</a></li><li><a class="nav-link" data-target="ch10" href="#ch10">夜景拍摄</a></li><li><a class="nav-link" data-target="ch11" href="#ch11">菜单详解</a></li><li><a class="nav-link" data-target="ch12" href="#ch12">常见问题</a></li></ul>
+      <div class="nav-title">进阶篇</div>
+      <ul class="nav-group"><li><a class="nav-link" data-target="ch13" href="#ch13">RAW 后期入门</a></li><li><a class="nav-link" data-target="ch14" href="#ch14">视频与 Vlog 实操</a></li><li><a class="nav-link" data-target="ch15" href="#ch15">旅行摄影全流程</a></li><li><a class="nav-link" data-target="ch16" href="#ch16">摄影术语表</a></li></ul>
+    </nav>
+  </aside>
+  <div class="main">
+    <div style="width:100%">
+      <div class="topbar">
+        <button class="menu-btn" id="menuBtn">☰ 目录</button>
+        <span class="t">EP7 新手教程</span>
+      </div>
+      <div class="reader" id="reader">
+        <article class="chapter" id="home">
+<h1>从零开始使用 Olympus PEN E-P7</h1>
+<blockquote>
+<p>一本写给零基础新手的 EP7 实用教程<br />
+套装：E-P7 + M.Zuiko 14-42mm F3.5-5.6 EZ + M.Zuiko 40-150mm F4.0-5.6 R</p>
+</blockquote>
+<hr />
+<h2>这本书是写给谁的？</h2>
+<p>如果你：</p>
+<ul>
+<li>以前几乎没用过相机，只会用手机拍照</li>
+<li>刚买了（或准备买）EP7 双镜头套装</li>
+<li>不想啃 200 页官方说明书</li>
+<li>希望<strong>尽快拍出满意的照片</strong></li>
+</ul>
+<p>那么这本书就是为你写的。</p>
+<hr />
+<h2>目录</h2>
+<table>
+<thead>
+<tr>
+<th>章节</th>
+<th>文件</th>
+<th>你会学到什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>第 0 章</td>
+<td><a href="#ch01">01-第一次拿到EP7.md</a></td>
+<td>开箱、装镜头、充电、插卡</td>
+</tr>
+<tr>
+<td>第 1 章</td>
+<td><a href="#ch02">02-认识EP7.md</a></td>
+<td>EP7 是什么、优缺点、适合谁</td>
+</tr>
+<tr>
+<td>第 2 章</td>
+<td><a href="#ch03">03-第一次开机设置.md</a></td>
+<td>开机前必做的 10 项设置</td>
+</tr>
+<tr>
+<td>第 3 章</td>
+<td><a href="#ch04">04-模式转盘.md</a></td>
+<td>AUTO / P / A / S / M / SCN / ART / AP 全解</td>
+</tr>
+<tr>
+<td>第 4 章</td>
+<td><a href="#ch05">05-14-42EZ镜头.md</a></td>
+<td>标准变焦「饼干头」怎么用</td>
+</tr>
+<tr>
+<td>第 5 章</td>
+<td><a href="#ch06">06-40-150R镜头.md</a></td>
+<td>长焦镜头拍什么、何时换</td>
+</tr>
+<tr>
+<td>第 6 章</td>
+<td><a href="#ch07">07-第一次出去拍照.md</a></td>
+<td>出门前的「一键配置清单」</td>
+</tr>
+<tr>
+<td>第 7 章</td>
+<td><a href="#ch08">08-拍人像.md</a></td>
+<td>人像模式、光圈、光线</td>
+</tr>
+<tr>
+<td>第 8 章</td>
+<td><a href="#ch09">09-拍风景.md</a></td>
+<td>旅行、建筑、街拍</td>
+</tr>
+<tr>
+<td>第 9 章</td>
+<td><a href="#ch10">10-夜景.md</a></td>
+<td>夜景、烟花、星空入门</td>
+</tr>
+<tr>
+<td>第 10 章</td>
+<td><a href="#ch11">11-菜单详解.md</a></td>
+<td>哪些菜单必改、哪些别碰</td>
+</tr>
+<tr>
+<td>第 11 章</td>
+<td><a href="#ch12">12-常见问题.md</a></td>
+<td>模糊、过曝、对焦失败……</td>
+</tr>
+</tbody>
+</table>
+<h3>进阶篇（第二个月起）</h3>
+<table>
+<thead>
+<tr>
+<th>章节</th>
+<th>文件</th>
+<th>你会学到什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>第 12 章</td>
+<td><a href="#ch13">13-RAW后期入门.md</a></td>
+<td>RAW 是什么、后期五步流程、软件选择</td>
+</tr>
+<tr>
+<td>第 13 章</td>
+<td><a href="#ch14">14-视频与Vlog.md</a></td>
+<td>1080p Vlog、快门守则、稳定与收音</td>
+</tr>
+<tr>
+<td>第 14 章</td>
+<td><a href="#ch15">15-旅行摄影.md</a></td>
+<td>打包、当天节奏、备份、故事线</td>
+</tr>
+<tr>
+<td>附录</td>
+<td><a href="#ch16">16-术语表.md</a></td>
+<td>全书名词「人话」速查</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>新手学习路线</h2>
+<h3>第一天（2～3 小时）</h3>
+<ol>
+<li>阅读 <a href="#ch01">01-第一次拿到EP7</a> —— 完成开箱、装镜头、充电</li>
+<li>阅读 <a href="#ch02">02-认识EP7</a> —— 了解你的相机</li>
+<li>阅读 <a href="#ch03">03-第一次开机设置</a> —— 完成基础设置</li>
+<li><strong>在家拍 20 张</strong>：桌子上的杯子、窗外的树、镜子里自己的脸</li>
+</ol>
+<blockquote>
+<p><strong>目标</strong>：能开机、能对焦、能按快门、能在回放里看到照片。</p>
+</blockquote>
+<h3>第二天（1～2 小时）</h3>
+<ol>
+<li>阅读 <a href="#ch04">04-模式转盘</a> 的 <strong>AUTO</strong> 和 <strong>A 模式</strong> 两节</li>
+<li>阅读 <a href="#ch05">05-14-42EZ镜头</a></li>
+<li><strong>出门拍 30 张</strong>：小区、便利店、路边花</li>
+</ol>
+<blockquote>
+<p><strong>目标</strong>：理解 A 模式，知道用前拨轮调光圈。</p>
+</blockquote>
+<h3>第三天（1～2 小时）</h3>
+<ol>
+<li>继续 <a href="#ch04">04-模式转盘</a> 的 <strong>SCN 场景模式</strong></li>
+<li>阅读 <a href="#ch07">07-第一次出去拍照</a></li>
+<li><strong>按清单设置相机</strong>，再拍 30 张</li>
+</ol>
+<blockquote>
+<p><strong>目标</strong>：形成「出门前三分钟检查清单」的习惯。</p>
+</blockquote>
+<h3>第一周末（累计 3～5 天）</h3>
+<table>
+<thead>
+<tr>
+<th>天</th>
+<th>任务</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>第 4 天</td>
+<td>读 <a href="#ch06">06-40-150R镜头</a>，练习换镜头</td>
+</tr>
+<tr>
+<td>第 5 天</td>
+<td>读 <a href="#ch08">08-拍人像</a>，给朋友或家人拍 20 张</td>
+</tr>
+<tr>
+<td>第 6 天</td>
+<td>读 <a href="#ch09">09-拍风景</a>，去公园或城市走走</td>
+</tr>
+<tr>
+<td>第 7 天</td>
+<td>复习 <a href="#ch12">12-常见问题</a>，整理本周最佳 5 张照片</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>第一周目标</strong>：
+- 熟练使用 <strong>A 模式</strong>
+- 会换两支镜头
+- 知道 ISO、光圈、快门的大致作用
+- 能拍清楚人像和风景</p>
+</blockquote>
+<h3>第二～四周</h3>
+<ul>
+<li>尝试 <strong>P 模式</strong> 和 <strong>SCN 场景模式</strong></li>
+<li>阅读 <a href="#ch10">10-夜景</a>，找机会拍一次夜景</li>
+<li>阅读 <a href="#ch11">11-菜单详解</a>，按需调整 2～3 个菜单</li>
+<li>每周至少出门拍一次，每次 50 张以上</li>
+</ul>
+<h3>一个月以后</h3>
+<table>
+<thead>
+<tr>
+<th>主题</th>
+<th>建议学习</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>S 模式</td>
+<td>拍运动、宠物奔跑</td>
+</tr>
+<tr>
+<td>M 模式</td>
+<td>理解曝光三要素的关系</td>
+</tr>
+<tr>
+<td>AP 高级模式</td>
+<td>Live Composite 拍烟花/光轨</td>
+</tr>
+<tr>
+<td>ART 艺术滤镜</td>
+<td>创意表达，Instagram 直出</td>
+</tr>
+<tr>
+<td>RAW 后期</td>
+<td>见 <a href="#ch13">13-RAW后期入门.md</a></td>
+</tr>
+<tr>
+<td>视频 / Vlog</td>
+<td>见 <a href="#ch14">14-视频与Vlog.md</a></td>
+</tr>
+<tr>
+<td>旅行摄影</td>
+<td>见 <a href="#ch15">15-旅行摄影.md</a></td>
+</tr>
+<tr>
+<td>外接闪光灯</td>
+<td>室内人像进阶</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>我的推荐：新手默认配置</h2>
+<p>如果你懒得记太多，<strong>平时就用这一套</strong>：</p>
+<pre><code>模式转盘 → A（光圈优先）
+光圈     → F4～F5.6（14-42）或 F5.6（40-150）
+ISO      → AUTO（上限设为 3200）
+白平衡   → AUTO
+图片质量 → LF（大 JPEG，约 20MP）
+对焦     → 单点 AF（S-AF）
+防抖     → 开启（默认）
+曝光补偿 → 0，太暗就 +0.3～+1.0
+镜头     → 白天用 14-42，需要「拉近」再换 40-150
+</code></pre>
+<hr />
+<h2>关于图片</h2>
+<p>本书在需要插图的位置预留了 Markdown 图片引用，例如：</p>
+<pre><code class="language-markdown">![EP7 正面](images/body/front-hero.webp)
+</code></pre>
+<p>请将你拍摄或截屏的图片放入 <code>images/</code> 对应子文件夹。每处占位符下方都标注了<strong>建议放入什么图片</strong>。</p>
+<hr />
+<h2>重要提醒</h2>
+<ol>
+<li><strong>EP7 没有取景器</strong>，强光下看屏幕可能吃力——尽量找阴影处构图，或调高屏幕亮度。</li>
+<li><strong>14-42 EZ 是电动变焦</strong>，变焦环是电子的，关机后镜头会自动收回。</li>
+<li><strong>换镜头前务必关机</strong>，避免进灰。</li>
+<li>品牌已更名为 <strong>OM SYSTEM</strong>，但相机菜单里可能仍显示 OLYMPUS——功能一样，不必困惑。</li>
+</ol>
+<hr />
+<h2>开始学习</h2>
+<p>打开 <a href="#ch01">01-第一次拿到EP7.md</a>，从开箱第一步开始。</p>
+<p>祝你拍得开心。</p>
+</article>
+<article class="chapter" id="ch01">
+<h1>第一次拿到 EP7</h1>
+<blockquote>
+<p>本章目标：安全完成开箱、装镜头、充电、插卡，拍第一张测试照片。</p>
+</blockquote>
+<hr />
+<h2>开箱清单</h2>
+<p>打开包装盒，确认以下物品是否齐全：</p>
+<table>
+<thead>
+<tr>
+<th>物品</th>
+<th>数量</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Olympus PEN E-P7 机身</td>
+<td>1</td>
+<td>有银色、白色可选</td>
+</tr>
+<tr>
+<td>BLS-50 锂电池</td>
+<td>1</td>
+<td>出厂可能未充满</td>
+</tr>
+<tr>
+<td>F-5AC USB 电源适配器</td>
+<td>1</td>
+<td>用于充电</td>
+</tr>
+<tr>
+<td>USB 数据线（Micro USB）</td>
+<td>1</td>
+<td>连接相机与充电器</td>
+</tr>
+<tr>
+<td>肩带</td>
+<td>1</td>
+<td>建议装上再用</td>
+</tr>
+<tr>
+<td>14-42mm EZ 镜头</td>
+<td>1</td>
+<td>电动饼干变焦，可能已预装</td>
+</tr>
+<tr>
+<td>40-150mm R 镜头</td>
+<td>1</td>
+<td>长焦，单独包装</td>
+</tr>
+<tr>
+<td>说明书 / 保修卡</td>
+<td>若干</td>
+<td>可备查，日常以本教程为主</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>💡 <strong>小技巧</strong>：先不要扔掉所有包装。镜头原装前后盖、缓冲材料旅行时还能用。</p>
+</blockquote>
+<p><img alt="开箱全部物品平铺" src="images/body/unboxing.svg" /></p>
+<blockquote>
+<p>📷 <strong>建议图片</strong>：所有配件平铺在桌面上的俯拍，标注每个物品名称。</p>
+</blockquote>
+<hr />
+<h2>认识包装盒里的「三件套」</h2>
+<h3>机身</h3>
+<p>EP7 是一台 <strong>Micro Four Thirds（M4/3）</strong> 无反相机。没有反光镜，比单反轻很多；<strong>没有内置取景器</strong>，所有构图都靠背后那块可翻转触摸屏。</p>
+<h3>14-42mm EZ</h3>
+<p>日常「挂机头」。非常薄，像块饼干，适合放包里随身带。变焦是<strong>电动</strong>的——转变焦环时镜头会伸长，关机后会自动缩回。</p>
+<h3>40-150mm R</h3>
+<p>轻量长焦。等效 80～300mm，拍远处的人、动物、舞台很有用。比 14-42 长一截，但放在包里不占太多地方。</p>
+<hr />
+<h2>第一步：给电池充电</h2>
+<ol>
+<li>打开机身底部电池仓盖</li>
+<li>按指示方向插入 BLS-50 电池（缺角对准）</li>
+<li>关上仓盖</li>
+<li><strong>关机</strong>状态下，用 USB 线连接相机与 F-5AC 充电器，插入插座</li>
+<li>充电指示灯亮起；约 <strong>4 小时</strong> 充满后灯灭</li>
+</ol>
+<blockquote>
+<p>⚠️ <strong>注意</strong>
+- 充电时相机必须<strong>关机</strong>，开机状态下不会充进电
+- 也可另购 BCS-5 座充（约 3.5 小时充满），出门备用电池更方便</p>
+</blockquote>
+<p><img alt="电池插入方向示意" src="images/body/battery-insert.svg" /></p>
+<blockquote>
+<p>📷 <strong>建议图片</strong>：电池仓打开，标注电池正确插入方向。</p>
+</blockquote>
+<hr />
+<h2>第二步：插入 SD 存储卡</h2>
+<ol>
+<li>打开同一侧（底部或侧面）的 <strong>SD 卡槽</strong></li>
+<li>卡标签朝外，金手指朝内，推入至卡住</li>
+<li>关好卡槽盖</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>推荐规格</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>容量</td>
+<td>64GB 或 128GB</td>
+</tr>
+<tr>
+<td>速度</td>
+<td>UHS-I U3 或 UHS-II</td>
+</tr>
+<tr>
+<td>品牌</td>
+<td>闪迪、三星、金士顿等主流即可</td>
+</tr>
+</tbody>
+</table>
+<p>拍 4K 视频建议 U3 及以上。纯拍照，Class 10 也够用。</p>
+<blockquote>
+<p>💡 <strong>小技巧</strong>：备一张备用卡。旅行时卡满了或损坏，有备无患。</p>
+</blockquote>
+<hr />
+<h2>第三步：安装 14-42mm EZ 镜头</h2>
+<p><strong>第一次建议装 14-42</strong>，它是最常用的标准镜头。</p>
+<h3>操作步骤</h3>
+<pre><code>1. 关闭相机电源（拨到 OFF）
+2. 拆下机身卡口盖、镜头后盖——后盖收好别丢
+3. 镜头卡口上的白点 对准 机身上白点
+4. 镜头插入卡口，顺时针轻轻转动，听到「咔」一声即锁紧
+5. 开机——EZ 镜头会自动伸出至工作位置
+</code></pre>
+<p><img alt="装镜头卡口对齐" src="images/lenses/mount-align.svg" /></p>
+<blockquote>
+<p>📷 <strong>建议图片</strong>：镜头与机身白点对齐的特写；或装镜头过程的连拍。</p>
+</blockquote>
+<h3>新手最容易犯的错</h3>
+<table>
+<thead>
+<tr>
+<th>错误</th>
+<th>后果</th>
+<th>正确做法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>开机状态下换镜头</td>
+<td>传感器进灰风险大</td>
+<td><strong>先关机</strong></td>
+</tr>
+<tr>
+<td>白点没对齐硬拧</td>
+<td>损坏卡口</td>
+<td>对齐后再转</td>
+</tr>
+<tr>
+<td>没听到锁紧声就开机</td>
+<td>镜头可能掉落</td>
+<td>确认「咔」一声</td>
+</tr>
+<tr>
+<td>用手摸镜头前组玻璃</td>
+<td>留下指纹油污</td>
+<td>只握镜身</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>第四步：装肩带</h2>
+<p>肩带穿入机身上两个挂耳。建议用「从外向内」的穿法，防止肩带意外滑脱——具体可参考官方说明书肩带穿法图。</p>
+<p><img alt="肩带穿入挂耳" src="images/body/strap.svg" /></p>
+<blockquote>
+<p>📷 <strong>建议图片</strong>：肩带正确穿法的特写。</p>
+</blockquote>
+<hr />
+<h2>第五步：第一次开机</h2>
+<ol>
+<li>模式转盘转到 <strong>iAUTO</strong>（全自动，通常标记为绿色相机图标）</li>
+<li>电源拨杆拨到 <strong>ON</strong></li>
+<li>14-42 EZ 会轻微「嗡」一声伸出——这是正常的</li>
+<li>按提示选择语言、日期时间</li>
+</ol>
+<p><img alt="第一次开机 iAUTO 模式" src="images/body/mode-dial.svg" /></p>
+<blockquote>
+<p>📷 <strong>建议图片</strong>：模式转盘指向 iAUTO；或开机后日期时间设置界面。</p>
+</blockquote>
+<hr />
+<h2>第六步：拍第一张测试照片</h2>
+<ol>
+<li>镜头对准房间里的静物（杯子、书本、玩偶）</li>
+<li>屏幕轻触你想对焦的位置</li>
+<li>半按快门——对焦框变绿表示合焦</li>
+<li>完全按下快门</li>
+<li>按 <strong>播放键</strong>（▶ 三角形）查看照片</li>
+</ol>
+<h3>检查这三件事</h3>
+<ul>
+<li>[ ] 照片没有黑屏（镜头盖摘了吗？）</li>
+<li>[ ] 主体是清晰的（快门速度够快吗？）</li>
+<li>[ ] 亮度大致正常（太暗或太亮先别管，后面会学）</li>
+</ul>
+<hr />
+<h2>40-150mm 镜头先别急着装</h2>
+<p>长焦镜头留到熟悉 14-42 之后再装。你需要先练会：</p>
+<ul>
+<li>关机换镜头</li>
+<li>基本对焦</li>
+<li>回放删除废片</li>
+</ul>
+<hr />
+<h2>机身各部位速览</h2>
+<pre><code>        [热靴/闪光灯]
+    [模式转盘]  [电源开关]
+  ┌─────────────────────┐
+  │  OLYMPUS PEN        │  ← 正面：镜头、Profile 拨盘（左下）
+  │      [镜头]         │
+  └─────────────────────┘
+
+  背面：3 英寸触摸屏（可上翻 80°、下翻 180° 自拍）
+        十字键、MENU、INFO、AEL/AFL、播放、删除
+</code></pre>
+<p><img alt="EP7 正面与背面" src="images/body/front-back.svg" /></p>
+<blockquote>
+<p>📷 <strong>建议图片</strong>：机身正、背两面产品照，标注主要区域。</p>
+</blockquote>
+<hr />
+<h2>实战 walkthrough：开箱到第一张照片（20 分钟）</h2>
+<p>跟着做一遍，全程不用查其他章节。每一步都有「做什么 + 看到什么才算对」。</p>
+<h3>阶段一：通电（约 5 分钟 + 充电等待）</h3>
+<pre><code>步骤 1｜插电池
+  → 底盖打开，BLS-50 缺角对准推到底，听到卡扣
+  → 看到什么：盖子能轻松合上，不顶
+
+步骤 2｜插 SD 卡
+  → 标签朝外推入，听到「咔」
+  → 看到什么：卡不外露、盖能关
+
+步骤 3｜充电（关机）
+  → USB 线接 F-5AC，插座通电
+  → 看到什么：机身指示灯亮 = 正在充；灯灭 = 充满
+</code></pre>
+<blockquote>
+<p>✅ <strong>检查点</strong>：若插上没反应 → 确认相机<strong>关机</strong>（开机不充电）、换个 USB 口。</p>
+</blockquote>
+<h3>阶段二：开机与基础引导（约 3 分钟）</h3>
+<pre><code>步骤 4｜转到 iAUTO（绿色相机图标），电源拨到 ON
+  → 看到什么：14-42 轻微「嗡」一声伸出，屏幕亮
+
+步骤 5｜按屏幕提示选「简体中文」→ 设日期时间
+  → 看到什么：进入实时取景画面，能看到镜头前的景象
+</code></pre>
+<blockquote>
+<p>✅ <strong>检查点</strong>：屏幕全黑？→ 镜头盖没摘 / 镜头没伸出（重新开关机）。</p>
+</blockquote>
+<h3>阶段三：第一张照片（约 5 分钟）</h3>
+<pre><code>步骤 6｜镜头对准桌上静物（杯子、书）
+步骤 7｜手指点屏幕上的主体 → 出现对焦框
+步骤 8｜半按快门 → 对焦框变绿 + 「滴」一声
+步骤 9｜完全按下快门 → 屏幕闪一下 = 已拍
+步骤 10｜按 ▶ 播放键 → 看到刚拍的照片
+</code></pre>
+<h3>阶段四：三项验收</h3>
+<table>
+<thead>
+<tr>
+<th>检查</th>
+<th>合格标准</th>
+<th>不合格怎么办</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>清晰</td>
+<td>放大主体边缘锐利</td>
+<td>快门太慢→靠窗更亮处再拍</td>
+</tr>
+<tr>
+<td>曝光</td>
+<td>不死黑不死白</td>
+<td>太暗→靠窗；太亮→别对着窗</td>
+</tr>
+<tr>
+<td>对焦</td>
+<td>主体清背景可虚</td>
+<td>框没变绿别按到底</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>🎯 <strong>毕业标准</strong>：能独立完成步骤 6～10，并拍出 1 张清晰照片，本章就通关了。</p>
+</blockquote>
+<hr />
+<h2>常见开箱问题速查</h2>
+<table>
+<thead>
+<tr>
+<th>现象</th>
+<th>原因</th>
+<th>处理</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>开机镜头不伸出</td>
+<td>镜头没锁紧 / 电量过低</td>
+<td>重新锁镜头、先充电</td>
+</tr>
+<tr>
+<td>屏幕提示「无存储卡」</td>
+<td>卡没插到位</td>
+<td>重插到「咔」</td>
+</tr>
+<tr>
+<td>拍完没声音没反馈</td>
+<td>静音模式</td>
+<td>转 iAUTO 重试</td>
+</tr>
+<tr>
+<td>时间不对 EXIF 乱</td>
+<td>没设日期</td>
+<td>MENU→扳手→日期时间</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>本章重点回顾</h2>
+<ul>
+<li>开箱确认：机身、两镜头、电池、充电器、肩带、SD 卡</li>
+<li>充电必须<strong>关机</strong>，约 4 小时</li>
+<li>装镜头：<strong>关机 → 白点对白点 → 顺时针锁紧 → 开机</strong></li>
+<li>第一次用 <strong>iAUTO</strong> 模式拍测试照</li>
+<li>40-150 等熟悉后再装</li>
+</ul>
+<h2>常见误区</h2>
+<table>
+<thead>
+<tr>
+<th>误区</th>
+<th>真相</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>「镜头没伸出来就是坏了」</td>
+<td>EZ 关机后会缩回，开机自动伸出</td>
+</tr>
+<tr>
+<td>「充电时可以顺便开机看看」</td>
+<td>开机时不会充电</td>
+</tr>
+<tr>
+<td>「SD 卡随便插」</td>
+<td>推到底卡住，别用蛮力</td>
+</tr>
+<tr>
+<td>「两个镜头可以同时装」</td>
+<td>一次只能装一支</td>
+</tr>
+</tbody>
+</table>
+<h2>拍摄练习</h2>
+<ol>
+<li><strong>充电练习</strong>：插入电池，连接充电器，观察指示灯</li>
+<li><strong>装拆镜头 3 次</strong>：每次关机，练到 30 秒内完成</li>
+<li><strong>iAUTO 拍 10 张</strong>：不同距离、不同光线</li>
+<li><strong>回放练习</strong>：播放、放大检查、删除 2 张最糊的</li>
+<li><strong>熟悉按键位置</strong>：闭着眼摸出快门、播放、删除键</li>
+</ol>
+<p>完成以上练习后，进入 <a href="#ch02">02-认识EP7.md</a>。</p>
+</article>
+<article class="chapter" id="ch02">
+<h1>认识 EP7</h1>
+<blockquote>
+<p>本章目标：知道 EP7 是什么、强在哪、弱在哪，以及它是否适合你。</p>
+</blockquote>
+<hr />
+<h2>EP7 是什么？</h2>
+<p>Olympus PEN E-P7（2021 年 6 月发布）是 OM System（原奥林巴斯）PEN 系列的一台 <strong>入门级无反相机</strong>。</p>
+<p>几个关键特征：</p>
+<table>
+<thead>
+<tr>
+<th>特征</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>传感器</td>
+<td>2000 万像素 M4/3 Live MOS</td>
+</tr>
+<tr>
+<td>处理器</td>
+<td>TruePic VIII</td>
+</tr>
+<tr>
+<td>防抖</td>
+<td>5 轴机身防抖，约 4.5 档</td>
+</tr>
+<tr>
+<td>屏幕</td>
+<td>3 英寸触摸屏，104 万点，可翻转自拍</td>
+</tr>
+<tr>
+<td>取景器</td>
+<td><strong>无</strong>（靠屏幕构图）</td>
+</tr>
+<tr>
+<td>重量</td>
+<td>约 337g（含电池和卡）</td>
+</tr>
+<tr>
+<td>连拍</td>
+<td>最高约 8.7 张/秒</td>
+</tr>
+<tr>
+<td>视频</td>
+<td>4K 30p</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="EP7 与手机大小对比" src="images/body/size-compare.svg" /></p>
+<blockquote>
+<p>📷 <strong>建议图片</strong>：EP7 加 14-42 镜头与手机并排，展示体积。</p>
+</blockquote>
+<hr />
+<h2>为什么很多人喜欢 EP7？</h2>
+<h3>1. 颜值即正义</h3>
+<p>复古 PEN 造型、金属质感、银白配色——很多人买它就是因为「好看」。愿意带出门的相机，才是好相机。</p>
+<h3>2. 真的轻</h3>
+<p>机身 + 14-42 EZ 大约 <strong>430g</strong>，比一罐可乐还轻。旅行、逛街挂脖子或放小包都不累赘。</p>
+<h3>3. 色彩直出好看</h3>
+<p>奥林巴斯/OM System 的 JPEG 色彩一向口碑不错。机内还有 <strong>色彩配置文件</strong> 和 <strong>16 种艺术滤镜</strong>，不想后期也能出片。</p>
+<h3>4. 防抖很强</h3>
+<p>5 轴防抖约 4.5 档，意味着你可以用更慢的快门手持拍摄。新手最怕手抖，EP7 帮你兜很大一部分底。</p>
+<h3>5. 镜头生态丰富</h3>
+<p>M4/3 卡口镜头选择多。你的 14-42 + 40-150 双套头已经覆盖 28～300mm 等效焦段，性价比极高。</p>
+<hr />
+<h2>Micro Four Thirds 是什么？</h2>
+<p>一句话：<strong>一种相机和镜头的「接头标准」</strong>。</p>
+<pre><code>全画幅传感器  ████████████████  （最大，景深最浅，机身往往最大）
+APS-C 传感器  ██████████        （中等）
+M4/3 传感器   ████████          （EP7 用这个，边长约 17×13mm）
+手机传感器    ██                （最小）
+</code></pre>
+<h3>等效焦段 ×2</h3>
+<p>M4/3 传感器比全画幅小，所以有一个「等效系数 2×」：</p>
+<table>
+<thead>
+<tr>
+<th>镜头标注</th>
+<th>等效全画幅视角</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>14mm</td>
+<td>28mm（广角）</td>
+</tr>
+<tr>
+<td>42mm</td>
+<td>84mm（中焦）</td>
+</tr>
+<tr>
+<td>150mm</td>
+<td>300mm（长焦）</td>
+</tr>
+</tbody>
+</table>
+<p><strong>你不需要背公式</strong>。记住：14-42 适合日常，40-150 适合「拉近远处的」。</p>
+<h3>对新手意味着什么？</h3>
+<table>
+<thead>
+<tr>
+<th>优点</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>机身镜头更小</td>
+<td>愿意带出门</td>
+</tr>
+<tr>
+<td>长焦更轻便</td>
+<td>300mm 等效才 190g</td>
+</tr>
+<tr>
+<td>景深相对深</td>
+<td>同光圈下背景不如全画幅虚——但人像仍够用</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>相对弱项</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>高 ISO 噪点</td>
+<td>比全画幅明显，但 ISO 3200 以内日常够用</td>
+</tr>
+<tr>
+<td>极致背景虚化</td>
+<td>需要 F1.8 大光圈定焦才更明显</td>
+</tr>
+<tr>
+<td>暗光极限</td>
+<td>有防抖补，但不如大传感器</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>EP7 的优点（结合你的套装）</h2>
+<table>
+<thead>
+<tr>
+<th>优点</th>
+<th>实际体验</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>轻便</td>
+<td>双镜头放一个小包即可</td>
+</tr>
+<tr>
+<td>防抖</td>
+<td>室内、黄昏手持成功率更高</td>
+</tr>
+<tr>
+<td>翻转屏</td>
+<td>自拍、低角度、高角度都方便</td>
+</tr>
+<tr>
+<td>触控对焦</td>
+<td>和手机一样点哪对哪</td>
+</tr>
+<tr>
+<td>艺术滤镜</td>
+<td>直出创意照，免 App 滤镜</td>
+</tr>
+<tr>
+<td>USB 充电</td>
+<td>充电宝也能给相机充</td>
+</tr>
+<tr>
+<td>静音快门</td>
+<td>博物馆、婚礼部分场景可用</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>EP7 的不足（买前/用前要知道）</h2>
+<table>
+<thead>
+<tr>
+<th>不足</th>
+<th>影响</th>
+<th>应对方法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>无取景器</td>
+<td>大太阳下屏幕看不清</td>
+<td>找阴影、戴帽子挡光、调高亮度</td>
+</tr>
+<tr>
+<td>不防尘防滴</td>
+<td>下雨、沙滩要小心</td>
+<td>雨天套塑料袋；别换镜头</td>
+</tr>
+<tr>
+<td>反差对焦</td>
+<td>追焦不如高端机型</td>
+<td>拍小孩宠物用连拍+提前量</td>
+</tr>
+<tr>
+<td>4K 无机身防抖协同</td>
+<td>拍视频手持会抖</td>
+<td>用三脚架或裁切 1080p</td>
+</tr>
+<tr>
+<td>单卡槽</td>
+<td>卡坏=数据全丢</td>
+<td>重要行程备双卡、及时备份</td>
+</tr>
+<tr>
+<td>菜单复杂</td>
+<td>新手迷路</td>
+<td>跟本教程「必改清单」走</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>⚠️ <strong>诚实说</strong>：如果你主要拍<strong>高速运动</strong>（赛车、飞鸟）或<strong>专业商业人像</strong>，EP7 不是最优选。但旅行、记录生活、入门学摄影——非常合适。</p>
+</blockquote>
+<hr />
+<h2>适合什么人？</h2>
+<p>✅ <strong>非常适合</strong></p>
+<ul>
+<li>从手机升级、想要更好画质但怕太重</li>
+<li>旅行、街拍、美食、家人朋友记录</li>
+<li>在意相机外观，愿意随身带</li>
+<li>不想学复杂后期，希望直出好看</li>
+<li>预算有限，双套头一机走天下</li>
+</ul>
+<p>✅ <strong>也可以，但有预期</strong></p>
+<ul>
+<li>夜景爱好者（能拍，但要学会控制 ISO）</li>
+<li>Vlog 入门（4K 可用，无麦克风接口是短板）</li>
+<li>演唱会后排（40-150 能拍，但光圈小、高 ISO 有噪点）</li>
+</ul>
+<hr />
+<h2>不适合什么人？</h2>
+<p>❌ <strong>可能不合适</strong></p>
+<ul>
+<li>强烈需要取景器（阳光户外的职业拍摄）</li>
+<li>主要拍体育/野生动物高速追焦</li>
+<li>追求极致暗光画质（经常 ISO 12800+）</li>
+<li>需要双卡备份的专业商拍</li>
+<li>重度视频创作（无耳机麦接口、4K 裁切大）</li>
+</ul>
+<hr />
+<h2>EP7 vs 手机：差在哪？</h2>
+<table>
+<thead>
+<tr>
+<th>对比项</th>
+<th>手机</th>
+<th>EP7 + 镜头</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>传感器</td>
+<td>小</td>
+<td>大很多</td>
+</tr>
+<tr>
+<td>光学变焦</td>
+<td>多数靠数码裁切</td>
+<td>40-150 真光学 300mm</td>
+</tr>
+<tr>
+<td>背景虚化</td>
+<td>算法模拟，边缘易穿帮</td>
+<td>物理光学，更自然</td>
+</tr>
+<tr>
+<td>暗光</td>
+<td>计算摄影很强</td>
+<td>靠大传感器+防抖，各有胜负</td>
+</tr>
+<tr>
+<td>操控</td>
+<td>极简</td>
+<td>需学习，但更可控</td>
+</tr>
+<tr>
+<td>便携</td>
+<td>口袋</td>
+<td>小包</td>
+</tr>
+</tbody>
+</table>
+<p><strong>新手常见失望</strong>：「为什么不如手机亮？」—— 因为手机默认 HDR+算法，相机默认更「真实」。学会曝光补偿和后期，差距就拉开了。</p>
+<hr />
+<h2>你的双镜头套装能拍什么？</h2>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>14-42 EZ</th>
+<th>40-150 R</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>餐厅美食</td>
+<td>⭐⭐⭐</td>
+<td>❌ 太近</td>
+</tr>
+<tr>
+<td>旅行合影</td>
+<td>⭐⭐⭐</td>
+<td>⭐</td>
+</tr>
+<tr>
+<td>远处建筑</td>
+<td>⭐</td>
+<td>⭐⭐⭐</td>
+</tr>
+<tr>
+<td>动物园</td>
+<td>⭐</td>
+<td>⭐⭐⭐</td>
+</tr>
+<tr>
+<td>儿童室内</td>
+<td>⭐⭐⭐</td>
+<td>⭐</td>
+</tr>
+<tr>
+<td>演唱会</td>
+<td>❌</td>
+<td>⭐⭐</td>
+</tr>
+<tr>
+<td>月亮</td>
+<td>❌</td>
+<td>⭐（需三脚架）</td>
+</tr>
+<tr>
+<td>人像半身</td>
+<td>⭐⭐⭐</td>
+<td>⭐⭐</td>
+</tr>
+</tbody>
+</table>
+<p>详细镜头章节见 <a href="#ch05">05-14-42EZ镜头.md</a> 和 <a href="#ch06">06-40-150R镜头.md</a>。</p>
+<hr />
+<h2>品牌更名说明</h2>
+<p>2021 年起影像部门品牌逐步改为 <strong>OM SYSTEM</strong>。你的 EP7 机身上可能仍印 OLYMPUS PEN，菜单里也可能是 OLYMPUS——<strong>功能完全相同</strong>，固件更新从 OM System 官网下载即可。</p>
+<hr />
+<h2>实战 walkthrough：用 3 个实拍案例读懂 EP7 的强项</h2>
+<p>与其背参数，不如各拍一张，直观感受相机比手机强在哪。三个案例都用 <strong>A 模式</strong>（下一章详解，这里照抄参数即可）。</p>
+<h3>案例 A：真实光学虚化（手机算法比不了的边缘）</h3>
+<pre><code>镜头：14-42 @ 42mm
+模式：A，光圈 F5.6
+主体：一个杯子/玩偶，放桌子边缘
+背景：离主体 1.5m 以上（越远越虚）
+动作：靠近主体到 0.5m，对焦主体
+</code></pre>
+<blockquote>
+<p>对比：同场景用手机「人像模式」拍一张。放大看主体<strong>边缘</strong>（头发、把手）——手机算法常在边缘穿帮，EP7 是光学虚化，过渡自然。</p>
+</blockquote>
+<h3>案例 B：光学长焦（把远处拉到眼前）</h3>
+<pre><code>镜头：换 40-150 @ 150mm（等效 300mm）
+模式：A，F5.6
+主体：50m 外的招牌 / 对岸建筑
+动作：站稳，半按对焦，快门≥1/250
+</code></pre>
+<blockquote>
+<p>对比：手机同一位置拉到最大。手机多为数码裁切，放大就糊；EP7 是真光学，细节清楚得多。</p>
+</blockquote>
+<h3>案例 C：防抖暗光手持（不糊的极限）</h3>
+<pre><code>镜头：14-42 @ 14mm，F3.5
+模式：A，ISO AUTO（上限 3200）
+场景：室内较暗的角落
+动作：双手夹紧、屏息，轻按快门
+</code></pre>
+<blockquote>
+<p>感受：EP7 的 5 轴防抖让 1/10～1/20 秒手持也常能出清晰片——这是它「愿意带出门也能拍」的底气。</p>
+</blockquote>
+<h3>三案例对照</h3>
+<table>
+<thead>
+<tr>
+<th>案例</th>
+<th>关键设置</th>
+<th>你会明白</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A 虚化</td>
+<td>42mm + F5.6 + 靠近</td>
+<td>光学虚化更自然</td>
+</tr>
+<tr>
+<td>B 长焦</td>
+<td>40-150 @ 150mm</td>
+<td>光学变焦碾压手机数码变焦</td>
+</tr>
+<tr>
+<td>C 防抖</td>
+<td>14mm + ISO AUTO</td>
+<td>暗光手持成功率</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>🎯 <strong>目的</strong>：不是拍大片，是<strong>亲手验证</strong>「为什么要用相机而不是手机」。拍完你就知道该在什么场景掏出 EP7。</p>
+</blockquote>
+<hr />
+<h2>本章重点回顾</h2>
+<ul>
+<li>EP7 = 轻便、好看、防抖强的 M4/3 入门无反</li>
+<li>无取景器是最大的使用环境限制</li>
+<li>M4/3 等效焦段 ×2，你的套装覆盖 28～300mm</li>
+<li>适合旅行、生活记录；不适合专业体育/极致暗光</li>
+<li>比手机强在光学变焦、真实虚化、可控性</li>
+</ul>
+<h2>常见误区</h2>
+<table>
+<thead>
+<tr>
+<th>误区</th>
+<th>真相</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>「像素越高越好」</td>
+<td>2000 万对打印 A3 足够</td>
+</tr>
+<tr>
+<td>「小传感器就是垃圾」</td>
+<td>轻便+防抖+镜头，整体体验很好</td>
+</tr>
+<tr>
+<td>「必须买定焦才专业」</td>
+<td>双套头先把焦段用熟</td>
+</tr>
+<tr>
+<td>「EP7 是老相机了」</td>
+<td>2021 年发布，仍是最新 PEN 线</td>
+</tr>
+</tbody>
+</table>
+<h2>拍摄练习</h2>
+<ol>
+<li>称一下你的 EP7+14-42 重量，和手机对比</li>
+<li>在强光下看屏幕，感受「无取景器」的实际影响</li>
+<li>打开艺术滤镜拍 3 张，体验直出色彩</li>
+<li>列出你最常拍的 5 种场景，对照上表看该用哪支镜头</li>
+</ol>
+<p>下一章：<a href="#ch03">03-第一次开机设置.md</a></p>
+</article>
+<article class="chapter" id="ch03">
+<h1>第一次开机设置</h1>
+<blockquote>
+<p>本章目标：完成 10 项「开机必做」设置，让 EP7 处于最适合新手的状态。</p>
+</blockquote>
+<hr />
+<h2>开始之前</h2>
+<ul>
+<li>电池已充满或至少有 50% 电量</li>
+<li>SD 卡已插入</li>
+<li>14-42 EZ 已安装</li>
+<li>模式转盘在 <strong>P</strong> 或 <strong>A</strong>（设置菜单时比 iAUTO 自由）</li>
+</ul>
+<p><img alt="开机设置流程概览" src="images/menu/first-setup.svg" /></p>
+<blockquote>
+<p>📷 <strong>建议图片</strong>：设置菜单首页截图，或本教程设置清单打印版。</p>
+</blockquote>
+<hr />
+<h2>必做设置清单（10 项）</h2>
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th>设置项</th>
+<th>推荐值</th>
+<th>优先级</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>日期与时间</td>
+<td>准确</td>
+<td>⭐⭐⭐</td>
+</tr>
+<tr>
+<td>2</td>
+<td>图片质量</td>
+<td>LF（大 JPEG）</td>
+<td>⭐⭐⭐</td>
+</tr>
+<tr>
+<td>3</td>
+<td>ISO 上限</td>
+<td>AUTO，最高 3200</td>
+<td>⭐⭐⭐</td>
+</tr>
+<tr>
+<td>4</td>
+<td>防抖</td>
+<td>开启 S-IS AUTO</td>
+<td>⭐⭐⭐</td>
+</tr>
+<tr>
+<td>5</td>
+<td>对焦模式</td>
+<td>S-AF 单次对焦</td>
+<td>⭐⭐⭐</td>
+</tr>
+<tr>
+<td>6</td>
+<td>对焦点</td>
+<td>单点，可触控</td>
+<td>⭐⭐⭐</td>
+</tr>
+<tr>
+<td>7</td>
+<td>白平衡</td>
+<td>AUTO</td>
+<td>⭐⭐</td>
+</tr>
+<tr>
+<td>8</td>
+<td>网格线</td>
+<td>开启</td>
+<td>⭐⭐</td>
+</tr>
+<tr>
+<td>9</td>
+<td>格式化 SD 卡</td>
+<td>新卡必做</td>
+<td>⭐⭐⭐</td>
+</tr>
+<tr>
+<td>10</td>
+<td>固件版本</td>
+<td>检查更新</td>
+<td>⭐</td>
+</tr>
+</tbody>
+</table>
+<p>下面逐项说明<strong>为什么要这样设</strong>。</p>
+<hr />
+<h2>1. 日期与时间</h2>
+<p><strong>路径</strong>：MENU → 扳手图标（设置）→ 日期/时间</p>
+<p>照片 EXIF 信息依赖正确时间。旅行跨时区记得改。</p>
+<blockquote>
+<p>💡 <strong>小技巧</strong>：开启「保留日期」——换电池时时间不会乱。</p>
+</blockquote>
+<hr />
+<h2>2. 图片质量：LF</h2>
+<p><strong>路径</strong>：MENU → 相机图标 → 图片质量 → <strong>LF</strong></p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>含义</th>
+<th>新手建议</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LF</td>
+<td>大 JPEG，约 20MP</td>
+<td>✅ <strong>默认用这个</strong></td>
+</tr>
+<tr>
+<td>LN</td>
+<td>标准 JPEG，稍小</td>
+<td>卡空间紧张时</td>
+</tr>
+<tr>
+<td>RAW</td>
+<td>原始数据</td>
+<td>第一个月<strong>先别用</strong></td>
+</tr>
+<tr>
+<td>RAW+JPEG</td>
+<td>两种都存</td>
+<td>占空间，以后再说</td>
+</tr>
+</tbody>
+</table>
+<p><strong>为什么不用 RAW？</strong></p>
+<p>RAW 需要电脑软件后期。你现在的目标是<strong>拍清楚、直出好看</strong>。等 JPEG 玩熟了再学 RAW。</p>
+<blockquote>
+<p>⚠️ <strong>注意</strong>：LF 单张约 8～10MB，64GB 卡可拍 6000+ 张，放心用。</p>
+</blockquote>
+<hr />
+<h2>3. ISO：AUTO，上限 3200</h2>
+<p><strong>路径</strong>：按 OK 键 → 超级控制面板（SCP）→ ISO → AUTO</p>
+<p>或：MENU → 拍摄菜单 → ISO → AUTO</p>
+<table>
+<thead>
+<tr>
+<th>设置</th>
+<th>推荐</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ISO 模式</td>
+<td>AUTO</td>
+</tr>
+<tr>
+<td>AUTO 上限</td>
+<td><strong>3200</strong>（默认可能 6400，建议改低）</td>
+</tr>
+<tr>
+<td>AUTO 下限</td>
+<td>LOW（约 ISO 100）</td>
+</tr>
+</tbody>
+</table>
+<p><strong>为什么限制 3200？</strong></p>
+<p>ISO 越高，噪点越多。EP7 在 ISO 3200 以内日常完全可用；6400 以上明显变脏。限制上限 = 相机帮你兜底。</p>
+<p><strong>什么时候手动提高？</strong></p>
+<p>室内极暗、演唱会——临时改 ISO 1600～6400，拍完改回 AUTO。</p>
+<hr />
+<h2>4. 防抖：开启</h2>
+<p><strong>路径</strong>：MENU → 拍摄 → 防抖 / IS Settings → <strong>S-IS AUTO</strong></p>
+<p>EP7 的 5 轴防抖是核心优势。<strong>不要关</strong>。</p>
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>S-IS AUTO</td>
+<td>自动，日常用这个</td>
+</tr>
+<tr>
+<td>IS 1</td>
+<td>仅横抖</td>
+</tr>
+<tr>
+<td>IS 2</td>
+<td>仅竖抖</td>
+</tr>
+<tr>
+<td>OFF</td>
+<td>关——仅三脚架长曝光时用</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>5. 对焦：S-AF 单次对焦</h2>
+<p><strong>路径</strong>：SCP（按 OK）→ 对焦模式 → <strong>S-AF</strong></p>
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>何时用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>S-AF</strong></td>
+<td>静物、人像、风景——<strong>90% 时间</strong></td>
+</tr>
+<tr>
+<td>C-AF</td>
+<td>跑步的小孩、宠物——第二周再学</td>
+</tr>
+<tr>
+<td>MF</td>
+<td>手动对焦——高级，以后学</td>
+</tr>
+<tr>
+<td>S-AF+MF</td>
+<td>半自动——以后学</td>
+</tr>
+</tbody>
+</table>
+<p>新手用 S-AF：半按快门对焦一次，全按拍摄。简单可靠。</p>
+<hr />
+<h2>6. 对焦点：单点 + 触摸</h2>
+<p><strong>路径</strong>：SCP → AF 区域 → <strong>单点</strong> 或 <strong>小群点</strong></p>
+<ul>
+<li>触摸屏点哪对哪——和手机一样</li>
+<li>半按快门时可配合十字键移动对焦点</li>
+</ul>
+<blockquote>
+<p>💡 <strong>小技巧</strong>：人像对焦在<strong>眼睛</strong>，不要对鼻子或背景。</p>
+</blockquote>
+<p><img alt="单点对焦点示意" src="images/diagrams/af-single-point.svg" /></p>
+<blockquote>
+<p>📷 <strong>建议图片</strong>：屏幕上的单点对焦框对准人脸眼睛的截图。</p>
+</blockquote>
+<hr />
+<h2>7. 白平衡：AUTO</h2>
+<p><strong>路径</strong>：SCP → WB → <strong>AUTO</strong></p>
+<p>让相机自动判断色温。90% 场景够用。</p>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>是否改 WB</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>日常</td>
+<td>AUTO</td>
+</tr>
+<tr>
+<td>餐厅暖光灯</td>
+<td>AUTO 或 白炽灯</td>
+</tr>
+<tr>
+<td>阴天</td>
+<td>AUTO 即可</td>
+</tr>
+<tr>
+<td>RAW 拍摄者</td>
+<td>固定 AUTO，后期改</td>
+</tr>
+</tbody>
+</table>
+<p>第一个月：<strong>别碰自定义白平衡</strong>。</p>
+<hr />
+<h2>8. 网格线：开启</h2>
+<p><strong>路径</strong>：MENU → 自定义 → 网格线 → <strong>3×3</strong></p>
+<p>帮助构图（三分法）。不影响成像，只在屏幕显示。</p>
+<hr />
+<h2>9. 格式化 SD 卡</h2>
+<p><strong>路径</strong>：MENU → 扳手 → 格式化</p>
+<p>⚠️ <strong>会删除卡上所有照片</strong>。新卡或二手卡第一次使用必做。</p>
+<blockquote>
+<p><strong>区别</strong>：
+- <strong>删除全部照片</strong>：文件可能残留
+- <strong>格式化</strong>：彻底清空，推荐</p>
+</blockquote>
+<hr />
+<h2>10. 检查固件</h2>
+<p><strong>路径</strong>：MENU → 扳手 → 固件 → 显示版本</p>
+<p>访问 <a href="https://www.om-system.com/">OM System 支持页面</a> 对比是否有新版本。有更新再升，没有就跳过。</p>
+<hr />
+<h2>推荐但非必做（第二周再改）</h2>
+<table>
+<thead>
+<tr>
+<th>设置</th>
+<th>推荐值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>静音模式</td>
+<td>关</td>
+<td>需要时再用 SCN Silent</td>
+</tr>
+<tr>
+<td>长按 AF 取消</td>
+<td>默认</td>
+<td>先不动</td>
+</tr>
+<tr>
+<td>按钮自定义</td>
+<td>默认</td>
+<td>熟悉后再改 Fn</td>
+</tr>
+<tr>
+<td>Wi-Fi</td>
+<td>按需</td>
+<td>传手机时再开</td>
+</tr>
+<tr>
+<td>人脸检测</td>
+<td>开</td>
+<td>拍人像有帮助</td>
+</tr>
+<tr>
+<td>防闪烁</td>
+<td>AUTO</td>
+<td>室内荧光灯防条纹</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>超级控制面板（SCP）——你的「快捷菜单」</h2>
+<p>在 P/A/S/M 模式下，按 <strong>OK 键</strong> 调出 SCP：</p>
+<pre><code>┌─────────────────┐
+│ ISO    WB   测光 │
+│ 模式   AF区  驱动 │
+│ 闪光   防抖  ... │
+└─────────────────┘
+</code></pre>
+<p><img alt="超级控制面板" src="images/menu/super-control-panel.svg" /></p>
+<blockquote>
+<p>📷 <strong>建议图片</strong>：SCP 完整界面截图，标注常用图标。</p>
+</blockquote>
+<p><strong>新手最常碰的 5 个</strong>：</p>
+<ol>
+<li>ISO</li>
+<li>白平衡（WB）</li>
+<li>对焦模式</li>
+<li>AF 区域</li>
+<li>连拍/自拍定时</li>
+</ol>
+<p>用十字键移动，OK 确认，前拨轮或子拨盘改数值。</p>
+<hr />
+<h2>设置完成后的「标准状态」</h2>
+<pre><code class="language-text">模式：A（光圈优先）——下一章详讲
+光圈：F4（14-42 中间档）
+ISO：AUTO（上限 3200）
+WB：AUTO
+画质：LF
+对焦：S-AF，单点
+防抖：S-IS AUTO
+网格：3×3 开
+</code></pre>
+<p>拍一张测试照，回放检查：</p>
+<ul>
+<li>[ ] 文件名连续、时间正确</li>
+<li>[ ] 照片清晰</li>
+<li>[ ] 亮度正常</li>
+</ul>
+<hr />
+<h2>实战 walkthrough：SCP 30 秒改齐 4 项（每天出门前）</h2>
+<p>超级控制面板（SCP）是你日常最该练熟的操作。目标：<strong>闭着也能在 30 秒内</strong>把 ISO、WB、AF 模式、AF 区域改对。</p>
+<pre><code>步骤 1｜确保在 P/A/S/M 模式（iAUTO 下 SCP 受限）
+步骤 2｜按 OK 键 → 屏幕出现方格面板（SCP）
+步骤 3｜十字键移动高亮框到目标项，转拨轮改值：
+        · ISO      → AUTO
+        · WB       → AUTO
+        · AF 模式   → S-AF
+        · AF 区域   → 单点
+步骤 4｜半按快门退出，设置立即生效
+</code></pre>
+<blockquote>
+<p>✅ <strong>检查点</strong>：改完随手拍一张，回放按 INFO 看参数是否是你设的值。
+🎯 <strong>练习目标</strong>：连续 3 天，每天出门前盲操一遍，直到不看菜单也能改。</p>
+</blockquote>
+<hr />
+<h2>两套「即用预设」（抄参数就能拍）</h2>
+<p>刚学不用自己想参数，先用这两套覆盖 90% 场景。</p>
+<h3>预设 A · 白天通用</h3>
+<pre><code class="language-text">模式：A          光圈：F5.6
+ISO：AUTO(≤3200)  WB：AUTO
+对焦：S-AF 单点    画质：LF
+曝光补偿：0（偏暗+0.3）
+</code></pre>
+<p>适合：街拍、合影、旅行、静物。</p>
+<h3>预设 B · 室内 / 弱光</h3>
+<pre><code class="language-text">模式：A          光圈：F3.5～F4（开大进光）
+ISO：AUTO(≤3200)  WB：AUTO
+对焦：S-AF 单点    画质：LF
+曝光补偿：+0.3     防抖：S-IS AUTO（务必开）
+</code></pre>
+<p>适合：餐厅、家里、咖啡馆、黄昏。</p>
+<blockquote>
+<p>💡 从预设 A 起步；发现快门低于 1/60 容易糊，就切到预设 B（开大光圈）。</p>
+</blockquote>
+<hr />
+<h2>分步：新卡第一次「格式化」（会清空，务必确认）</h2>
+<pre><code>步骤 1｜MENU → 扳手图标 → 格式化
+步骤 2｜选「全部删除 / 格式化」→ 确认
+步骤 3｜等待完成，回到拍摄
+</code></pre>
+<blockquote>
+<p>⚠️ 格式化<strong>清空全部照片</strong>。只对新卡或已备份的卡做。</p>
+</blockquote>
+<hr />
+<h2>本章重点回顾</h2>
+<ul>
+<li>新卡必须<strong>格式化</strong></li>
+<li>画质用 <strong>LF JPEG</strong>，第一个月不用 RAW</li>
+<li>ISO <strong>AUTO 上限 3200</strong> 控噪点</li>
+<li>防抖<strong>常开</strong>，S-IS AUTO</li>
+<li>对焦 <strong>S-AF + 单点 + 触摸</strong></li>
+<li><strong>OK 键 = SCP 快捷菜单</strong>，比深逛 MENU 高效</li>
+</ul>
+<h2>常见误区</h2>
+<table>
+<thead>
+<tr>
+<th>误区</th>
+<th>真相</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>「画质选最高 RAW」</td>
+<td>新手先 JPEG，学后期再 RAW</td>
+</tr>
+<tr>
+<td>「ISO 越低越好所以锁 200」</td>
+<td>暗光会糊，AUTO 更聪明</td>
+</tr>
+<tr>
+<td>「防抖耗电就关」</td>
+<td>关防抖糊片率大增</td>
+</tr>
+<tr>
+<td>「设置一次永远不用改」</td>
+<td>特殊场景要临时调整</td>
+</tr>
+</tbody>
+</table>
+<h2>拍摄练习</h2>
+<ol>
+<li>按清单完成 10 项设置，勾选 checkbox</li>
+<li>按 OK 打开 SCP，找到 ISO、WB、AF 三项</li>
+<li>用 A 模式 + 上述设置拍 10 张室内照</li>
+<li>故意把 ISO 上限改成 12800 拍一张，对比 3200 的噪点（然后改回 3200）</li>
+<li>打开网格线，用三分法构图拍 3 张</li>
+</ol>
+<p>下一章：<a href="#ch04">04-模式转盘.md</a> —— 最重要的章节之一。</p>
+</article>
+<article class="chapter" id="ch04">
+<h1>模式转盘详解</h1>
+<blockquote>
+<p>本章目标：搞懂 EP7 模式转盘上每一个档位，知道<strong>什么时候用哪个</strong>。</p>
+</blockquote>
+<hr />
+<h2>模式转盘长什么样？</h2>
+<p>EP7 模式转盘在机身<strong>右上方</strong>（快门附近），共 10 个档位：</p>
+<pre><code>                    [热靴]
+         ┌─── iAUTO ───┐
+    SCN ─┤               ├─ AP
+    ART ─┤   模式转盘    ├─ P
+         │               │
+    视频 ─┤               ├─ A
+     B  ─┤               ├─ S
+         └─── M ─────────┘
+</code></pre>
+<p><img alt="EP7 模式转盘特写" src="images/body/mode-dial.svg" /></p>
+<blockquote>
+<p>📷 <strong>建议图片</strong>：模式转盘俯拍，每个档位清晰可见并标注名称。</p>
+</blockquote>
+<hr />
+<h2>新手推荐优先级</h2>
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>推荐指数</th>
+<th>第一周</th>
+<th>第一个月</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>A</strong> 光圈优先</td>
+<td>⭐⭐⭐⭐⭐</td>
+<td>✅ 主力</td>
+<td>✅ 主力</td>
+</tr>
+<tr>
+<td><strong>iAUTO</strong> 全自动</td>
+<td>⭐⭐⭐⭐</td>
+<td>✅ 过渡</td>
+<td>少用</td>
+</tr>
+<tr>
+<td><strong>SCN</strong> 场景</td>
+<td>⭐⭐⭐⭐</td>
+<td>✅ 特定场景</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><strong>P</strong> 程序自动</td>
+<td>⭐⭐⭐</td>
+<td>了解即可</td>
+<td>备用</td>
+</tr>
+<tr>
+<td><strong>ART</strong> 艺术滤镜</td>
+<td>⭐⭐⭐</td>
+<td>玩创意</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><strong>S</strong> 快门优先</td>
+<td>⭐⭐</td>
+<td>先不碰</td>
+<td>运动场景</td>
+</tr>
+<tr>
+<td><strong>AP</strong> 高级拍摄</td>
+<td>⭐⭐</td>
+<td>先不碰</td>
+<td>烟花/光轨</td>
+</tr>
+<tr>
+<td><strong>M</strong> 全手动</td>
+<td>⭐</td>
+<td>先不碰</td>
+<td>进阶</td>
+</tr>
+<tr>
+<td><strong>B</strong>  B门/长曝光</td>
+<td>⭐</td>
+<td>先不碰</td>
+<td>配合夜景章</td>
+</tr>
+<tr>
+<td><strong>视频</strong></td>
+<td>⭐⭐</td>
+<td>按需</td>
+<td>按需</td>
+</tr>
+</tbody>
+</table>
+<p><strong>一句话建议</strong>：第一个月把 <strong>A 模式</strong> 用熟，比学遍所有模式更有用。</p>
+<hr />
+<h2>iAUTO（全自动）</h2>
+<h3>是什么？</h3>
+<p>相机替你做所有决定：光圈、快门、ISO、是否闪光——像手机「自动模式」。</p>
+<h3>工作原理</h3>
+<p>测光 → 识别场景 → 自动组合参数 → 你只管按快门。</p>
+<p>EP7 的 iAUTO 还有 <strong>Live Guide（实时指引）</strong>，可以用滑动条调整「背景虚化」「亮度」「色温」——比纯自动友好。</p>
+<h3>推荐指数：⭐⭐⭐⭐（入门第一天）</h3>
+<table>
+<thead>
+<tr>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>零思考，出片率高</td>
+<td>很多参数改不了</td>
+</tr>
+<tr>
+<td>Live Guide 直观</td>
+<td>学不到曝光逻辑</td>
+</tr>
+<tr>
+<td>适合给家人随手拍</td>
+<td>复杂光线可能误判</td>
+</tr>
+</tbody>
+</table>
+<h3>推荐场景</h3>
+<ul>
+<li>第一天试机</li>
+<li>把相机交给完全不会用的朋友</li>
+<li>来不及设置的抓拍瞬间</li>
+</ul>
+<h3>推荐参数</h3>
+<p>无需设置——全自动。</p>
+<h3>常见错误</h3>
+<table>
+<thead>
+<tr>
+<th>错误</th>
+<th>后果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>长期只用 iAUTO</td>
+<td>永远学不会 A 模式</td>
+</tr>
+<tr>
+<td>暗光强制闪光</td>
+<td>人脸油亮、背景黑——可改 Live Guide 降闪光 influence</td>
+</tr>
+<tr>
+<td>大太阳下看不清屏幕还硬拍</td>
+<td>构图不准</td>
+</tr>
+</tbody>
+</table>
+<h3>实拍案例</h3>
+<blockquote>
+<p>家庭聚餐：iAUTO + Live Guide 把「背景虚化」滑一点 → 拍餐桌菜和人，成功率最高。</p>
+</blockquote>
+<p><strong>何时毕业离开 iAUTO？</strong> 当你能独立用 A 模式拍 50 张满意照片时。</p>
+<hr />
+<h2>P（程序自动）</h2>
+<h3>是什么？</h3>
+<p>相机选光圈+快门组合，但你可以换组合（程序线），也能调 ISO、曝光补偿。</p>
+<h3>工作原理</h3>
+<p>相机给出「均衡」的曝光组合；转前拨轮可切换同等曝光的不同快门/光圈配搭。</p>
+<h3>推荐指数：⭐⭐⭐</h3>
+<table>
+<thead>
+<tr>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>比 iAUTO 自由</td>
+<td>不如 A 模式直观</td>
+</tr>
+<tr>
+<td>不用管光圈快门</td>
+<td>新手仍不知背景虚实谁控制</td>
+</tr>
+<tr>
+<td>适合快速抓拍</td>
+<td>和 A 模式功能重叠</td>
+</tr>
+</tbody>
+</table>
+<h3>推荐场景</h3>
+<ul>
+<li>你已经会 A 模式，想少操心一点</li>
+<li>街头快拍，来不及想光圈</li>
+</ul>
+<h3>推荐参数</h3>
+<pre><code>ISO：AUTO（上限 3200）
+曝光补偿：0
+</code></pre>
+<h3>常见错误</h3>
+<table>
+<thead>
+<tr>
+<th>错误</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>以为 P = 专业</td>
+<td>P = Program，不是 Professional</td>
+</tr>
+<tr>
+<td>和 A 模式混用没区别</td>
+<td>人像用 A 更可控</td>
+</tr>
+</tbody>
+</table>
+<h3>实拍案例</h3>
+<blockquote>
+<p>逛街随手拍 storefront：P 模式，走哪拍哪，曝光补偿 +0.3 让画面稍亮。</p>
+</blockquote>
+<p><strong>新手建议</strong>：知道 P 存在即可，<strong>主力仍用 A</strong>。</p>
+<hr />
+<h2>A（光圈优先）—— 新手最该用的模式</h2>
+<h3>是什么？</h3>
+<p><strong>你定光圈，相机自动算快门。</strong></p>
+<h3>工作原理</h3>
+<pre><code>你选 F 值 → 相机测光 → 自动匹配快门速度 → 正确曝光
+</code></pre>
+<p>光圈越小（F 数字越大）→ 进光少 → 快门越慢 → 背景更清晰<br />
+光圈越大（F 数字越小）→ 进光多 → 快门越快 → 背景更虚化</p>
+<h3>推荐指数：⭐⭐⭐⭐⭐</h3>
+<table>
+<thead>
+<tr>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>直接控制背景虚化</td>
+<td>极暗时光圈最大仍可能慢快门</td>
+</tr>
+<tr>
+<td>相机帮你算快门</td>
+<td>大光圈+长焦仍可能虚焦浅</td>
+</tr>
+<tr>
+<td>专业摄影师日常模式</td>
+<td>需要理解 F 值含义</td>
+</tr>
+</tbody>
+</table>
+<h3>推荐场景</h3>
+<p><strong>几乎所有日常拍摄</strong>：人像、美食、旅行、静物、街拍。</p>
+<h3>推荐参数</h3>
+<table>
+<thead>
+<tr>
+<th>镜头</th>
+<th>光圈</th>
+<th>ISO</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>14-42 @ 14mm</td>
+<td>F3.5～F5.6</td>
+<td>AUTO</td>
+<td>风景、环境人像</td>
+</tr>
+<tr>
+<td>14-42 @ 25mm</td>
+<td>F4～F5.6</td>
+<td>AUTO</td>
+<td>美食、半身人像</td>
+</tr>
+<tr>
+<td>14-42 @ 42mm</td>
+<td>F5.6</td>
+<td>AUTO</td>
+<td>轻度压缩人像</td>
+</tr>
+<tr>
+<td>40-150 @ 150mm</td>
+<td>F5.6</td>
+<td>AUTO～1600</td>
+<td>远景、动物园</td>
+</tr>
+</tbody>
+</table>
+<p><strong>怎么调光圈？</strong> A 模式下转<strong>后拨轮</strong>（拇指下方小拨轮）。</p>
+<h3>常见错误</h3>
+<table>
+<thead>
+<tr>
+<th>错误</th>
+<th>后果</th>
+<th>解决</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>F 值越大越「高级」</td>
+<td>F11 室内快门太慢糊片</td>
+<td>室内 F4～5.6</td>
+</tr>
+<tr>
+<td>一直 F3.5</td>
+<td>景深太浅，对焦不准就糊</td>
+<td>多人合影 F5.6+</td>
+</tr>
+<tr>
+<td>不看快门速度</td>
+<td>1/10 秒手持必糊</td>
+<td>低于 1/60 提高 ISO 或开大光圈</td>
+</tr>
+<tr>
+<td>背景不虚就怪相机</td>
+<td>套头+F5.6+离主体远</td>
+<td>靠近主体、拉长焦段</td>
+</tr>
+</tbody>
+</table>
+<h3>实拍案例</h3>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>设置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>咖啡馆人像</td>
+<td>A, F4, ISO AUTO, 42mm 端</td>
+</tr>
+<tr>
+<td>餐桌美食</td>
+<td>A, F5.6, 俯拍, 14mm</td>
+</tr>
+<tr>
+<td>旅行合影</td>
+<td>A, F5.6～F8, 14mm, 对焦中间人</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="光圈与背景虚化对比" src="images/diagrams/aperture-blur.svg" /></p>
+<blockquote>
+<p>📷 <strong>建议图片</strong>：同一场景 F3.5 vs F8 背景虚化对比（各一张）。</p>
+</blockquote>
+<hr />
+<h2>S（快门优先）</h2>
+<h3>是什么？</h3>
+<p><strong>你定快门速度，相机自动算光圈。</strong></p>
+<h3>工作原理</h3>
+<pre><code>你选 1/500 → 相机自动选 F 值 → 曝光正确
+</code></pre>
+<h3>推荐指数：⭐⭐（第一个月后）</h3>
+<table>
+<thead>
+<tr>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>凝固运动</td>
+<td>新手不直观</td>
+</tr>
+<tr>
+<td>拍流水可慢门</td>
+<td>光圈可能到极限仍过曝/欠曝</td>
+</tr>
+</tbody>
+</table>
+<h3>推荐场景</h3>
+<ul>
+<li>跑步、踢球（1/500～1/1000）</li>
+<li>瀑布丝滑（1/4～1/15 + 三脚架）</li>
+<li>车辆 Panning（SCN 也有）</li>
+</ul>
+<h3>推荐参数</h3>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>快门</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>走路的人</td>
+<td>1/125</td>
+</tr>
+<tr>
+<td>跑步/宠物</td>
+<td>1/500</td>
+</tr>
+<tr>
+<td>体育运动</td>
+<td>1/1000</td>
+</tr>
+<tr>
+<td>手持安全下限</td>
+<td>≥ 1/焦距等效（如 150mm → 1/300）</td>
+</tr>
+</tbody>
+</table>
+<p><strong>怎么调？</strong> S 模式下转<strong>前拨轮</strong>（快门环）。</p>
+<h3>常见错误</h3>
+<table>
+<thead>
+<tr>
+<th>错误</th>
+<th>后果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>室内 S 模式 1/1000</td>
+<td>光圈开最大仍欠曝</td>
+</tr>
+<tr>
+<td>快门太慢</td>
+<td>运动模糊</td>
+</tr>
+</tbody>
+</table>
+<h3>实拍案例</h3>
+<blockquote>
+<p>小孩在公园跑：S, 1/640, ISO AUTO, 14-42 @ 25mm, C-AF 连拍。</p>
+</blockquote>
+<hr />
+<h2>M（全手动）</h2>
+<h3>是什么？</h3>
+<p>光圈、快门、ISO 全部你说了算。相机只显示曝光指示（欠曝/过曝）。</p>
+<h3>推荐指数：⭐（进阶）</h3>
+<table>
+<thead>
+<tr>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>完全控制</td>
+<td>学习曲线陡</td>
+</tr>
+<tr>
+<td>棚拍、闪光灯</td>
+<td>新手极易拍废</td>
+</tr>
+<tr>
+<td>理解曝光原理</td>
+<td>速度慢</td>
+</tr>
+</tbody>
+</table>
+<h3>推荐场景</h3>
+<ul>
+<li>使用外接闪光灯</li>
+<li>固定参数拍延时序列</li>
+<li>你已经完全理解曝光三要素</li>
+</ul>
+<h3>推荐参数</h3>
+<p>第一个月：<strong>不要用 M 模式</strong>。用 A 模式 + 曝光补偿达到 90% 效果。</p>
+<h3>常见错误</h3>
+<table>
+<thead>
+<tr>
+<th>错误</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>「专业就必须 M」</td>
+<td>很多专业摄影师日常用 A</td>
+</tr>
+<tr>
+<td>忘记看曝光指示</td>
+<td>全黑或全白</td>
+</tr>
+</tbody>
+</table>
+<h3>EP7 的 M 模式便利之处</h3>
+<p>双拨轮：一个调快门，一个调光圈——比很多相机友好。</p>
+<hr />
+<h2>SCN（场景模式）</h2>
+<h3>是什么？</h3>
+<p>22 种预设场景，相机自动优化参数。分两级选择：</p>
+<p><strong>第一级（大类）</strong> → <strong>第二级（具体场景）</strong></p>
+<table>
+<thead>
+<tr>
+<th>大类</th>
+<th>包含场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>人物</td>
+<td>人像、e-人像、人像+风景、人像+夜景、儿童</td>
+</tr>
+<tr>
+<td>夜景</td>
+<td>夜景、人像+夜景、手持星空、烟花、光轨</td>
+</tr>
+<tr>
+<td>运动</td>
+<td>运动、儿童、平移</td>
+</tr>
+<tr>
+<td>风景</td>
+<td>风景、日落、海滩&amp;雪景、全景、逆光 HDR</td>
+</tr>
+<tr>
+<td>室内</td>
+<td>烛光、静音、人像、逆光 HDR</td>
+</tr>
+<tr>
+<td>特写</td>
+<td>微距、自然微距、文档、多焦点拍摄</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="SCN 场景选择界面" src="images/menu/scn-modes.svg" /></p>
+<blockquote>
+<p>📷 <strong>建议图片</strong>：SCN 模式两级选择菜单截图。</p>
+</blockquote>
+<h3>推荐指数：⭐⭐⭐⭐</h3>
+<table>
+<thead>
+<tr>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>针对性优化</td>
+<td>参数不透明</td>
+</tr>
+<tr>
+<td>手持星空等「一键」</td>
+<td>不如 A 模式灵活</td>
+</tr>
+<tr>
+<td>新手成功率极高</td>
+<td>依赖场景选对</td>
+</tr>
+</tbody>
+</table>
+<h3>最实用的 5 个 SCN</h3>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>何时用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>人像</strong></td>
+<td>比 iAUTO 肤色更好</td>
+</tr>
+<tr>
+<td><strong>风景</strong></td>
+<td>旅行远景，饱和稍增</td>
+</tr>
+<tr>
+<td><strong>儿童</strong></td>
+<td>对焦+快门偏向凝固</td>
+</tr>
+<tr>
+<td><strong>手持星空</strong></td>
+<td>星空入门（配合三脚架更好）</td>
+</tr>
+<tr>
+<td><strong>静音</strong></td>
+<td>博物馆、演出</td>
+</tr>
+</tbody>
+</table>
+<h3>推荐参数</h3>
+<p>选 SCN 后一般无需再调。可微调曝光补偿。</p>
+<h3>常见错误</h3>
+<table>
+<thead>
+<tr>
+<th>错误</th>
+<th>后果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>场景选错</td>
+<td>运动模式拍静物——快门太快浪费</td>
+</tr>
+<tr>
+<td>手持星空不用三脚架</td>
+<td>仍可能糊</td>
+</tr>
+<tr>
+<td>所有情况都用 SCN</td>
+<td>学不到 A 模式</td>
+</tr>
+</tbody>
+</table>
+<h3>实拍案例</h3>
+<blockquote>
+<p>日落海滩：SCN → 风景 → 日落，曝光补偿 -0.3 防止太阳过曝。</p>
+</blockquote>
+<hr />
+<h2>ART（艺术滤镜）</h2>
+<h3>是什么？</h3>
+<p>16 种机内滤镜，<strong>拍摄时实时预览</strong>，直出创意效果。</p>
+<table>
+<thead>
+<tr>
+<th>滤镜</th>
+<th>风格</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>流行艺术</td>
+<td>高饱和</td>
+</tr>
+<tr>
+<td>柔焦</td>
+<td>梦幻朦胧</td>
+</tr>
+<tr>
+<td>颗粒胶片</td>
+<td>复古</td>
+</tr>
+<tr>
+<td>针孔</td>
+<td>暗角 LOFI</td>
+</tr>
+<tr>
+<td>戏剧 tone</td>
+<td>高反差黑白</td>
+</tr>
+<tr>
+<td>部分色彩</td>
+<td>留一色其余黑白</td>
+</tr>
+<tr>
+<td>…</td>
+<td>共 16 种</td>
+</tr>
+</tbody>
+</table>
+<h3>推荐指数：⭐⭐⭐（玩创意）</h3>
+<table>
+<thead>
+<tr>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>免后期</td>
+<td>不可 RAW 回退（JPEG 滤镜）</td>
+</tr>
+<tr>
+<td>社交直出</td>
+<td>容易「滤镜感」过重</td>
+</tr>
+<tr>
+<td>可 Fine Tune 强度</td>
+<td>拍错无法撤销风格</td>
+</tr>
+</tbody>
+</table>
+<h3>推荐场景</h3>
+<ul>
+<li>街拍复古风</li>
+<li>旅行纪念「有风格」的照片</li>
+<li>Instagram 直发</li>
+</ul>
+<h3>推荐参数</h3>
+<p>选滤镜 → 屏幕上下滑调整强度 → 建议 <strong>50%～70%</strong>，别拉满。</p>
+<h3>常见错误</h3>
+<table>
+<thead>
+<tr>
+<th>错误</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>重要场合全开 ART</td>
+<td>无法恢复普通色彩</td>
+</tr>
+<tr>
+<td>强度 100%</td>
+<td>假、腻</td>
+</tr>
+</tbody>
+</table>
+<h3>实拍案例</h3>
+<blockquote>
+<p>老城区街拍：ART → 颗粒胶片，强度 60%，14-42 @ 17mm。</p>
+</blockquote>
+<hr />
+<h2>AP（高级拍摄模式）</h2>
+<h3>是什么？</h3>
+<p>把高级功能集中到模式转盘，不用深逛菜单：</p>
+<table>
+<thead>
+<tr>
+<th>AP 子模式</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Live Composite</td>
+<td>烟花、光轨、星轨叠加</td>
+</tr>
+<tr>
+<td>Live Time</td>
+<td>实时看长曝光效果</td>
+</tr>
+<tr>
+<td>多重曝光</td>
+<td>两次曝光合成一张</td>
+</tr>
+<tr>
+<td>HDR</td>
+<td>高动态范围</td>
+</tr>
+<tr>
+<td>静音</td>
+<td>电子快门无声</td>
+</tr>
+<tr>
+<td>全景</td>
+<td>横向接片</td>
+</tr>
+<tr>
+<td>梯形校正</td>
+<td>拍建筑防倒</td>
+</tr>
+<tr>
+<td>AE 包围</td>
+<td>连拍不同曝光</td>
+</tr>
+<tr>
+<td>对焦包围</td>
+<td>微距景深合成</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="AP 模式选择" src="images/menu/ap-modes.svg" /></p>
+<blockquote>
+<p>📷 <strong>建议图片</strong>：AP 模式列表截图。</p>
+</blockquote>
+<h3>推荐指数：⭐⭐（第二个月）</h3>
+<table>
+<thead>
+<tr>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>烟花/光轨神器</td>
+<td>学习成本</td>
+</tr>
+<tr>
+<td>Live Composite 可预览</td>
+<td>设置步骤多</td>
+</tr>
+</tbody>
+</table>
+<h3>推荐场景</h3>
+<ul>
+<li><strong>Live Composite</strong>：烟花、光绘</li>
+<li><strong>全景</strong>：大场景</li>
+<li><strong>静音</strong>：需要绝对安静的场合</li>
+</ul>
+<h3>常见错误</h3>
+<table>
+<thead>
+<tr>
+<th>错误</th>
+<th>后果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>不读说明直接用 Live Composite</td>
+<td>全黑或全白</td>
+</tr>
+<tr>
+<td>手持 Live Time 长曝光</td>
+<td>糊</td>
+</tr>
+</tbody>
+</table>
+<p><strong>第一个月</strong>：知道 AP 存在，<strong>夜景章节再学 Live Composite</strong>。</p>
+<hr />
+<h2>B（B 门 / 时间 / Live Composite）</h2>
+<h3>是什么？</h3>
+<p>B 模式包含三种长曝光：</p>
+<table>
+<thead>
+<tr>
+<th>子模式</th>
+<th>操作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BULB</td>
+<td>按住快门多久，曝光多久</td>
+</tr>
+<tr>
+<td>TIME</td>
+<td>按一次开始，再按一次结束</td>
+</tr>
+<tr>
+<td>LIVE COMP</td>
+<td>累积光轨，背景亮度不变</td>
+</tr>
+</tbody>
+</table>
+<h3>推荐指数：⭐（配合三脚架）</h3>
+<p>详见 <a href="#ch10">10-夜景.md</a>。</p>
+<hr />
+<h2>视频模式</h2>
+<h3>是什么？</h3>
+<p>模式转盘转到摄像机图标，拍摄 MOV 视频。</p>
+<table>
+<thead>
+<tr>
+<th>子模式</th>
+<th>规格</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>4K</td>
+<td>3840×2160, 30/25/24p</td>
+</tr>
+<tr>
+<td>标准</td>
+<td>1080p 多种帧率</td>
+</tr>
+<tr>
+<td>高速</td>
+<td>慢动作（无声音）</td>
+</tr>
+</tbody>
+</table>
+<h3>新手建议</h3>
+<ul>
+<li>日常 1080p 60fps 足够</li>
+<li>4K 裁切大、文件大</li>
+<li>无麦克风接口——环境声收录有限</li>
+</ul>
+<hr />
+<h2>模式对照速查表</h2>
+<table>
+<thead>
+<tr>
+<th>我想…</th>
+<th>用哪个模式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>完全不想动脑</td>
+<td>iAUTO</td>
+</tr>
+<tr>
+<td>日常 90% 拍摄</td>
+<td><strong>A</strong></td>
+</tr>
+<tr>
+<td>拍跑步的人</td>
+<td>S 或 SCN 运动</td>
+</tr>
+<tr>
+<td>拍日落</td>
+<td>SCN 日落 或 A</td>
+</tr>
+<tr>
+<td>创意直出</td>
+<td>ART</td>
+</tr>
+<tr>
+<td>烟花</td>
+<td>AP → Live Composite</td>
+</tr>
+<tr>
+<td>学曝光原理</td>
+<td>M（进阶）</td>
+</tr>
+<tr>
+<td>录 Vlog</td>
+<td>视频 → 1080p</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>实战 walkthrough：A 模式「光圈三连」分步练习（15 分钟）</h2>
+<p>这是全书最重要的一次练习——用同一主体、只改光圈，亲眼看懂 A 模式在控制什么。</p>
+<h3>准备</h3>
+<pre><code>主体：一个立体小物（玩偶、瓶子），放桌面
+背景：身后 1.5m 有杂物（书架、窗）
+镜头：14-42 @ 42mm（长端虚化最明显）
+模式：A     ISO：AUTO     对焦：单点对主体
+距离：靠近主体约 0.5m
+</code></pre>
+<h3>分步拍摄</h3>
+<pre><code>第 1 张｜后拨轮把光圈转到 F3.5（最大）
+        → 拍摄 → 回放放大看背景
+第 2 张｜光圈转到 F5.6
+        → 同机位同构图再拍
+第 3 张｜光圈转到 F8
+        → 再拍一张
+</code></pre>
+<h3>观察与结论</h3>
+<table>
+<thead>
+<tr>
+<th>光圈</th>
+<th>背景</th>
+<th>相机自动给的快门（大概）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>F3.5</td>
+<td>最虚</td>
+<td>较快</td>
+</tr>
+<tr>
+<td>F5.6</td>
+<td>中等</td>
+<td>中</td>
+</tr>
+<tr>
+<td>F8</td>
+<td>较清晰</td>
+<td>较慢</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>🔑 <strong>你会明白</strong>：光圈越大（F 数越小）→ 背景越虚、快门越快。这就是 A 模式给你的<strong>唯一但最有用</strong>的控制权。</p>
+</blockquote>
+<h3>进阶：加一次「快门观察」</h3>
+<p>回放每张按 INFO 看快门速度，记录下来。你会发现：<strong>F 变大 → 快门变慢</strong>。当快门低于 1/60，就要警惕手抖糊片（开大光圈或提 ISO）。</p>
+<hr />
+<h2>场景 → 模式速选（分步决策）</h2>
+<p>拿起相机先问自己三句话：</p>
+<pre><code>1) 要不要控制背景虚化？  要 → A 模式
+2) 主体在快速移动吗？    是 → S 模式 或 SCN 运动
+3) 完全没时间想？        是 → iAUTO
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>首选</th>
+<th>关键参数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>咖啡馆人像</td>
+<td>A</td>
+<td>42mm F4，对眼睛</td>
+</tr>
+<tr>
+<td>跑动小孩</td>
+<td>S / SCN儿童</td>
+<td>1/500，连拍</td>
+</tr>
+<tr>
+<td>日落</td>
+<td>SCN日落 / A</td>
+<td>F8，-0.3EV</td>
+</tr>
+<tr>
+<td>烟花</td>
+<td>AP LiveComp</td>
+<td>F8 ISO200 三脚架</td>
+</tr>
+<tr>
+<td>随手抓拍</td>
+<td>iAUTO</td>
+<td>无</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>本章重点回顾</h2>
+<ul>
+<li><strong>A 模式是新手最好的朋友</strong>：你控光圈，相机控快门</li>
+<li>iAUTO 和 SCN 帮你过渡，但别一直停留</li>
+<li>ART 玩创意，重要场合用普通模式</li>
+<li>AP / B / M 是第二个月的内容</li>
+<li>后拨轮（A 模式）= 光圈；前拨轮（S 模式）= 快门</li>
+</ul>
+<h2>常见误区</h2>
+<table>
+<thead>
+<tr>
+<th>误区</th>
+<th>真相</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>模式越多越好要全试</td>
+<td>精通 A 比浅尝辄止强</td>
+</tr>
+<tr>
+<td>SCN 比 A 专业</td>
+<td>SCN 是自动 preset，A 更可控</td>
+</tr>
+<tr>
+<td>M 模式才专业</td>
+<td>A 是专业摄影师最常用模式之一</td>
+</tr>
+<tr>
+<td>艺术滤镜可以后期加</td>
+<td>有，但机内实时预览更好玩</td>
+</tr>
+</tbody>
+</table>
+<h2>拍摄练习</h2>
+<ol>
+<li><strong>同一主体用 4 种模式拍</strong>：iAUTO、A(F5.6)、SCN人像、ART 颗粒胶片——对比</li>
+<li><strong>A 模式光圈练习</strong>：F3.5 / F5.6 / F8 各拍 5 张，观察背景变化</li>
+<li><strong>SCN 打卡</strong>：人像、风景、儿童各 5 张</li>
+<li><strong>记录快门速度</strong>：A 模式下拍 10 张，回放看 EXIF 快门，理解相机如何自动匹配</li>
+<li><strong>毕业测试</strong>：连续 30 张全部用 A 模式，至少 25 张满意</li>
+</ol>
+<p>下一章：<a href="#ch05">05-14-42EZ镜头.md</a></p>
+</article>
+<article class="chapter" id="ch05">
+<h1>14-42mm EZ 镜头使用指南</h1>
+<blockquote>
+<p>本章目标：把「挂机饼干头」用熟——知道每个焦段拍什么、怎么拍成功率最高。</p>
+</blockquote>
+<hr />
+<h2>镜头一览</h2>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>规格</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>全称</td>
+<td>M.Zuiko Digital ED 14-42mm F3.5-5.6 EZ</td>
+</tr>
+<tr>
+<td>类型</td>
+<td>电动变焦标准变焦（Pancake 饼干）</td>
+</tr>
+<tr>
+<td>焦段</td>
+<td>14～42mm</td>
+</tr>
+<tr>
+<td>等效焦段</td>
+<td><strong>28～84mm</strong>（×2）</td>
+</tr>
+<tr>
+<td>最大光圈</td>
+<td>F3.5（广角端）～ F5.6（长端）</td>
+</tr>
+<tr>
+<td>最近对焦</td>
+<td><strong>0.2m</strong>（20 厘米）</td>
+</tr>
+<tr>
+<td>重量</td>
+<td>约 93g</td>
+</tr>
+<tr>
+<td>滤镜口径</td>
+<td>37mm</td>
+</tr>
+<tr>
+<td>特点</td>
+<td>电动伸缩、关机自动收回、静音 AF</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="14-42 EZ 镜头正面与侧面" src="images/lenses/14-42-ez.svg" /></p>
+<blockquote>
+<p>📷 <strong>建议图片</strong>：镜头伸出和收回两种状态对比；标注变焦环位置。</p>
+</blockquote>
+<hr />
+<h2>等效焦段速查</h2>
+<p>M4/3 乘 2，对应手机/全画幅习惯的视角：</p>
+<table>
+<thead>
+<tr>
+<th>变焦位置</th>
+<th>实际 mm</th>
+<th>等效 mm</th>
+<th>视角感受</th>
+<th>手机类比</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>最广</td>
+<td>14</td>
+<td>28</td>
+<td>广角，容纳环境</td>
+<td>手机 0.5x～1x</td>
+</tr>
+<tr>
+<td>中间</td>
+<td>25</td>
+<td>50</td>
+<td>标准，接近人眼</td>
+<td>手机 1x</td>
+</tr>
+<tr>
+<td>最长</td>
+<td>42</td>
+<td>84</td>
+<td>中焦，轻度压缩</td>
+<td>手机 2x 左右</td>
+</tr>
+</tbody>
+</table>
+<pre><code>14mm ────────── 25mm ────────── 42mm
+ 广              标准              中焦
+ 风景            日常              人像半身
+ 建筑            美食              细节
+</code></pre>
+<p><img alt="焦段视角示意图" src="images/diagrams/focal-length-14-42.svg" /></p>
+<blockquote>
+<p>📷 <strong>建议图片</strong>：同一位置 14mm / 25mm / 42mm 三张对比图。</p>
+</blockquote>
+<hr />
+<h2>电动变焦：和别的镜头不一样</h2>
+<p>14-42 EZ 的变焦环是<strong>电子</strong>的：</p>
+<table>
+<thead>
+<tr>
+<th>行为</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>开机</td>
+<td>镜头自动<strong>伸出</strong>至工作位置，轻微马达声</td>
+</tr>
+<tr>
+<td>关机</td>
+<td>镜头自动<strong>收回</strong>，变扁便于携带</td>
+</tr>
+<tr>
+<td>变焦</td>
+<td>转变焦环，匀速电子变焦，不是机械阻尼</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>⚠️ <strong>注意</strong>
+- 关机后镜头缩回——<strong>不是故障</strong>
+- 变焦时<strong>不要</strong>用手堵镜头伸缩
+- 没有「变焦锁定」键，放包里已收回即可</p>
+<p>💡 <strong>小技巧</strong>：拍视频时电动变焦非常顺滑，比手动拧更稳。</p>
+</blockquote>
+<hr />
+<h2>最佳光圈与锐度</h2>
+<table>
+<thead>
+<tr>
+<th>焦段</th>
+<th>最佳画质光圈</th>
+<th>日常推荐</th>
+<th>虚化能力</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>14mm</td>
+<td>F5.6～F8</td>
+<td>F5.6</td>
+<td>弱（广角+小光圈）</td>
+</tr>
+<tr>
+<td>25mm</td>
+<td>F4～F5.6</td>
+<td>F4～F5.6</td>
+<td>中等</td>
+</tr>
+<tr>
+<td>42mm</td>
+<td>F5.6</td>
+<td>F5.6</td>
+<td>套头里最好</td>
+</tr>
+</tbody>
+</table>
+<p><strong>锐度</strong>：中心 F5.6～F8 最锐；F3.5 广角端也够用，别迷信「必须 F8」。</p>
+<p><strong>虚化</strong>：套头+ M4/3 别期待「刀锐奶化」。要明显虚化：<strong>42mm 端 + F5.6 + 主体离背景远 + 靠近主体</strong>。</p>
+<hr />
+<h2>适合拍什么？</h2>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>推荐焦段</th>
+<th>模式</th>
+<th>光圈</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>旅行合影</strong></td>
+<td>14～17mm</td>
+<td>A</td>
+<td>F5.6～F8</td>
+<td>容纳多人+背景</td>
+</tr>
+<tr>
+<td><strong>街拍</strong></td>
+<td>17～25mm</td>
+<td>A</td>
+<td>F5.6</td>
+<td>标准视角，低调</td>
+</tr>
+<tr>
+<td><strong>美食</strong></td>
+<td>14～25mm</td>
+<td>A</td>
+<td>F5.6</td>
+<td>0.2m 近摄够俯拍</td>
+</tr>
+<tr>
+<td><strong>咖啡店内景</strong></td>
+<td>14mm</td>
+<td>A</td>
+<td>F4</td>
+<td>空间小要广角</td>
+</tr>
+<tr>
+<td><strong>半身人像</strong></td>
+<td>35～42mm</td>
+<td>A / SCN人像</td>
+<td>F4～F5.6</td>
+<td>对焦眼睛</td>
+</tr>
+<tr>
+<td><strong>建筑外观</strong></td>
+<td>14mm</td>
+<td>A</td>
+<td>F8</td>
+<td>注意垂直线条</td>
+</tr>
+<tr>
+<td><strong>桌面静物</strong></td>
+<td>25～42mm</td>
+<td>A</td>
+<td>F5.6</td>
+<td>三脚架或高 ISO</td>
+</tr>
+<tr>
+<td><strong>Vlog 自拍</strong></td>
+<td>14mm</td>
+<td>视频</td>
+<td>F5.6</td>
+<td>翻转屏+广角</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>不适合拍什么？</h2>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>为什么</th>
+<th>怎么办</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>远处动物/舞台</td>
+<td>42mm 等效 84mm 不够远</td>
+<td>换 <strong>40-150</strong></td>
+</tr>
+<tr>
+<td>演唱会后排</td>
+<td>同上</td>
+<td>换 40-150</td>
+</tr>
+<tr>
+<td>月亮特写</td>
+<td>84mm 等效太小</td>
+<td>40-150 @ 150 + 三脚架</td>
+</tr>
+<tr>
+<td>极致背景虚化</td>
+<td>F5.6 套头限制</td>
+<td>接受或日后买 F1.8 定焦</td>
+</tr>
+<tr>
+<td>快速运动远距离</td>
+<td>焦段不够</td>
+<td>换 40-150</td>
+</tr>
+<tr>
+<td>暗光无防抖场景</td>
+<td>光圈最大 F3.5</td>
+<td>靠 EP7 机身防抖；开 ISO</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>与 40-150 的搭配策略</h2>
+<pre><code>出门默认：14-42 装在机身上
+需要「拉近」时：找地方关机换 40-150
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>一天行程示例</th>
+<th>镜头选择</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>城市逛街+咖啡馆</td>
+<td>只带 14-42</td>
+</tr>
+<tr>
+<td>动物园</td>
+<td>14-42 进门，换 40-150 进园区</td>
+</tr>
+<tr>
+<td>旅行混合</td>
+<td>14-42 挂机，40-150 放包侧袋</td>
+</tr>
+<tr>
+<td>纯远景（登山观云）</td>
+<td>直接装 40-150</td>
+</tr>
+</tbody>
+</table>
+<p><strong>换镜头信号</strong>：你发现自己走很近还是拍不大 → 该换长焦了。</p>
+<hr />
+<h2>场景实例详解</h2>
+<h3>旅游</h3>
+<pre><code>镜头：14-42 @ 14～17mm
+模式：A
+光圈：F5.6～F8
+ISO：AUTO
+对焦：单点，对中间人物
+</code></pre>
+<p>合影时 F8 让前后排都清晰；单人纪念照 F5.6 即可。</p>
+<h3>街拍</h3>
+<pre><code>镜头：14-42 @ 17～25mm
+模式：A
+光圈：F5.6
+快门：相机自动，确保 ≥1/125
+</code></pre>
+<p>广角街拍融入环境，不要怼脸。提前半按快门预对焦。</p>
+<h3>美食</h3>
+<pre><code>镜头：14-42 @ 14～25mm
+模式：A
+光圈：F5.6
+角度：45° 斜俯或 90° 正俯
+最近距离：约 20cm，别靠太近挡光
+</code></pre>
+<p>餐厅暗 → ISO 自动升；用曝光补偿 +0.3～+0.7 让菜更 appetizing。</p>
+<h3>建筑</h3>
+<pre><code>镜头：14-42 @ 14mm
+模式：A
+光圈：F8
+注意：保持水平，可用网格线
+</code></pre>
+<p>14mm 边缘畸变明显——拍建筑尽量让相机水平，后期可梯形校正（AP 模式）。</p>
+<h3>人像</h3>
+<pre><code>镜头：14-42 @ 35～42mm（等效 70～84mm）
+模式：A 或 SCN 人像
+光圈：F4～F5.6
+对焦：眼睛
+距离：1.5～3m
+</code></pre>
+<p><strong>别用 14mm 拍人脸特写</strong>——广角畸变，鼻子变大。</p>
+<h3>儿童（室内）</h3>
+<pre><code>镜头：14-42 @ 17～25mm
+模式：A 或 SCN 儿童
+光圈：F4
+ISO：AUTO（可能 800～1600）
+快门：尽量 ≥1/200
+</code></pre>
+<p>儿童动——用连拍（H 连拍），多拍选最好的。</p>
+<h3>宠物（室内）</h3>
+<p>同儿童，对焦眼睛，连拍。14-42 足够室内距离。</p>
+<h3>体育 / 演唱会</h3>
+<p>14-42 <strong>不合适</strong>。见 <a href="#ch06">06-40-150R镜头.md</a>。</p>
+<h3>月亮</h3>
+<p>14-42 只能拍「大月亮小点」。要月亮占画面 → 40-150 @ 150mm + 三脚架 + M 或 S 模式。</p>
+<hr />
+<h2>操作要点</h2>
+<h3>安装与拆卸</h3>
+<p>与 <a href="#ch01">01-第一次拿到EP7.md</a> 相同：<strong>关机 → 白点对齐 → 锁紧</strong>。</p>
+<h3>遮光罩</h3>
+<p>EZ 通常无标配遮光罩。强光逆光可用手或帽子挡一下，或买选配遮光罩。</p>
+<h3>保护</h3>
+<ul>
+<li>可选自动开合镜头盖（LC-37C）</li>
+<li>放包时用机身盖或镜头已收回状态</li>
+</ul>
+<hr />
+<h2>新手常见错误</h2>
+<table>
+<thead>
+<tr>
+<th>错误</th>
+<th>现象</th>
+<th>解决</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>14mm 拍大头照</td>
+<td>脸变形</td>
+<td>改 35mm+ 或退远</td>
+</tr>
+<tr>
+<td>美食离太近</td>
+<td>对焦失败</td>
+<td>退到 20cm 外</td>
+</tr>
+<tr>
+<td>室内 F8</td>
+<td>快门太慢糊</td>
+<td>改 F4，ISO 交给 AUTO</td>
+</tr>
+<tr>
+<td>忘记镜头会缩回</td>
+<td>以为坏了</td>
+<td>开机即伸出</td>
+</tr>
+<tr>
+<td>不擦镜头</td>
+<td>油膜灰雾</td>
+<td>气吹+镜头布</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>实战 walkthrough：一支 14-42 拍一条街（15 分钟脚本）</h2>
+<p>只带这一支镜头出门，按脚本走一遍，把「一个焦段拍什么」变成肌肉记忆。全程 <strong>A 模式</strong>。</p>
+<pre><code>机位 1｜街道全景（14mm, F8）
+  → 站路口，等一个行人入画，对焦中景
+  → 目的：练广角容纳环境
+
+机位 2｜店招 / 橱窗（25mm, F5.6）
+  → 平视拍店面，网格线保持水平
+  → 目的：练标准视角、水平构图
+
+机位 3｜美食 / 桌面（25mm, F5.6, +0.3EV）
+  → 45° 斜俯，距离约 25cm 别挡光
+  → 目的：练近摄与曝光补偿
+
+机位 4｜行人半身（42mm, F5.6）
+  → 长端 + 靠近，背景拉虚
+  → 目的：练中焦人像、虚化
+
+机位 5｜细节特写（42mm, F5.6, 近对焦）
+  → 门牌、把手、花——推到最近对焦距离
+  → 目的：练最近对焦与选点
+</code></pre>
+<h3>拍完自检</h3>
+<table>
+<thead>
+<tr>
+<th>机位</th>
+<th>合格标准</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>全景</td>
+<td>水平、主体不居正中</td>
+</tr>
+<tr>
+<td>店招</td>
+<td>垂直线正、无过曝</td>
+</tr>
+<tr>
+<td>美食</td>
+<td>亮、清晰、不挡光</td>
+</tr>
+<tr>
+<td>半身</td>
+<td>眼睛清、背景有虚化</td>
+</tr>
+<tr>
+<td>特写</td>
+<td>对上焦、主体突出</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>🎯 <strong>目标</strong>：5 个机位各拍 2～3 张，回家选出 5 张「一条街的故事」。练完你就懂 14/25/42 各拍什么。</p>
+</blockquote>
+<hr />
+<h2>焦段决策速查（站在原地先想）</h2>
+<pre><code>拍不下 / 想要环境感 → 往 14mm 转
+接近人眼、最百搭     → 25mm
+想要虚化 / 人像半身  → 42mm
+还是拍不大（远物）   → 该换 40-150 了
+</code></pre>
+<hr />
+<h2>本章重点回顾</h2>
+<ul>
+<li>14-42 EZ = 日常挂机，等效 <strong>28～84mm</strong></li>
+<li><strong>14mm</strong> 风景合影，<strong>25mm</strong> 标准日常，<strong>42mm</strong> 人像半身</li>
+<li>电动变焦，<strong>开关机自动伸缩</strong></li>
+<li>最佳实用光圈 <strong>F4～F5.6</strong>，别一味 F8</li>
+<li>需要拉近 → 换 40-150</li>
+</ul>
+<h2>常见误区</h2>
+<table>
+<thead>
+<tr>
+<th>误区</th>
+<th>真相</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>「套机头画质差」</td>
+<td>阳光 F5.6 完全够用</td>
+</tr>
+<tr>
+<td>「广角能拍一切人像」</td>
+<td>14mm 拍脸会畸变</td>
+</tr>
+<tr>
+<td>「F3.5 应该一直开」</td>
+<td>室内可以，合影要 F5.6+</td>
+</tr>
+<tr>
+<td>「电动变焦是缺点」</td>
+<td>视频和便携是优点</td>
+</tr>
+</tbody>
+</table>
+<h2>拍摄练习</h2>
+<ol>
+<li><strong>焦段三连</strong>：同一主体 14 / 25 / 42 各 1 张</li>
+<li><strong>美食五张</strong>：不同角度、不同焦段</li>
+<li><strong>人像对比</strong>：14mm vs 42mm 拍同一人</li>
+<li><strong>最近对焦</strong>：找小物件，推到 20cm 试最小距离</li>
+<li><strong>一天只用 14-42</strong>：出门不带 40-150，强迫熟悉标准焦段</li>
+</ol>
+<p>下一章：<a href="#ch06">06-40-150R镜头.md</a></p>
+</article>
+<article class="chapter" id="ch06">
+<h1>40-150mm R 镜头使用指南</h1>
+<blockquote>
+<p>本章目标：知道长焦镜头何时上场、怎么拍远、怎么避免糊片和噪点。</p>
+</blockquote>
+<hr />
+<h2>镜头一览</h2>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>规格</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>全称</td>
+<td>M.Zuiko Digital ED 40-150mm F4.0-5.6 R</td>
+</tr>
+<tr>
+<td>类型</td>
+<td>轻量 tele 变焦</td>
+</tr>
+<tr>
+<td>焦段</td>
+<td>40～150mm</td>
+</tr>
+<tr>
+<td>等效焦段</td>
+<td><strong>80～300mm</strong></td>
+</tr>
+<tr>
+<td>最大光圈</td>
+<td>F4.0（40mm）～ F5.6（150mm）</td>
+</tr>
+<tr>
+<td>最近对焦</td>
+<td><strong>0.9m</strong>（90 厘米）</td>
+</tr>
+<tr>
+<td>重量</td>
+<td>约 190g</td>
+</tr>
+<tr>
+<td>滤镜口径</td>
+<td>58mm</td>
+</tr>
+<tr>
+<td>特点</td>
+<td>MSC 静音对焦、机械变焦（拧动）</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="40-150 R 镜头" src="images/lenses/40-150-r.svg" /></p>
+<blockquote>
+<p>📷 <strong>建议图片</strong>：镜头全长伸出状态；与 14-42 并排对比大小。</p>
+</blockquote>
+<hr />
+<h2>等效焦段：为什么需要它？</h2>
+<p>14-42 最长等效 84mm。40-150 补上 <strong>80～300mm</strong>：</p>
+<pre><code>14-42:  [========28──────84mm========]
+40-150:                    [====80────300mm====]
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>位置</th>
+<th>等效</th>
+<th>感受</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>40mm</td>
+<td>80mm</td>
+<td>人像特写、隔离背景</td>
+</tr>
+<tr>
+<td>100mm</td>
+<td>200mm</td>
+<td>动物园中距离</td>
+</tr>
+<tr>
+<td>150mm</td>
+<td>300mm</td>
+<td>远景、舞台、鸟</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="40mm vs 150mm 视角对比" src="images/diagrams/focal-length-40-150.svg" /></p>
+<blockquote>
+<p>📷 <strong>建议图片</strong>：同一远景 40mm 与 150mm 对比。</p>
+</blockquote>
+<hr />
+<h2>最佳光圈与锐度</h2>
+<table>
+<thead>
+<tr>
+<th>焦段</th>
+<th>推荐光圈</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>40～70mm</td>
+<td>F5.6</td>
+<td>日常</td>
+</tr>
+<tr>
+<td>100～150mm</td>
+<td>F5.6～F8</td>
+<td>长端稍收一点更锐</td>
+</tr>
+<tr>
+<td>最大 F4</td>
+<td>40mm 端</td>
+<td>略暗环境可用</td>
+</tr>
+</tbody>
+</table>
+<p><strong>虚化</strong>：150mm + F5.6 + 主体离背景远 → 背景明显比 14-42 更柔。</p>
+<p><strong>锐度</strong>：入门长焦，F5.6～F8 完全满足社交分享和 A4 打印。</p>
+<hr />
+<h2>适合拍什么？</h2>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>推荐焦段</th>
+<th>模式</th>
+<th>要点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>动物园</strong></td>
+<td>100～150mm</td>
+<td>A / SCN</td>
+<td>玻璃反光注意角度</td>
+</tr>
+<tr>
+<td><strong>旅行远景</strong></td>
+<td>70～150mm</td>
+<td>A</td>
+<td>雪山、塔、对岸建筑</td>
+</tr>
+<tr>
+<td><strong>演唱会/舞台</strong></td>
+<td>100～150mm</td>
+<td>A, ISO↑</td>
+<td>光线暗，别期望顶级画质</td>
+</tr>
+<tr>
+<td><strong>体育（看台）</strong></td>
+<td>100～150mm</td>
+<td>S, 1/500+</td>
+<td>连拍</td>
+</tr>
+<tr>
+<td><strong>人像特写</strong></td>
+<td>70～100mm</td>
+<td>A, F5.6</td>
+<td>0.9m 外</td>
+</tr>
+<tr>
+<td><strong>街拍压缩</strong></td>
+<td>80～120mm</td>
+<td>A</td>
+<td>长焦压缩透视</td>
+</tr>
+<tr>
+<td><strong>月亮（入门）</strong></td>
+<td>150mm</td>
+<td>M/S + 三脚架</td>
+<td>见夜景章</td>
+</tr>
+<tr>
+<td><strong>宠物（室外）</strong></td>
+<td>70～120mm</td>
+<td>A / C-AF</td>
+<td>距离够再拍</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>不适合拍什么？</h2>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>原因</th>
+<th>替代</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>美食、桌面</td>
+<td>最近 0.9m，无法俯拍近距</td>
+<td>14-42</td>
+</tr>
+<tr>
+<td>室内合影</td>
+<td>空间不够退</td>
+<td>14-42 @ 14mm</td>
+</tr>
+<tr>
+<td>餐厅、小房间</td>
+<td>退到墙还拍不全</td>
+<td>14-42</td>
+</tr>
+<tr>
+<td>暗光手持长焦</td>
+<td>150mm 需 1/300+ 快门</td>
+<td>提 ISO 或三脚架</td>
+</tr>
+<tr>
+<td>专业野生动物</td>
+<td>300mm 等效仍嫌短</td>
+<td>更长焦镜头（进阶）</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>何时换镜头？</h2>
+<p>出现以下情况，<strong>关机换 40-150</strong>：</p>
+<ul>
+<li>[ ] 主体在 10 米外，14-42 拍出来太小</li>
+<li>[ ] 去动物园、看演出、登山观景</li>
+<li>[ ] 想拍背景强烈虚化的半身人像（户外）</li>
+<li>[ ] 想压缩街道透视（长焦街拍）</li>
+</ul>
+<p><strong>不必换</strong>：</p>
+<ul>
+<li>室内、餐厅、普通合影</li>
+<li>主体就在 1～3 米内</li>
+</ul>
+<h3>换镜头标准流程</h3>
+<pre><code>1. 关机
+2. 按镜头释放钮，逆时针卸 14-42
+3. 立刻装前后盖（14-42 会缩回）
+4. 40-150 白点对白点，锁紧
+5. 开机，试拍一张确认
+6. 镜头朝地，减少进灰
+</code></pre>
+<p><img alt="换镜头步骤" src="images/lenses/lens-change.svg" /></p>
+<blockquote>
+<p>📷 <strong>建议图片</strong>：换镜头过程 4 步连拍；或正确持机方向。</p>
+<p>⚠️ <strong>户外换镜头</strong>：尽量背风、身体挡风、快速完成。有风有沙宁可不换。</p>
+</blockquote>
+<hr />
+<h2>场景实例详解</h2>
+<h3>旅游（远景）</h3>
+<pre><code>焦段：80～120mm
+模式：A
+光圈：F5.6～F8
+ISO：AUTO
+</code></pre>
+<p>拍对岸的城堡、山顶的塔——14-42 拍出来只有一个小点，150mm 端能填满画面。</p>
+<h3>动物园</h3>
+<pre><code>焦段：100～150mm
+模式：A 或 S（动物动时用 S 1/500）
+光圈：F5.6
+ISO：400～3200（室内馆）
+对焦：单点，对动物眼睛
+</code></pre>
+<p><strong>技巧</strong>：找干净背景（虚化遮笼子）；玻璃展柜垂直贴屏减少反光。</p>
+<h3>街拍（长焦）</h3>
+<pre><code>焦段：等效 80～120mm
+模式：A
+光圈：F5.6
+</code></pre>
+<p>长焦街拍更「隐蔽」，压缩街道层次感。站在街角拍对面行人。</p>
+<h3>建筑（局部）</h3>
+<pre><code>焦段：80～100mm
+模式：A
+光圈：F8
+</code></pre>
+<p>拍建筑细节、窗户排列——不是整栋，是局部几何。</p>
+<h3>人像（户外半身/特写）</h3>
+<pre><code>焦段：70～100mm（等效 140～200mm）
+模式：A 或 SCN 人像
+光圈：F5.6
+距离：2～5m
+</code></pre>
+<p>长焦人像 flattering，畸变小。<strong>最近 0.9m</strong>，别靠太近对不上焦。</p>
+<h3>演唱会</h3>
+<pre><code>焦段：150mm
+模式：A
+光圈：F5.6（固定）
+ISO：1600～6400
+快门：≥1/125，最好 1/250
+</code></pre>
+<p><strong>现实预期</strong>：EP7 + 40-150 在暗场演唱会只能「记录氛围」，别和专业 70200 F2.8 比。开高 ISO 接受噪点。</p>
+<h3>体育</h3>
+<pre><code>焦段：100～150mm
+模式：S
+快门：1/500～1/1000
+ISO：AUTO
+驱动：H 连拍
+对焦：C-AF（连续）
+</code></pre>
+<p>看台距离远——150mm 等效 300mm 是上限，仍可能嫌小。</p>
+<h3>月亮（入门）</h3>
+<pre><code>焦段：150mm
+模式：M 或 S
+光圈：F8
+快门：约 1/125～1/250（看亮度微调）
+ISO：200～400
+支撑：三脚架必须
+</code></pre>
+<p>150mm 月亮占画面仍不大，但能拍出环形山细节。想要更大 → 更长焦或裁切。</p>
+<h3>宠物（室外）</h3>
+<pre><code>焦段：70～120mm
+模式：A，连拍
+快门：≥1/500
+</code></pre>
+<p>长焦让宠物自然玩耍，你在远处拍，不打扰。</p>
+<h3>儿童（室外活动）</h3>
+<p>同体育，连拍 + 快快门。比 14-42 更适合运动场边家长席。</p>
+<h3>烟花</h3>
+<p>40-150 <strong>不是首选</strong>。烟花用广角 14-42 或三脚架固定机位。长焦难对准天空爆炸范围。</p>
+<hr />
+<h2>长焦手持技巧</h2>
+<p>长焦放大抖动。安全快门经验公式：</p>
+<pre><code>安全快门 ≈ 1 / 等效焦距
+
+150mm → 等效 300mm → 建议 ≥ 1/300 秒
+</code></pre>
+<p>EP7 有 4.5 档防抖，可放宽约 2～3 档，但<strong>新手仍建议 ≥ 1/250</strong>。</p>
+<table>
+<thead>
+<tr>
+<th>快门太慢</th>
+<th>现象</th>
+<th>解决</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1/60 @ 150mm</td>
+<td>大概率糊</td>
+<td>ISO 提高或 F4 开大</td>
+</tr>
+<tr>
+<td>风大</td>
+<td>镜头抖</td>
+<td>找支撑、连拍选最锐</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>与 14-42 的一天搭配示例</h2>
+<table>
+<thead>
+<tr>
+<th>时间</th>
+<th>镜头</th>
+<th>拍什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>上午 city walk</td>
+<td>14-42</td>
+<td>早餐、街道、合影</td>
+</tr>
+<tr>
+<td>中午 zoo</td>
+<td>换 40-150</td>
+<td>动物</td>
+</tr>
+<tr>
+<td>下午回酒店</td>
+<td>换 14-42</td>
+<td>休息、室内</td>
+</tr>
+<tr>
+<td>傍晚观景台</td>
+<td>40-150</td>
+<td>日落远山</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>实战 walkthrough：动物园半日实拍脚本（分步）</h2>
+<p>长焦最好的练习场就是动物园——距离远、主体动、常隔玻璃。按脚本走完，长焦就上手了。</p>
+<h3>进门前设置（一次设好）</h3>
+<pre><code>镜头：40-150     模式：A     光圈：F5.6
+ISO：AUTO（室内馆临时提上限到 3200）
+对焦：单点（对动物眼睛）；动物快速移动切 C-AF + H 连拍
+快门底线：≥1/250（150mm 端更要）
+</code></pre>
+<h3>分场景操作</h3>
+<pre><code>场景 1｜室外围栏动物（100～150mm）
+  → 找栏杆空隙，光圈 F5.6 让栏杆虚化「消失」
+  → 对焦动物眼睛，连拍抓表情
+
+场景 2｜玻璃展柜（爬虫/水族）
+  → 镜头前端尽量垂直贴近玻璃，减少反光
+  → 关闪光灯！否则玻璃反光一片白
+  → ISO 提到 1600～3200，快门≥1/125
+
+场景 3｜奔跑 / 飞禽（150mm）
+  → 切 S 模式 1/500～1/1000，或 SCN 运动
+  → C-AF 追焦 + H 连拍，拍一串选最锐
+
+场景 4｜干净背景特写（70～100mm）
+  → 找天空/绿植做背景，F5.6 虚化
+  → 得到「专业感」隔离主体
+</code></pre>
+<h3>常见翻车与救法</h3>
+<table>
+<thead>
+<tr>
+<th>现象</th>
+<th>原因</th>
+<th>救法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>全糊</td>
+<td>快门太慢</td>
+<td>提 ISO / 开 F4 / 靠支撑</td>
+</tr>
+<tr>
+<td>对到栏杆</td>
+<td>单点压在栏杆上</td>
+<td>移点到缝隙、开大光圈</td>
+</tr>
+<tr>
+<td>玻璃反光</td>
+<td>有闪光 / 角度</td>
+<td>关闪光、贴玻璃、变角度</td>
+</tr>
+<tr>
+<td>主体太小</td>
+<td>150mm 仍不够</td>
+<td>靠近 / 回家裁切 LF</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>🎯 <strong>目标</strong>：一个半天拍 100+ 张，回家选 10 张清晰、背景干净的。练完你会明白长焦的「快门底线」和「找干净背景」两条铁律。</p>
+</blockquote>
+<hr />
+<h2>长焦手持稳定分步</h2>
+<pre><code>1. 左手托住镜头下方（不是抓机身）
+2. 双肘夹紧肋部形成支撑
+3. 呼气到一半时屏息按快门
+4. 连拍 3 张，选最锐的一张
+5. 有栏杆/树干就靠上去当「人肉三脚架」
+</code></pre>
+<hr />
+<h2>本章重点回顾</h2>
+<ul>
+<li>40-150 R = <strong>80～300mm 等效</strong>，轻量长焦</li>
+<li><strong>最近对焦 0.9m</strong>——不能拍美食微距</li>
+<li>动物园、远景、户外人像、舞台 = 主战场</li>
+<li>长焦要<strong>快快门</strong>（≥1/250）+ 注意 ISO</li>
+<li>换镜头务必<strong>关机</strong>，户外防风防尘</li>
+</ul>
+<h2>常见误区</h2>
+<table>
+<thead>
+<tr>
+<th>误区</th>
+<th>真相</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>「长焦万能」</td>
+<td>室内、近距离不开 14-42</td>
+</tr>
+<tr>
+<td>「防抖所以 1/30 也能手持 150mm」</td>
+<td>防抖有极限</td>
+</tr>
+<tr>
+<td>「F5.6 太暗」</td>
+<td>白天完全够，暗场靠 ISO</td>
+</tr>
+<tr>
+<td>「演唱会能拍清楚歌手表情」</td>
+<td>看台距离+光线限制大</td>
+</tr>
+</tbody>
+</table>
+<h2>拍摄练习</h2>
+<ol>
+<li><strong>换镜头 5 次</strong>：计时，目标 1 分钟内完成</li>
+<li><strong>同场景 14-42 vs 40-150</strong>：感受「拉近」差异</li>
+<li><strong>150mm 手持测试</strong>：1/60 vs 1/250 各拍 5 张，看糊片率</li>
+<li><strong>户外人像</strong>：70～100mm，F5.6，拍 10 张</li>
+<li><strong>远景</strong>：找 50m 外建筑，150mm 填满画面</li>
+</ol>
+<p>下一章：<a href="#ch07">07-第一次出去拍照.md</a></p>
+</article>
+<article class="chapter" id="ch07">
+<h1>第一次出去拍照</h1>
+<blockquote>
+<p>本章目标：出门前 3 分钟完成设置，带着「配置清单」自信开拍。</p>
+</blockquote>
+<hr />
+<h2>出门前三分钟检查清单</h2>
+<p>打印或存手机，每次出门过一遍：</p>
+<pre><code>□ 电池满电（或 ≥80%）
+□ SD 卡已插，空间充足
+□ 镜头盖已摘
+□ 模式转盘 → A
+□ ISO → AUTO（上限 3200）
+□ 画质 → LF
+□ 对焦 → S-AF，单点
+□ 防抖 → 开
+□ 曝光补偿 → 0
+□ 默认镜头 → 14-42 EZ
+□ 40-150 放包侧袋（如需）
+□ 肩带牢固
+</code></pre>
+<p><img alt="出门检查清单卡片" src="images/diagrams/checklist-card.svg" /></p>
+<blockquote>
+<p>📷 <strong>建议图片</strong>：自制检查清单卡片实物照；或手机备忘录截图。</p>
+</blockquote>
+<hr />
+<h2>第一次出门：推荐路线</h2>
+<p><strong>不要第一天就去复杂场景</strong>。建议：</p>
+<ol>
+<li><strong>小区或家附近</strong>（30 分钟）</li>
+<li><strong>附近公园</strong>（1 小时）</li>
+<li><strong>商业街</strong>（第二周）</li>
+</ol>
+<p>第一次目标：<strong>拍清楚 30 张</strong>，不是拍「大片」。</p>
+<hr />
+<h2>标准配置（复制即用）</h2>
+<h3>通用白天配置</h3>
+<pre><code class="language-text">模式转盘：A（光圈优先）
+光圈：F5.6
+ISO：AUTO（上限 3200）
+白平衡：AUTO
+图片质量：LF（大 JPEG）
+对焦模式：S-AF（单次）
+AF 区域：单点（可触摸）
+驱动模式：单张
+防抖：S-IS AUTO
+测光：ESP 默认
+曝光补偿：0
+闪光灯：关（白天）
+镜头：14-42 EZ
+</code></pre>
+<h3>为什么这样设？</h3>
+<table>
+<thead>
+<tr>
+<th>设置</th>
+<th>理由</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A 模式</td>
+<td>你只管光圈，快门自动</td>
+</tr>
+<tr>
+<td>F5.6</td>
+<td>套头最佳 compromise：画质+景深</td>
+</tr>
+<tr>
+<td>ISO AUTO</td>
+<td>光线变化不用你管</td>
+</tr>
+<tr>
+<td>上限 3200</td>
+<td>控制噪点</td>
+</tr>
+<tr>
+<td>S-AF</td>
+<td>静物人像最稳</td>
+</tr>
+<tr>
+<td>闪光关</td>
+<td>白天闪光没必要</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>各参数第一次怎么理解</h2>
+<h3>模式 → A</h3>
+<p>见 <a href="#ch04">04-模式转盘.md</a>。出门默认 A，特殊场景再换 SCN。</p>
+<h3>ISO → AUTO</h3>
+<p>相机根据光线自动调节感光度。你只需设<strong>上限 3200</strong>。</p>
+<table>
+<thead>
+<tr>
+<th>光线</th>
+<th>相机大概用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>大晴天</td>
+<td>ISO 200</td>
+</tr>
+<tr>
+<td>阴天</td>
+<td>ISO 400～800</td>
+</tr>
+<tr>
+<td>室内</td>
+<td>ISO 800～3200</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="ISO 噪点对比" src="images/diagrams/iso-compare.svg" /></p>
+<blockquote>
+<p>📷 <strong>建议图片</strong>：同一场景 ISO 200 / 1600 / 6400 对比（可选后期章内容）。</p>
+</blockquote>
+<h3>白平衡 → AUTO</h3>
+<p>第一个月不用改。餐厅偏黄、阴天偏冷——AUTO 大多能处理。</p>
+<h3>JPEG → LF</h3>
+<p>直接出片，手机/电脑能看。不用 RAW。</p>
+<h3>对焦 → S-AF + 单点 + 触摸</h3>
+<p>半按快门对焦，或点屏幕。对<strong>主体</strong>对焦，不是背景。</p>
+<h3>防抖 → 开</h3>
+<p>EP7 核心优势，别关。</p>
+<h3>曝光补偿 → 0</h3>
+<table>
+<thead>
+<tr>
+<th>现象</th>
+<th>调整</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>照片偏暗</td>
+<td>+0.3 ～ +1.0</td>
+</tr>
+<tr>
+<td>照片偏亮、天空死白</td>
+<td>-0.3 ～ -1.0</td>
+</tr>
+</tbody>
+</table>
+<p>A 模式下转<strong>前拨轮</strong>（快门按钮周围）调曝光补偿。</p>
+<hr />
+<h2>第一次按快门：六步法</h2>
+<pre><code>1. 举起相机，屏幕朝向自己
+2. 变焦到合适焦段（14-42 转变焦环）
+3. 触摸屏幕将对焦框移到主体
+4. 半按快门——等对焦框变绿
+5. 构图稳定，完全按下快门
+6. 回放放大检查是否清晰
+</code></pre>
+<p><img alt="六步法流程图" src="images/diagrams/six-steps.svg" /></p>
+<blockquote>
+<p>📷 <strong>建议图片</strong>：半按快门对焦 green box 截图。</p>
+</blockquote>
+<hr />
+<h2>按场景微调（仍用 14-42）</h2>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>改动</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>大合影</td>
+<td>F8，14mm</td>
+</tr>
+<tr>
+<td>单人肖像</td>
+<td>F4～F5.6，42mm</td>
+</tr>
+<tr>
+<td>树荫下偏暗</td>
+<td>曝光补偿 +0.7</td>
+</tr>
+<tr>
+<td>逆光人脸黑</td>
+<td>+1.0 或 SCN 逆光 HDR</td>
+</tr>
+<tr>
+<td>小孩跑动</td>
+<td>SCN 儿童 或 C-AF 连拍</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>包里带什么</h2>
+<table>
+<thead>
+<tr>
+<th>物品</th>
+<th>必要性</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>充满电的 EP7 + 14-42</td>
+<td>必须</td>
+</tr>
+<tr>
+<td>40-150（视行程）</td>
+<td>动物园/远景必带</td>
+</tr>
+<tr>
+<td>备用电池</td>
+<td>强烈建议</td>
+</tr>
+<tr>
+<td>64GB+ SD 卡</td>
+<td>必须</td>
+</tr>
+<tr>
+<td>气吹</td>
+<td>建议</td>
+</tr>
+<tr>
+<td>镜头布</td>
+<td>建议</td>
+</tr>
+<tr>
+<td>小三脚架</td>
+<td>夜景再带</td>
+</tr>
+</tbody>
+</table>
+<p><strong>不必第一天带</strong>：外闪、滤镜、反光板。</p>
+<hr />
+<h2>第一次拍摄主题建议</h2>
+<h3>练习 1：静物（10 张）</h3>
+<ul>
+<li>小区花、长椅、自己的鞋</li>
+<li>A, F5.6, 25mm</li>
+<li>练对焦和回放</li>
+</ul>
+<h3>练习 2：风景（10 张）</h3>
+<ul>
+<li>树、天空、小 pond</li>
+<li>A, F8, 14mm</li>
+<li>练广角构图</li>
+</ul>
+<h3>练习 3：自拍/他拍（10 张）</h3>
+<ul>
+<li>翻转屏自拍 3 张</li>
+<li>请路人帮你拍 2 张</li>
+<li>SCN 人像 5 张</li>
+</ul>
+<hr />
+<h2>拍完回家：5 分钟整理</h2>
+<ol>
+<li>回放删除明显糊片、闭眼、重复</li>
+<li>选 3 张最满意的</li>
+<li>看 EXIF：光圈、快门、ISO 各是多少？</li>
+<li>记录一个问题：「今天哪张最不满意？为什么？」</li>
+<li>SD 卡备份到电脑或云盘</li>
+</ol>
+<hr />
+<h2>天气与 EP7 注意</h2>
+<p>EP7 <strong>不防尘防滴</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>天气</th>
+<th>建议</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>小雨</td>
+<td>塑料袋套机，别换镜头</td>
+</tr>
+<tr>
+<td>大太阳</td>
+<td>找阴影看屏幕，或手遮光</td>
+</tr>
+<tr>
+<td>极冷</td>
+<td>电池消耗快，揣怀里暖</td>
+</tr>
+<tr>
+<td>沙滩</td>
+<td>风大别换镜头，防沙</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>实战 walkthrough：公园 30 张「闯关任务单」</h2>
+<p>第一次出门别乱拍。按这张任务单走，每关一个明确目标，30 张拍完你就完成了「新手上路」。全程 <strong>A 模式 + F5.6 起步</strong>。</p>
+<pre><code>关卡 1｜静物 ×6（练对焦）
+  · 长椅、花、路牌、自己的鞋
+  · 25mm F5.6，点屏对焦，半按变绿再拍
+  · 过关标准：6 张主体都清晰
+
+关卡 2｜广角风景 ×6（练构图）
+  · 大树、天空、小路
+  · 14mm F8，开网格线，地平线放上/下三分线
+  · 过关标准：地平线不歪、画面有层次
+
+关卡 3｜曝光补偿 ×6（练明暗控制）
+  · 同一树荫场景：0 / +0.7 / -0.7 各两张
+  · 前拨轮调 EV，回放对比亮度
+  · 过关标准：说得出哪张最合适、为什么
+
+关卡 4｜虚化 ×6（练光圈）
+  · 花/朋友，42mm F4，靠近主体、背景拉远
+  · 过关标准：背景明显虚
+
+关卡 5｜人 ×6（练综合）
+  · 请人帮拍你，或拍同行者半身
+  · 42mm F5.6，对眼睛
+  · 过关标准：眼睛清、构图舒服
+</code></pre>
+<h3>回家结算</h3>
+<pre><code>1. 删掉糊片、闭眼、重复
+2. 每关选 1 张最好的（共 5 张）
+3. 看这 5 张的 EXIF：快门都高于 1/60 吗？
+4. 记 1 条今天最大的问题
+</code></pre>
+<blockquote>
+<p>🎯 <strong>过关线</strong>：30 张里至少 20 张清晰、5 张你自己满意，就算通关。</p>
+</blockquote>
+<hr />
+<h2>出门前 3 分钟：分步盲操</h2>
+<p>把<a href="#">出门检查清单</a>背成动作流：</p>
+<pre><code>① 电量看一眼（≥80%）    ② 卡在不在
+③ 转盘拨到 A            ④ 按 OK 进 SCP 扫一眼 ISO/AF
+⑤ 摘镜头盖             ⑥ 装 14-42、40-150 进包
+</code></pre>
+<p>熟练后全程不超过 1 分钟。</p>
+<hr />
+<h2>本章重点回顾</h2>
+<ul>
+<li>出门用 <strong>A + F5.6 + ISO AUTO(3200) + S-AF</strong></li>
+<li>三分钟 checklist 养成习惯</li>
+<li>第一次选简单场景，目标 30 张清楚照片</li>
+<li>曝光补偿是「照片太亮/太暗」的第一调节手段</li>
+<li>回家删废片、看 EXIF、备份</li>
+</ul>
+<h2>常见误区</h2>
+<table>
+<thead>
+<tr>
+<th>误区</th>
+<th>真相</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>第一次就去夜景/演唱会</td>
+<td>挫败感强，先练白天</td>
+</tr>
+<tr>
+<td>带太多配件</td>
+<td>14-42 + 满电即可出门</td>
+</tr>
+<tr>
+<td>不回放就猛拍</td>
+<td>100 张糊片不如 10 张清楚</td>
+</tr>
+<tr>
+<td>曝光补偿一直 +2</td>
+<td>高光会死</td>
+</tr>
+</tbody>
+</table>
+<h2>拍摄练习</h2>
+<ol>
+<li>按 checklist 完整走一遍，计时 3 分钟</li>
+<li>小区完成 30 张，至少 25 张清晰</li>
+<li>练习曝光补偿：0 / +0.7 / -0.7 同场景对比</li>
+<li>用 EXIF 记录：你的「安全快门」大概是多少（手持 42mm）</li>
+<li>写 100 字心得：今天最大困难是什么</li>
+</ol>
+<p>专题实战：</p>
+<ul>
+<li>人像 → <a href="#ch08">08-拍人像.md</a></li>
+<li>风景 → <a href="#ch09">09-拍风景.md</a></li>
+<li>夜景 → <a href="#ch10">10-夜景.md</a></li>
+</ul>
+</article>
+<article class="chapter" id="ch08">
+<h1>拍人像</h1>
+<blockquote>
+<p>本章目标：给朋友、家人拍出清晰、肤色自然、背景适度虚化的人像照片。</p>
+</blockquote>
+<hr />
+<h2>人像新手一句话配置</h2>
+<pre><code class="language-text">模式：A（或 SCN → 人像）
+镜头：14-42 @ 35～42mm（半身） / 40-150 @ 70～100mm（户外特写）
+光圈：F4～F5.6
+ISO：AUTO
+对焦：单点，对眼睛
+曝光补偿：+0.3（逆光时 +0.7～+1.0）
+驱动：单张或低速连拍
+</code></pre>
+<p><img alt="人像拍摄 Setup" src="images/samples/portrait/setup.svg" /></p>
+<blockquote>
+<p>📷 <strong>建议图片</strong>：EP7 拍人像时的机位示意图；对焦在眼睛的屏幕截图。</p>
+</blockquote>
+<hr />
+<h2>镜头选择</h2>
+<table>
+<thead>
+<tr>
+<th>情况</th>
+<th>镜头</th>
+<th>焦段</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>室内空间有限</td>
+<td>14-42</td>
+<td>25～42mm（等效 50～84mm）</td>
+</tr>
+<tr>
+<td>户外半身</td>
+<td>14-42</td>
+<td>35～42mm</td>
+</tr>
+<tr>
+<td>户外特写、虚化更强</td>
+<td>40-150</td>
+<td>70～100mm</td>
+</tr>
+<tr>
+<td>大合影</td>
+<td>14-42</td>
+<td>14～17mm，F8</td>
+</tr>
+</tbody>
+</table>
+<p><strong>避免</strong>：14mm 拍单人脸部特写——鼻子变大、边缘拉伸。</p>
+<hr />
+<h2>模式选择</h2>
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>何时用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>A</strong></td>
+<td>日常主力，可控虚化</td>
+</tr>
+<tr>
+<td><strong>SCN 人像</strong></td>
+<td>肤色优化，省心</td>
+</tr>
+<tr>
+<td><strong>SCN e-人像</strong></td>
+<td>机内轻微磨皮，直出友好</td>
+</tr>
+<tr>
+<td><strong>iAUTO + Live Guide</strong></td>
+<td>完全新手、交给朋友拍</td>
+</tr>
+</tbody>
+</table>
+<p>第一个月：<strong>A 模式 F4～F5.6</strong> 足够。</p>
+<hr />
+<h2>光圈：背景虚不虚看它</h2>
+<table>
+<thead>
+<tr>
+<th>光圈</th>
+<th>效果</th>
+<th>场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>F3.5～F4</td>
+<td>背景较虚</td>
+<td>单人、杂背景</td>
+</tr>
+<tr>
+<td>F5.6</td>
+<td>平衡</td>
+<td>日常半身</td>
+</tr>
+<tr>
+<td>F8</td>
+<td>前后都清晰</td>
+<td>多人合影</td>
+</tr>
+</tbody>
+</table>
+<p><strong>套头虚化有限</strong>——接受它，或：<strong>42mm/长焦 + 靠近主体 + 背景远</strong>。</p>
+<hr />
+<h2>对焦：眼睛，永远是眼睛</h2>
+<pre><code>触摸屏幕 → 对焦框移到最近那只眼睛 → 半按快门 → 构图 → 全按
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>错误对焦</th>
+<th>后果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>对鼻子/脸颊</td>
+<td>眼睛虚</td>
+</tr>
+<tr>
+<td>对背景</td>
+<td>人糊</td>
+</tr>
+<tr>
+<td>对头发</td>
+<td>脸虚</td>
+</tr>
+</tbody>
+</table>
+<p>开启 <strong>人脸检测</strong>（MENU → AF 菜单）可辅助，但单点选眼睛更准。</p>
+<hr />
+<h2>光线：人像成败关键</h2>
+<table>
+<thead>
+<tr>
+<th>光线</th>
+<th>效果</th>
+<th>建议</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>窗边侧光</td>
+<td>立体、肤色好</td>
+<td>⭐ 室内最佳</td>
+</tr>
+<tr>
+<td>阴天</td>
+<td>柔和、无硬影</td>
+<td>⭐ 户外最佳</td>
+</tr>
+<tr>
+<td>黄金时刻（日出后/日落前 1h）</td>
+<td>暖、柔</td>
+<td>⭐⭐⭐</td>
+</tr>
+<tr>
+<td>正午顶光</td>
+<td>眼窝黑影</td>
+<td>找阴影或戴帽</td>
+</tr>
+<tr>
+<td>逆光</td>
+<td>脸黑或剪影</td>
+<td>曝光补偿 +1.0 或闪光补</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="顺光 vs 逆光人像" src="images/samples/portrait/light-compare.svg" /></p>
+<blockquote>
+<p>📷 <strong>建议图片</strong>：同一人顺光与逆光对比；逆光 + 曝光补偿后的改善。</p>
+</blockquote>
+<h3>逆光救脸</h3>
+<pre><code>A, F5.6, 曝光补偿 +0.7～+1.0
+或 SCN → 逆光 HDR
+或 内置闪光灯补光（功率调低，-1EV 闪光补偿）
+</code></pre>
+<hr />
+<h2>构图速成</h2>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>做法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>三分法</td>
+<td>眼睛在上 1/3 线</td>
+</tr>
+<tr>
+<td>留白</td>
+<td>看向方向留空间</td>
+</tr>
+<tr>
+<td>全身</td>
+<td>脚别切在关节，留脚踝</td>
+</tr>
+<tr>
+<td>头顶</td>
+<td>别切头发，上方留一点空</td>
+</tr>
+</tbody>
+</table>
+<p>开 <strong>3×3 网格线</strong> 辅助。</p>
+<hr />
+<h2>机位与距离</h2>
+<table>
+<thead>
+<tr>
+<th>景别</th>
+<th>14-42 焦段</th>
+<th>大约距离</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>大头</td>
+<td>42mm</td>
+<td>1～1.5m</td>
+</tr>
+<tr>
+<td>半身</td>
+<td>25～35mm</td>
+<td>1.5～2.5m</td>
+</tr>
+<tr>
+<td>全身</td>
+<td>17～25mm</td>
+<td>3～5m</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>参数速查表</h2>
+<h3>室内窗边</h3>
+<pre><code class="language-text">镜头：14-42 @ 35mm
+模式：A
+光圈：F4
+ISO：AUTO（通常 400～800）
+快门：≥1/60（防抖辅助）
+WB：AUTO
+曝光补偿：0
+</code></pre>
+<h3>户外阴天</h3>
+<pre><code class="language-text">镜头：14-42 @ 42mm 或 40-150 @ 80mm
+模式：A
+光圈：F5.6
+ISO：AUTO（200～400）
+曝光补偿：+0.3
+</code></pre>
+<h3>户外逆光</h3>
+<pre><code class="language-text">模式：A 或 SCN 逆光 HDR
+光圈：F5.6
+曝光补偿：+0.7～+1.0
+</code></pre>
+<h3>儿童</h3>
+<pre><code class="language-text">模式：SCN 儿童 或 A
+镜头：14-42 @ 25mm
+光圈：F4
+快门：≥1/200
+驱动：H 连拍
+对焦：C-AF 或 S-AF 预对焦
+</code></pre>
+<h3>宠物</h3>
+<p>同儿童，对焦眼睛，连拍。室外可用 40-150 远距离抓拍。</p>
+<hr />
+<h2>内置闪光灯人像</h2>
+<p>EP7 有弹出式闪光灯。</p>
+<table>
+<thead>
+<tr>
+<th>何时用</th>
+<th>何时不用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>室内暗、人脸黑</td>
+<td>博物馆、演出</td>
+</tr>
+<tr>
+<td>逆光补脸</td>
+<td>已有良好自然光</td>
+</tr>
+<tr>
+<td>填闪（白天压阴影）</td>
+<td>拍婴儿眼睛</td>
+</tr>
+</tbody>
+</table>
+<p><strong>功率调低</strong>：SCP 或 MENU 闪光补偿 <strong>-0.7～-1.0</strong>，避免油光脸。</p>
+<hr />
+<h2>色彩配置文件（进阶玩法）</h2>
+<p>EP7 正面 <strong>Profile Control 拨盘</strong> 可切换：</p>
+<table>
+<thead>
+<tr>
+<th>档位</th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>标准</td>
+<td>默认</td>
+</tr>
+<tr>
+<td>色彩 Profile</td>
+<td>胶片感、可调饱和</td>
+</tr>
+<tr>
+<td>单色 Profile</td>
+<td>黑白、颗粒</td>
+</tr>
+</tbody>
+</table>
+<p>拍人像试 <strong>色彩 Profile 2</strong>（类似 Portra）——直出肤色更柔。</p>
+<p><img alt="Profile Control 拨盘" src="images/body/profile-dial.svg" /></p>
+<blockquote>
+<p>📷 <strong>建议图片</strong>：Profile 拨盘位置；标准 vs 色彩 Profile 人像对比。</p>
+</blockquote>
+<hr />
+<h2>常见错误</h2>
+<table>
+<thead>
+<tr>
+<th>错误</th>
+<th>现象</th>
+<th>解决</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>14mm 贴脸拍</td>
+<td>大鼻子</td>
+<td>退远或加长焦</td>
+</tr>
+<tr>
+<td>不对眼睛对焦</td>
+<td>眼虚</td>
+<td>单点对眼</td>
+</tr>
+<tr>
+<td>逆光不补偿</td>
+<td>脸黑</td>
+<td>+EV 或 HDR</td>
+</tr>
+<tr>
+<td>F8 室内</td>
+<td>糊</td>
+<td>F4 + ISO</td>
+</tr>
+<tr>
+<td>闪光满功率</td>
+<td>油亮</td>
+<td>降闪光补偿</td>
+</tr>
+<tr>
+<td>不看快门</td>
+<td>1/15 秒糊</td>
+<td>提高 ISO</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>实战 walkthrough：窗边人像 10 分钟布光（分步）</h2>
+<p>不用任何灯，只用一扇窗，就能拍出立体好看的人像。这是新手最该掌握的一套。</p>
+<h3>布置</h3>
+<pre><code>1. 找一扇大窗（白天，不要直射硬阳光）
+2. 人侧对窗，让光从侧面 45° 打脸
+3. 人离窗约 1～1.5m，别贴着
+4. 你站在窗与人之间稍偏，背对窗拍
+</code></pre>
+<h3>拍摄</h3>
+<pre><code>镜头：14-42 @ 35～42mm
+模式：A     光圈：F4     ISO：AUTO
+对焦：单点，压在「靠窗那只眼睛」
+曝光补偿：0，若脸偏暗 +0.3
+快门：确认 ≥1/60（低了提 ISO）
+</code></pre>
+<h3>分步微调</h3>
+<pre><code>第 1 张｜侧光 45°，拍半身
+  → 观察：脸一侧亮、一侧稍暗 = 立体感（对了）
+第 2 张｜让人稍转向窗
+  → 脸更亮、阴影更少（更「甜」）
+第 3 张｜让人转离窗
+  → 阴影更重、更「情绪」
+</code></pre>
+<blockquote>
+<p>🔑 <strong>结论</strong>：转动人相对窗的角度 = 控制脸上光影。这比买灯更重要。</p>
+</blockquote>
+<h3>逆光救脸分步（窗在人身后时）</h3>
+<pre><code>1. 保持 A, F5.6
+2. 曝光补偿加到 +0.7 ～ +1.0（脸提亮）
+3. 若背景过曝可接受（要脸不要背景）
+4. 或改 SCN → 逆光 HDR
+5. 仍暗 → 弹内置闪光，闪光补偿 -1EV 补脸
+</code></pre>
+<hr />
+<h2>三种景别一次拍全（分步）</h2>
+<p>同一个人，练「全身→半身→特写」的机位与焦段切换：</p>
+<pre><code>全身｜17～25mm，退到 3～5m，脚踝以下留空间，别切关节
+半身｜25～35mm，1.5～2.5m，腰或胸口构图
+特写｜42mm，1～1.5m，对眼睛，头顶留一点空
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>景别</th>
+<th>焦段</th>
+<th>距离</th>
+<th>对焦点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>全身</td>
+<td>17-25mm</td>
+<td>3-5m</td>
+<td>面部/身体</td>
+</tr>
+<tr>
+<td>半身</td>
+<td>25-35mm</td>
+<td>1.5-2.5m</td>
+<td>眼睛</td>
+</tr>
+<tr>
+<td>特写</td>
+<td>42mm</td>
+<td>1-1.5m</td>
+<td>眼睛</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>🎯 <strong>目标</strong>：同一人拍出 3 种景别各 2 张，理解「焦段 + 距离」如何决定景别。</p>
+</blockquote>
+<hr />
+<h2>本章重点回顾</h2>
+<ul>
+<li>人像默认 <strong>A, F4～F5.6, 对焦眼睛</strong></li>
+<li>14-42 用 35～42mm，户外特写可 40-150</li>
+<li>光线 &gt; 器材；窗边、阴天、黄金时刻最好</li>
+<li>逆光记得 <strong>曝光补偿 +0.7</strong></li>
+<li>套头虚化有限，靠焦段+距离弥补</li>
+</ul>
+<h2>常见误区</h2>
+<table>
+<thead>
+<tr>
+<th>误区</th>
+<th>真相</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>「虚化不够是相机差」</td>
+<td>套头 F5.6 正常，技巧可改善</td>
+</tr>
+<tr>
+<td>「人像必须大光圈 F1.8」</td>
+<td>F4～F5.6 日常够用</td>
+</tr>
+<tr>
+<td>「e-人像可以救一切」</td>
+<td>光线和对焦才是根本</td>
+</tr>
+<tr>
+<td>「竖拍不用翻转屏」</td>
+<td>翻转屏 low angle 人像很香</td>
+</tr>
+</tbody>
+</table>
+<h2>拍摄练习</h2>
+<ol>
+<li>窗边单人 10 张，F4，对焦眼睛</li>
+<li>逆光 5 张：无补偿 vs +1.0 对比</li>
+<li>14mm vs 42mm 同一人对比畸变</li>
+<li>SCN 人像 vs A F5.6 对比肤色</li>
+<li>给同一人拍：全身、半身、特写 各 2 张</li>
+</ol>
+<p>相关：<a href="#ch09">09-拍风景.md</a> | <a href="#ch10">10-夜景.md</a></p>
+</article>
+<article class="chapter" id="ch09">
+<h1>拍风景</h1>
+<blockquote>
+<p>本章涵盖旅行、街拍、建筑等「非人像为主」的日常拍摄——EP7 双镜头的实战参数。</p>
+</blockquote>
+<hr />
+<h2>风景新手一句话配置</h2>
+<pre><code class="language-text">模式：A
+镜头：14-42 @ 14～17mm（大场景） / 40-150 @ 80～150mm（远景）
+光圈：F5.6～F8
+ISO：AUTO（通常 200～400）
+对焦：单点，对画面 1/3 处或无穷远标志
+曝光补偿：0；天空很亮时 -0.3～-0.7
+</code></pre>
+<p><img alt="风景拍摄广角示例" src="images/samples/landscape/wide.svg" /></p>
+<blockquote>
+<p>📷 <strong>建议图片</strong>：14mm 大场景风景样张；标注地平线位置。</p>
+</blockquote>
+<hr />
+<h2>旅行</h2>
+<h3>用什么</h3>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>推荐</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>镜头</td>
+<td>14-42 为主，远景换 40-150</td>
+</tr>
+<tr>
+<td>模式</td>
+<td>A</td>
+</tr>
+<tr>
+<td>光圈</td>
+<td>F5.6～F8</td>
+</tr>
+<tr>
+<td>焦段</td>
+<td>14mm 地标+人，25mm 街景</td>
+</tr>
+</tbody>
+</table>
+<h3>典型场景</h3>
+<p><strong>地标合影</strong></p>
+<pre><code class="language-text">14-42 @ 14mm, A, F8, ISO AUTO
+对焦中间人物，景深覆盖前后
+</code></pre>
+<p><strong>小巷街拍</strong></p>
+<pre><code class="language-text">14-42 @ 17～25mm, A, F5.6
+快门 ≥1/125  handheld
+</code></pre>
+<p><strong>远山/对岸</strong></p>
+<pre><code class="language-text">40-150 @ 100～150mm, A, F5.6～F8
+</code></pre>
+<h3>常见错误</h3>
+<table>
+<thead>
+<tr>
+<th>错误</th>
+<th>解决</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>什么都用广角</td>
+<td>远景换长焦</td>
+</tr>
+<tr>
+<td>地平线歪</td>
+<td>开水平仪（MENU → 水平 gauge）</td>
+</tr>
+<tr>
+<td>天空过曝</td>
+<td>曝光补偿 -0.3 或 SCN 逆光 HDR</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>街拍</h2>
+<h3>用什么</h3>
+<pre><code class="language-text">镜头：14-42 @ 17～25mm（融入环境）或 40-150 @ 80mm（远距离）
+模式：A
+光圈：F5.6
+ISO：AUTO
+快门：≥1/250（动态街头）
+</code></pre>
+<h3>技巧</h3>
+<ul>
+<li><strong>提前对焦</strong>：半按快门预对焦在马路上</li>
+<li><strong>连拍</strong>：行人走过时 H 连拍</li>
+<li><strong>低调</strong>：长焦 80mm 街角偷拍更有层次</li>
+</ul>
+<h3>常见错误</h3>
+<table>
+<thead>
+<tr>
+<th>错误</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>怼脸拍陌生人</td>
+<td>尊重距离，长焦或广角环境</td>
+</tr>
+<tr>
+<td>1/30 秒 handheld</td>
+<td>糊——提 ISO</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>建筑</h2>
+<h3>用什么</h3>
+<pre><code class="language-text">镜头：14-42 @ 14mm（整栋） / 40-150 @ 80mm（局部）
+模式：A 或 AP → 梯形校正
+光圈：F8
+</code></pre>
+<h3>14mm 拍整栋</h3>
+<ul>
+<li>相机尽量<strong>水平</strong>，减少 converging verticals（向中心汇聚）</li>
+<li>仰拍必然「倒梯形」——可 AP 梯形校正或后期</li>
+</ul>
+<pre><code>      │  ← 建筑垂直线
+      │     相机水平时更直
+   ───┴───
+</code></pre>
+<p><img alt="建筑垂直线示意" src="images/diagrams/building-lines.svg" /></p>
+<blockquote>
+<p>📷 <strong>建议图片</strong>：仰拍 vs 水平拍建筑对比。</p>
+</blockquote>
+<h3>40-150 拍细节</h3>
+<p>窗户、纹理、对称——80～100mm 压缩感好。</p>
+<h3>常见错误</h3>
+<table>
+<thead>
+<tr>
+<th>错误</th>
+<th>后果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>14mm 极端仰角</td>
+<td>建筑像要倒</td>
+</tr>
+<tr>
+<td>F3.5</td>
+<td>边缘画质和景深不必要</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>纯风景（自然）</h2>
+<h3>用什么</h3>
+<pre><code class="language-text">镜头：14-42 @ 14mm
+模式：A 或 SCN → 风景
+光圈：F8
+ISO：200（AUTO 即可）
+对焦：前景 1/3 或 ∞
+</code></pre>
+<h3>黄金时刻</h3>
+<p>日出后、日落前 1 小时——侧光、色彩 richest。</p>
+<h3>海景 / 沙滩</h3>
+<p>SCN → 海滩&amp;雪景 或 A F8，注意 <strong>-0.3 EV</strong> 防高光过曝。</p>
+<h3>日落</h3>
+<p>SCN → 日落，或 A F8，曝光补偿 -0.3～-0.7 保留太阳层次。</p>
+<p><img alt="日落参数示例" src="images/samples/landscape/sunset.svg" /></p>
+<blockquote>
+<p>📷 <strong>建议图片</strong>：SCN 日落模式样张。</p>
+</blockquote>
+<hr />
+<h2>美食（归入生活风景）</h2>
+<pre><code class="language-text">镜头：14-42 @ 14～25mm
+模式：A
+光圈：F5.6
+角度：45° 或 90° 俯拍
+曝光补偿：+0.3～+0.7
+ISO：AUTO（餐厅常 800～1600）
+</code></pre>
+<p><strong>最近 20cm</strong>——别挡光。餐厅暖光 AUTO WB 即可。</p>
+<hr />
+<h2>全景</h2>
+<p>两种方式：</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>操作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SCN → 全景</td>
+<td>按提示平移，机内拼接</td>
+</tr>
+<tr>
+<td>后期拼接</td>
+<td>A F8 多张重叠，手机 App 拼</td>
+</tr>
+</tbody>
+</table>
+<p>SCN 全景适合初学者；注意平移速度均匀。</p>
+<hr />
+<h2>参数总表</h2>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>模式</th>
+<th>镜头</th>
+<th>光圈</th>
+<th>ISO</th>
+<th>快门</th>
+<th>对焦</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>旅行合影</td>
+<td>A</td>
+<td>14-42@14</td>
+<td>F8</td>
+<td>AUTO</td>
+<td>自动</td>
+<td>人物</td>
+</tr>
+<tr>
+<td>街拍</td>
+<td>A</td>
+<td>14-42@25</td>
+<td>F5.6</td>
+<td>AUTO</td>
+<td>≥1/250</td>
+<td>单点</td>
+</tr>
+<tr>
+<td>建筑整体</td>
+<td>A</td>
+<td>14-42@14</td>
+<td>F8</td>
+<td>AUTO</td>
+<td>自动</td>
+<td>∞/1/3</td>
+</tr>
+<tr>
+<td>建筑细节</td>
+<td>A</td>
+<td>40-150@80</td>
+<td>F8</td>
+<td>AUTO</td>
+<td>自动</td>
+<td>单点</td>
+</tr>
+<tr>
+<td>自然风景</td>
+<td>A/SCN风景</td>
+<td>14-42@14</td>
+<td>F8</td>
+<td>AUTO</td>
+<td>自动</td>
+<td>1/3</td>
+</tr>
+<tr>
+<td>日落</td>
+<td>SCN日落</td>
+<td>14-42@14</td>
+<td>F8</td>
+<td>AUTO</td>
+<td>自动</td>
+<td>∞</td>
+</tr>
+<tr>
+<td>美食</td>
+<td>A</td>
+<td>14-42@25</td>
+<td>F5.6</td>
+<td>AUTO</td>
+<td>≥1/60</td>
+<td>食物</td>
+</tr>
+<tr>
+<td>远景</td>
+<td>A</td>
+<td>40-150@150</td>
+<td>F5.6</td>
+<td>AUTO</td>
+<td>≥1/250</td>
+<td>∞</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>防抖与三脚架</h2>
+<table>
+<thead>
+<tr>
+<th>情况</th>
+<th>建议</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>白天 handheld</td>
+<td>防抖足够</td>
+</tr>
+<tr>
+<td>黄昏慢门</td>
+<td>ISO 提高优先；或小三脚架</td>
+</tr>
+<tr>
+<td>流水慢门</td>
+<td>三脚架 + S 模式 1/4s 或 SCN</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>实战 walkthrough：黄金时刻风景（日落前 1 小时分步）</h2>
+<p>风景成败一半靠光。挑日落前 1 小时（黄金时刻）出门，按步骤拍一组。</p>
+<h3>到场准备</h3>
+<pre><code>镜头：14-42（远景备 40-150）
+模式：A     光圈：F8     ISO：AUTO（通常 200）
+对焦：单点对前景 1/3 处，或远景对 ∞
+开：网格线 + 水平仪
+曝光补偿：天空亮时 -0.3 ～ -0.7
+</code></pre>
+<h3>分步拍摄</h3>
+<pre><code>第 1 步｜找前景
+  → 石头、花、栏杆放画面下 1/3，制造纵深
+
+第 2 步｜定地平线
+  → 天空好看 → 地平线放下 1/3
+  → 地面好看 → 地平线放上 1/3
+  → 别放正中
+
+第 3 步｜控高光
+  → 拍一张看回放，天空死白 → -0.3EV 再拍
+  → 直到云层有细节
+
+第 4 步｜等光
+  → 太阳越低颜色越暖，多等几分钟连拍
+  → 太阳入镜时 F8 可拍出星芒
+
+第 5 步｜换长焦收局部
+  → 40-150 @ 100~150mm 压缩远山/城市天际线
+</code></pre>
+<h3>日落曝光对照</h3>
+<table>
+<thead>
+<tr>
+<th>想要</th>
+<th>曝光补偿</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>保留天空层次</td>
+<td>-0.3～-0.7</td>
+<td>云和太阳有细节，地面偏暗</td>
+</tr>
+<tr>
+<td>保留地面细节</td>
+<td>0～+0.3</td>
+<td>地面清楚，天空可能过曝</td>
+</tr>
+<tr>
+<td>剪影</td>
+<td>-1.0～-1.5</td>
+<td>前景全黑轮廓</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>🎯 <strong>目标</strong>：一次日落拍 3 组（前景纵深 / 地平线构图 / 长焦局部），回家各选 1 张。</p>
+</blockquote>
+<hr />
+<h2>城市街景「故事线」分步</h2>
+<p>一条街拍成一组有叙事的照片：</p>
+<pre><code>① 全景（14mm）交代环境 → 这是哪
+② 中景（25mm）街道生活 → 发生什么
+③ 特写（42mm 或长焦）细节 → 招牌、手、光影
+④ 人（长焦 80mm 远距离）→ 街头人文
+</code></pre>
+<p>四张排在一起，就是一个地方的完整印象。</p>
+<hr />
+<h2>本章重点回顾</h2>
+<ul>
+<li>风景默认 <strong>A + F5.6～F8 + 14-42 广角</strong></li>
+<li>远景、压缩感 → <strong>40-150</strong></li>
+<li>地平线用网格/水平仪</li>
+<li>天空亮 → <strong>负曝光补偿</strong></li>
+<li>建筑尽量水平，或 AP 梯形校正</li>
+</ul>
+<h2>常见误区</h2>
+<table>
+<thead>
+<tr>
+<th>误区</th>
+<th>真相</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>风景必须 F16</td>
+<td>套头 F8 已够，F16 易 diffraction 软</td>
+</tr>
+<tr>
+<td>永远最广角</td>
+<td>25mm 街景 often 更好</td>
+</tr>
+<tr>
+<td>不对焦就拍</td>
+<td>无限远或 1/3 对焦原则</td>
+</tr>
+<tr>
+<td>日落拍成剪影</td>
+<td>要层次就负补偿或 HDR</td>
+</tr>
+</tbody>
+</table>
+<h2>拍摄练习</h2>
+<ol>
+<li>同一公园：14mm / 25mm / 150mm 各 3 张</li>
+<li>建筑：水平 vs 仰拍对比</li>
+<li>日落：SCN vs A F8 对比</li>
+<li>美食俯拍 5 张，练习 +0.5 EV</li>
+<li>SCN 全景试 2 次</li>
+</ol>
+<p>下一章：<a href="#ch10">10-夜景.md</a></p>
+</article>
+<article class="chapter" id="ch10">
+<h1>夜景拍摄</h1>
+<blockquote>
+<p>本章目标：城市夜景、烟花、星空入门——直接给参数，少讲理论。</p>
+</blockquote>
+<hr />
+<h2>夜景核心认知</h2>
+<p>EP7 拍夜景靠三样东西：</p>
+<ol>
+<li><strong>机身防抖</strong>（手持 1/10～1/20 秒有可能）</li>
+<li><strong>控制 ISO</strong>（尽量 ≤3200，能 1600 更好）</li>
+<li><strong>三脚架</strong>（烟花、光轨、星空几乎必须）</li>
+</ol>
+<p><img alt="城市夜景手持 vs 三脚架" src="images/samples/night/handheld-vs-tripod.svg" /></p>
+<blockquote>
+<p>📷 <strong>建议图片</strong>：同夜景 handheld 糊 vs 三脚架清晰对比。</p>
+</blockquote>
+<hr />
+<h2>城市夜景（手持）</h2>
+<h3>配置</h3>
+<pre><code class="language-text">模式：A 或 SCN → 夜景
+镜头：14-42 @ 14～25mm
+光圈：F3.5～F4（尽量开大）
+ISO：AUTO 或手动 1600～3200
+快门：相机自动，手持尽量 ≤1/15（防抖辅助）
+曝光补偿：0 或 -0.3（防灯光过曝）
+对焦：单点，对亮区或 ∞
+防抖：开
+</code></pre>
+<h3>SCN 夜景 vs A 模式</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>SCN 夜景</th>
+<th>A 模式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>省心</td>
+<td>⭐⭐⭐</td>
+<td>⭐⭐</td>
+</tr>
+<tr>
+<td>可控</td>
+<td>⭐</td>
+<td>⭐⭐⭐</td>
+</tr>
+<tr>
+<td>推荐</td>
+<td>第一次夜景</td>
+<td>熟悉后</td>
+</tr>
+</tbody>
+</table>
+<h3>常见错误</h3>
+<table>
+<thead>
+<tr>
+<th>错误</th>
+<th>现象</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>F8 手持</td>
+<td>快门 1/2 秒，全糊</td>
+</tr>
+<tr>
+<td>ISO 12800</td>
+<td>噪点满屏</td>
+</tr>
+<tr>
+<td>对暗处对焦</td>
+<td>拉风箱对不上</td>
+</tr>
+</tbody>
+</table>
+<p><strong>技巧</strong>：对路灯、橱窗等<strong>亮处</strong>对焦，再 recompose。</p>
+<hr />
+<h2>夜景人像</h2>
+<pre><code class="language-text">模式：SCN → 人像+夜景 或 A
+镜头：14-42 @ 25～42mm
+光圈：F4
+ISO：1600～3200
+曝光补偿：+0.3（脸不要太黑）
+</code></pre>
+<p>可用内置闪光 <strong>-1EV</strong> 补脸，避免背景全黑。</p>
+<hr />
+<h2>烟花</h2>
+<h3>推荐：AP → Live Composite</h3>
+<p>EP7 拍烟花的「杀手锏」——实时叠加光轨，背景亮度不变。</p>
+<h3>基本流程</h3>
+<pre><code>1. 模式转盘 → AP → Live Composite
+2. 三脚架固定
+3. 镜头：14-42 @ 14mm（容纳天空范围）
+4. 光圈：F8～F11
+5. ISO：200
+6. 对焦：手动 MF 对无穷远，或对远处亮处一次 S-AF 后改 MF
+7. 按快门开始，观看屏幕光轨累积
+8. 烟花结束再按快门停止
+</code></pre>
+<p><img alt="Live Composite 烟花流程" src="images/menu/live-composite.svg" /></p>
+<blockquote>
+<p>📷 <strong>建议图片</strong>：Live Composite 设置界面；烟花成片样张。</p>
+</blockquote>
+<h3>备选：SCN → 烟花</h3>
+<p>更自动，成功率也不错。三脚架仍建议。</p>
+<h3>参数表</h3>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>模式</th>
+<th>镜头</th>
+<th>光圈</th>
+<th>ISO</th>
+<th>支撑</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Live Composite</td>
+<td>AP</td>
+<td>14-42@14</td>
+<td>F8</td>
+<td>200</td>
+<td>三脚架</td>
+</tr>
+<tr>
+<td>SCN 烟花</td>
+<td>SCN</td>
+<td>14-42@14</td>
+<td>自动</td>
+<td>自动</td>
+<td>三脚架</td>
+</tr>
+<tr>
+<td>手持抓拍</td>
+<td>A</td>
+<td>14-42@14</td>
+<td>F4</td>
+<td>3200</td>
+<td>手持，单发</td>
+</tr>
+</tbody>
+</table>
+<h3>常见错误</h3>
+<table>
+<thead>
+<tr>
+<th>错误</th>
+<th>后果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>手持 Live Composite</td>
+<td>背景糊成一片</td>
+</tr>
+<tr>
+<td>150mm 长焦</td>
+<td>框不住爆炸范围</td>
+</tr>
+<tr>
+<td>ISO 3200 + F4 长曝</td>
+<td>噪点+过曝</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>光轨（车轨）</h2>
+<pre><code class="language-text">模式：SCN → 光轨 或 AP → Live Composite
+镜头：14-42 @ 14mm
+光圈：F8～F11
+ISO：200
+三脚架：必须
+地点：天桥、路口俯拍
+</code></pre>
+<p>SCN 光轨对新手最友好。</p>
+<hr />
+<h2>星空入门</h2>
+<h3>手持星空（SCN）</h3>
+<pre><code class="language-text">模式：SCN → 手持星空（Handheld Starlight）
+镜头：14-42 @ 14mm
+三脚架：强烈建议（虽叫 handheld， tripod 成功率更高）
+</code></pre>
+<p>EP7 防抖 + 机内堆栈，能拍「有星星」的照片，不是天文级。</p>
+<h3>三脚架星空（进阶）</h3>
+<pre><code class="language-text">模式：M 或 A
+镜头：14-42 @ 14mm（广角收星更多）
+光圈：F3.5（最大）
+快门：约 15～20 秒（14mm 可稍长，有拖线风险）
+ISO：1600～3200
+对焦：MF 无穷远，或对焦明亮星星
+驱动：单张或 2s 自拍定时
+</code></pre>
+<p><strong>500 法则</strong>（粗略）：快门秒数 ≤ 500 / 等效焦距<br />
+14mm 等效 28 → 约 18 秒上限。</p>
+<h3>40-150 拍星空？</h3>
+<p>不推荐。14mm 广角才是星空入门焦段。</p>
+<p><img alt="星空 14mm 样张" src="images/samples/night/stars.svg" /></p>
+<blockquote>
+<p>📷 <strong>建议图片</strong>：SCN 手持星空或三脚架星空样张。</p>
+</blockquote>
+<hr />
+<h2>月亮</h2>
+<pre><code class="language-text">模式：M 或 S
+镜头：40-150 @ 150mm
+光圈：F8
+快门：约 1/125～1/250
+ISO：200～400
+三脚架：必须
+对焦：MF 无穷远 或 S-AF 对月亮后锁 MF
+测光：点测光月亮，或 M 模式试拍微调
+曝光补偿：月亮很亮，常需 -1～-2 EV
+</code></pre>
+<p>150mm 月亮仍较小——可裁切 LF JPEG（2000 万像素有余量）。</p>
+<p><strong>别信「手机拍超大月亮」</strong>——很多是 AI 合成。相机拍的是真实光学。</p>
+<hr />
+<h2>演唱会 / 暗光活动</h2>
+<pre><code class="language-text">模式：A
+镜头：40-150 @ 100～150mm
+光圈：F5.6
+ISO：3200～6400（临时提高上限）
+快门：≥1/125
+对焦：单点，预对焦舞台
+驱动：H 连拍
+</code></pre>
+<p><strong>预期管理</strong>：噪点会有，糊片会有——连拍选最好的。</p>
+<hr />
+<h2>静音拍摄</h2>
+<p>博物馆、演出部分场景：</p>
+<pre><code class="language-text">SCN → 静音 或 AP → 静音
+电子快门，无机械声
+注意：某些灯光下 banding
+</code></pre>
+<hr />
+<h2>B 模式简介（第二个月）</h2>
+<table>
+<thead>
+<tr>
+<th>子模式</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BULB</td>
+<td>按住快门曝光</td>
+</tr>
+<tr>
+<td>TIME</td>
+<td>按两次起止</td>
+</tr>
+<tr>
+<td>LIVE COMP</td>
+<td>同 AP Live Composite</td>
+</tr>
+</tbody>
+</table>
+<p>模式转盘 → <strong>B</strong> → 屏幕选子模式。</p>
+<hr />
+<h2>夜景参数速查总表</h2>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>模式</th>
+<th>镜头</th>
+<th>光圈</th>
+<th>ISO</th>
+<th>快门</th>
+<th>三脚架</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>城市 handheld</td>
+<td>A/SCN夜景</td>
+<td>14-42@17</td>
+<td>F4</td>
+<td>1600～3200</td>
+<td>自动</td>
+<td>否</td>
+</tr>
+<tr>
+<td>夜景人像</td>
+<td>SCN人像+夜景</td>
+<td>14-42@35</td>
+<td>F4</td>
+<td>3200</td>
+<td>自动</td>
+<td>否</td>
+</tr>
+<tr>
+<td>烟花</td>
+<td>AP LiveComp</td>
+<td>14-42@14</td>
+<td>F8</td>
+<td>200</td>
+<td>累积</td>
+<td>是</td>
+</tr>
+<tr>
+<td>车轨</td>
+<td>SCN光轨</td>
+<td>14-42@14</td>
+<td>F8</td>
+<td>200</td>
+<td>累积</td>
+<td>是</td>
+</tr>
+<tr>
+<td>星空入门</td>
+<td>SCN手持星空</td>
+<td>14-42@14</td>
+<td>自动</td>
+<td>自动</td>
+<td>自动</td>
+<td>建议</td>
+</tr>
+<tr>
+<td>星空三脚架</td>
+<td>M/A</td>
+<td>14-42@14</td>
+<td>F3.5</td>
+<td>1600～3200</td>
+<td>15～20s</td>
+<td>是</td>
+</tr>
+<tr>
+<td>月亮</td>
+<td>M/S</td>
+<td>40-150@150</td>
+<td>F8</td>
+<td>200～400</td>
+<td>1/200</td>
+<td>是</td>
+</tr>
+<tr>
+<td>演唱会</td>
+<td>A</td>
+<td>40-150@150</td>
+<td>F5.6</td>
+<td>6400</td>
+<td>≥1/125</td>
+<td>否</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>实战 walkthrough：城市夜景手持（分步，无三脚架）</h2>
+<p>第一次夜景不用带三脚架，靠 EP7 的强防抖也能拍。挑一个有灯光的街口。</p>
+<pre><code>步骤 1｜设置
+  模式：A     光圈：F3.5～F4（尽量开大）
+  ISO：AUTO（上限临时提到 3200）
+  对焦：单点     防抖：S-IS AUTO（必开）
+  曝光补偿：-0.3（防灯光过曝）
+
+步骤 2｜对焦技巧（夜里对焦最难）
+  → 把对焦点移到「路灯 / 亮橱窗」这类高对比亮处
+  → 半按锁定（听到滴声）→ 保持半按，重新构图 → 按下
+
+步骤 3｜稳住拍
+  → 双肘夹紧、屏息、轻按
+  → 连拍 3 张，回放选最锐
+
+步骤 4｜检查快门
+  → 回放按 INFO，快门若低于 1/15 → 再开大光圈或提 ISO
+</code></pre>
+<h3>手持夜景排错</h3>
+<table>
+<thead>
+<tr>
+<th>现象</th>
+<th>原因</th>
+<th>解法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>整体糊</td>
+<td>快门太慢+手抖</td>
+<td>F3.5全开、ISO↑、找栏杆靠</td>
+</tr>
+<tr>
+<td>灯白成一团</td>
+<td>过曝</td>
+<td>-0.7EV</td>
+</tr>
+<tr>
+<td>对不上焦</td>
+<td>对着暗处</td>
+<td>对亮处再重构图</td>
+</tr>
+<tr>
+<td>噪点满屏</td>
+<td>ISO 6400+</td>
+<td>上限压回 3200</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>实战 walkthrough：Live Composite 拍车轨（分步 + 排错）</h2>
+<p>这是 EP7 的「杀手锏」，必须三脚架。找一座能俯瞰车流的天桥。</p>
+<pre><code>步骤 1｜模式转盘 → AP → Live Composite
+步骤 2｜三脚架固定，构图让车道贯穿画面
+步骤 3｜光圈 F8，ISO 200
+步骤 4｜对焦：S-AF 对远处路灯一次 → 切 MF 锁死（防止重新拉焦）
+步骤 5｜先按一次快门「取暗场基准」（相机提示）
+步骤 6｜再按快门开始 → 屏幕上车灯轨迹逐渐累积
+步骤 7｜轨迹够长够满意 → 再按快门停止
+</code></pre>
+<h3>Live Composite 排错</h3>
+<table>
+<thead>
+<tr>
+<th>现象</th>
+<th>原因</th>
+<th>解法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>全黑</td>
+<td>没车/时间太短</td>
+<td>多等车流、延长累积</td>
+</tr>
+<tr>
+<td>背景过曝</td>
+<td>ISO 太高/光圈太大</td>
+<td>ISO200、F8～F11</td>
+</tr>
+<tr>
+<td>轨迹糊</td>
+<td>三脚架被碰/风吹</td>
+<td>稳固、用 2s 自拍触发</td>
+</tr>
+<tr>
+<td>中途拉焦</td>
+<td>用了 AF</td>
+<td>对焦后切 MF 锁死</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>🎯 <strong>目标</strong>：手持夜景选出 1 张清晰街景；Live Composite 拍出 1 张完整车轨。两者都成，你就跨过夜景门槛了。</p>
+</blockquote>
+<hr />
+<h2>本章重点回顾</h2>
+<ul>
+<li>手持夜景：<strong>开大光圈 F4 + ISO 1600～3200 + 防抖</strong></li>
+<li>烟花/光轨：<strong>三脚架 + AP Live Composite 或 SCN</strong></li>
+<li>星空：<strong>14mm 广角</strong>，SCN 手持星空入门</li>
+<li>月亮：<strong>40-150 @ 150 + 三脚架 + 快快门</strong></li>
+<li>暗光接受噪点，<strong>连拍选最锐</strong></li>
+</ul>
+<h2>常见误区</h2>
+<table>
+<thead>
+<tr>
+<th>误区</th>
+<th>真相</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>夜景关闭防抖</td>
+<td>手持更需要防抖</td>
+</tr>
+<tr>
+<td>烟花 handheld</td>
+<td>几乎必糊</td>
+</tr>
+<tr>
+<td>星空用 150mm</td>
+<td>广角才收得下天</td>
+</tr>
+<tr>
+<td>ISO 100 夜景</td>
+<td>快门太慢</td>
+</tr>
+</tbody>
+</table>
+<h2>拍摄练习</h2>
+<ol>
+<li>家附近路灯场景：SCN 夜景 vs A F4 ISO3200</li>
+<li>找天桥：SCN 光轨 3 张（三脚架）</li>
+<li>郊外或无光污染处：SCN 手持星空</li>
+<li>满月夜：40-150 拍月亮，试 3 组快门</li>
+<li>记录：哪张 ISO 噪点你无法接受——那就是你的 ISO 上限</li>
+</ol>
+<p>相关：<a href="#ch11">11-菜单详解.md</a> | <a href="#ch12">12-常见问题.md</a></p>
+</article>
+<article class="chapter" id="ch11">
+<h1>菜单详解</h1>
+<blockquote>
+<p>本章目标：不翻译整本说明书，只告诉你<strong>哪些必改、哪些别碰、哪些以后学</strong>。</p>
+</blockquote>
+<hr />
+<h2>菜单导航方式</h2>
+<pre><code>MENU 键 → 左侧图标选大类 → 上下键选条目 → OK 确认
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>图标</th>
+<th>类别</th>
+<th>新手关注度</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>相机</td>
+<td>拍摄相关</td>
+<td>⭐⭐⭐</td>
+</tr>
+<tr>
+<td>视频</td>
+<td>录像</td>
+<td>⭐</td>
+</tr>
+<tr>
+<td>播放</td>
+<td>回放设置</td>
+<td>⭐⭐</td>
+</tr>
+<tr>
+<td>自定义</td>
+<td>按钮/显示</td>
+<td>⭐⭐</td>
+</tr>
+<tr>
+<td>扳手</td>
+<td>设置/格式化</td>
+<td>⭐⭐⭐</td>
+</tr>
+</tbody>
+</table>
+<p><strong>更快的方式</strong>：P/A/S/M 模式下按 <strong>OK</strong> → <strong>超级控制面板（SCP）</strong>，80% 日常设置在里。</p>
+<p><img alt="菜单结构概览" src="images/menu/menu-overview.svg" /></p>
+<blockquote>
+<p>📷 <strong>建议图片</strong>：MENU 五大类图标截图。</p>
+</blockquote>
+<hr />
+<h2>必改清单（第一天）</h2>
+<table>
+<thead>
+<tr>
+<th>菜单路径</th>
+<th>设置</th>
+<th>值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>相机 → 图片质量</td>
+<td>画质</td>
+<td>LF</td>
+</tr>
+<tr>
+<td>相机 → ISO</td>
+<td>AUTO 上限</td>
+<td>3200</td>
+</tr>
+<tr>
+<td>拍摄 → 防抖</td>
+<td>IS</td>
+<td>S-IS AUTO</td>
+</tr>
+<tr>
+<td>拍摄 → 对焦模式</td>
+<td>AF</td>
+<td>S-AF</td>
+</tr>
+<tr>
+<td>自定义 → 网格线</td>
+<td>显示</td>
+<td>3×3</td>
+</tr>
+<tr>
+<td>扳手 → 格式化</td>
+<td>新卡</td>
+<td>执行一次</td>
+</tr>
+<tr>
+<td>扳手 → 日期时间</td>
+<td></td>
+<td>准确</td>
+</tr>
+</tbody>
+</table>
+<p>详见 <a href="#ch03">03-第一次开机设置.md</a>。</p>
+<hr />
+<h2>建议改（第一～二周）</h2>
+<table>
+<thead>
+<tr>
+<th>菜单路径</th>
+<th>设置</th>
+<th>推荐</th>
+<th>原因</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AF → AF 区域</td>
+<td>默认区域</td>
+<td>单点</td>
+<td>精准对焦</td>
+</tr>
+<tr>
+<td>AF → 人脸检测</td>
+<td></td>
+<td>开</td>
+<td>人像辅助</td>
+</tr>
+<tr>
+<td>自定义 → 水平 gauge</td>
+<td></td>
+<td>开</td>
+<td>风景建筑</td>
+</tr>
+<tr>
+<td>自定义 → 预览</td>
+<td>预览效果</td>
+<td>开</td>
+<td>WYSIWYG</td>
+</tr>
+<tr>
+<td>扳手 → 省电</td>
+<td>休眠</td>
+<td>1min 或 3min</td>
+<td>省电</td>
+</tr>
+<tr>
+<td>播放 → 旋转</td>
+<td>自动旋转</td>
+<td>开</td>
+<td>回放方便</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>不要碰（第一个月）</h2>
+<table>
+<thead>
+<tr>
+<th>菜单</th>
+<th>为什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>像素映射</td>
+<td>除非有坏点，厂家工具</td>
+</tr>
+<tr>
+<td>固件降级</td>
+<td>除非出问题</td>
+</tr>
+<tr>
+<td>语言乱改</td>
+<td>改不回去麻烦</td>
+</tr>
+<tr>
+<td>出厂重置</td>
+<td>会清所有设置</td>
+</tr>
+<tr>
+<td>RAW 相关</td>
+<td>先玩 JPEG</td>
+</tr>
+<tr>
+<td>色彩空间 Adobe RGB</td>
+<td>新手 sRGB 即可</td>
+</tr>
+<tr>
+<td>镜头校准微调</td>
+<td>没问题的镜头别动</td>
+</tr>
+<tr>
+<td>快门计数重置</td>
+<td>无意义</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>⚠️ <strong>误触出厂重置</strong>：MENU → 扳手 → 重置 → 确认。会清空本教程所有设置。</p>
+</blockquote>
+<hr />
+<h2>以后再学</h2>
+<table>
+<thead>
+<tr>
+<th>功能</th>
+<th>何时学</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RAW / RAW 编辑</td>
+<td>JPEG 满意后</td>
+</tr>
+<tr>
+<td>按钮自定义（AEL/Fn）</td>
+<td>熟练 A 模式后</td>
+</tr>
+<tr>
+<td>对焦包围 / 景深合成</td>
+<td>微距进阶</td>
+</tr>
+<tr>
+<td>间隔拍摄 / 延时</td>
+<td>视频爱好者</td>
+</tr>
+<tr>
+<td>Wi-Fi / OI.Share 传图</td>
+<td>需要手机发圈时</td>
+</tr>
+<tr>
+<td>外接闪光灯 RC 设置</td>
+<td>买外闪后</td>
+</tr>
+<tr>
+<td>色彩 Profile 注册</td>
+<td>玩直出风格时</td>
+</tr>
+<tr>
+<td>电子快门 banding</td>
+<td>静音模式遇条纹时</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>超级控制面板（SCP）图标速查</h2>
+<p>按 OK 后常见图标：</p>
+<table>
+<thead>
+<tr>
+<th>图标含义</th>
+<th>新手频率</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ISO</td>
+<td>高</td>
+<td>AUTO/手动</td>
+</tr>
+<tr>
+<td>WB 白平衡</td>
+<td>中</td>
+<td>默认 AUTO</td>
+</tr>
+<tr>
+<td>测光模式</td>
+<td>低</td>
+<td>ESP 默认</td>
+</tr>
+<tr>
+<td>AF 模式</td>
+<td>高</td>
+<td>S-AF / C-AF</td>
+</tr>
+<tr>
+<td>AF 区域</td>
+<td>高</td>
+<td>单点</td>
+</tr>
+<tr>
+<td>驱动</td>
+<td>中</td>
+<td>单张/连拍</td>
+</tr>
+<tr>
+<td>自拍定时</td>
+<td>低</td>
+<td>2s/12s</td>
+</tr>
+<tr>
+<td>闪光模式</td>
+<td>中</td>
+<td>强制关/自动</td>
+</tr>
+<tr>
+<td>防抖</td>
+<td>低</td>
+<td>常开</td>
+</tr>
+<tr>
+<td>曝光补偿</td>
+<td>高</td>
+<td>A 模式前拨轮也可</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="SCP 图标标注" src="images/menu/super-control-panel.svg" /></p>
+<blockquote>
+<p>📷 <strong>建议图片</strong>：SCP 每个图标用中文标注。</p>
+</blockquote>
+<hr />
+<h2>拍摄菜单（相机图标）精选</h2>
+<h3>必须理解</h3>
+<table>
+<thead>
+<tr>
+<th>条目</th>
+<th>建议</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>图片质量</td>
+<td>LF</td>
+<td>大 JPEG</td>
+</tr>
+<tr>
+<td>图片比例</td>
+<td>4:3</td>
+<td>默认，别改 16:9 丢像素</td>
+</tr>
+<tr>
+<td>ISO</td>
+<td>AUTO max 3200</td>
+<td></td>
+</tr>
+<tr>
+<td>降噪</td>
+<td>标准</td>
+<td>高 ISO 长曝降噪默认即可</td>
+</tr>
+<tr>
+<td>白平衡</td>
+<td>AUTO</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3>按需使用</h3>
+<table>
+<thead>
+<tr>
+<th>条目</th>
+<th>何时</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>连拍 H/L</td>
+<td>运动、儿童</td>
+</tr>
+<tr>
+<td>自拍定时</td>
+<td>合影</td>
+</tr>
+<tr>
+<td>包围曝光 bracketing</td>
+<td>进阶 HDR</td>
+</tr>
+<tr>
+<td>静音 / 静音快门</td>
+<td>博物馆</td>
+</tr>
+</tbody>
+</table>
+<h3>可忽略</h3>
+<table>
+<thead>
+<tr>
+<th>条目</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>镜头 Info</td>
+<td>看 attached lens</td>
+</tr>
+<tr>
+<td>多重测光细节</td>
+<td>ESP 够用</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>AF 菜单精选</h2>
+<table>
+<thead>
+<tr>
+<th>条目</th>
+<th>新手设置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>对焦模式</td>
+<td>S-AF</td>
+</tr>
+<tr>
+<td>AF 区域</td>
+<td>单点 / 小群</td>
+</tr>
+<tr>
+<td>人脸检测</td>
+<td>开</td>
+</tr>
+<tr>
+<td>对焦锁定</td>
+<td>AEL 默认（进阶）</td>
+</tr>
+<tr>
+<td>对焦 peaking</td>
+<td>MF 时用</td>
+</tr>
+</tbody>
+</table>
+<p><strong>C-AF + TR（追踪）</strong>：第二个月拍宠物再开。</p>
+<hr />
+<h2>自定义菜单精选</h2>
+<table>
+<thead>
+<tr>
+<th>条目</th>
+<th>建议</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>网格线</td>
+<td>3×3</td>
+</tr>
+<tr>
+<td>水平 gauge</td>
+<td>开</td>
+</tr>
+<tr>
+<td>直方图</td>
+<td>学曝光后开</td>
+</tr>
+<tr>
+<td>高光警告</td>
+<td>可选开</td>
+</tr>
+<tr>
+<td>按钮功能</td>
+<td>默认，熟悉后改 Fn</td>
+</tr>
+<tr>
+<td>拨盘功能</td>
+<td>A 模式后拨轮=光圈（默认）</td>
+</tr>
+</tbody>
+</table>
+<h3>Fn / AEL 按钮</h3>
+<p>默认：</p>
+<ul>
+<li><strong>AEL/AFL</strong>：曝光/对焦锁定</li>
+<li><strong>Fn（快门旁 Shortcut）</strong>：SCN/AP/ART 子模式切换</li>
+</ul>
+<p>第一个月<strong>不用改</strong>。</p>
+<hr />
+<h2>播放菜单精选</h2>
+<table>
+<thead>
+<tr>
+<th>条目</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>旋转显示</td>
+<td>自动</td>
+</tr>
+<tr>
+<td>幻灯片</td>
+<td>电视 HDMI 输出</td>
+</tr>
+<tr>
+<td>编辑</td>
+<td>机内裁剪、黑白——应急</td>
+</tr>
+<tr>
+<td>RAW 编辑</td>
+<td>有 RAW 才用</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>设置菜单（扳手）精选</h2>
+<table>
+<thead>
+<tr>
+<th>条目</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>格式化</td>
+<td>清空 SD 卡</td>
+</tr>
+<tr>
+<td>日期时间</td>
+<td></td>
+</tr>
+<tr>
+<td>固件更新</td>
+<td>偶尔检查</td>
+</tr>
+<tr>
+<td>USB 模式</td>
+<td>充电 / 存储</td>
+</tr>
+<tr>
+<td>Wi-Fi</td>
+<td>传手机</td>
+</tr>
+<tr>
+<td>省电</td>
+<td>自动关机时间</td>
+</tr>
+<tr>
+<td>传感器清洁</td>
+<td>换镜头后自动振动</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>视频菜单（简要）</h2>
+<table>
+<thead>
+<tr>
+<th>条目</th>
+<th>新手建议</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>分辨率</td>
+<td>1080p 60fps 日常</td>
+</tr>
+<tr>
+<td>4K</td>
+<td>需要裁切时再用</td>
+</tr>
+<tr>
+<td>麦克风</td>
+<td>机内立体声，无外接口</td>
+</tr>
+<tr>
+<td>防抖</td>
+<td>开，但视频防抖弱于拍照</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>菜单 vs SCP：什么时候进 MENU？</h2>
+<table>
+<thead>
+<tr>
+<th>需求</th>
+<th>用哪个</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>改 ISO/WB/AF</td>
+<td>SCP（OK 键）</td>
+</tr>
+<tr>
+<td>改画质 RAW/LF</td>
+<td>MENU</td>
+</tr>
+<tr>
+<td>格式化</td>
+<td>MENU</td>
+</tr>
+<tr>
+<td>网格线</td>
+<td>MENU</td>
+</tr>
+<tr>
+<td>固件更新</td>
+<td>MENU</td>
+</tr>
+<tr>
+<td>曝光补偿</td>
+<td>前拨轮（A 模式）</td>
+</tr>
+</tbody>
+</table>
+<p><strong>原则</strong>：能 SCP 就不 MENU，少迷路。</p>
+<hr />
+<h2>新手菜单学习路线</h2>
+<pre><code>第 1 天：画质、ISO、格式化、日期
+第 1 周：SCP 全部图标认一遍
+第 2 周：AF 菜单、网格、水平仪
+第 1 月：播放编辑、Wi-Fi 传图
+第 2 月：按钮自定义、RAW、间隔拍摄
+</code></pre>
+<hr />
+<h2>实战 walkthrough：SCP 逐图标认一遍（10 分钟）</h2>
+<p>按 OK 打开超级控制面板，跟着把最常用的图标点一遍，建立「肌肉记忆」。</p>
+<pre><code>步骤 1｜P/A/S/M 任一模式 → 按 OK
+步骤 2｜十字键依次高亮，转拨轮改值，逐个熟悉：
+
+  ① ISO       → 试着在 AUTO / 800 / 3200 间切换
+  ② WB        → AUTO / 白炽灯，看画面色调变化
+  ③ AF 模式    → S-AF ↔ C-AF
+  ④ AF 区域    → 单点 ↔ 小群点
+  ⑤ 驱动       → 单张 ↔ H 连拍
+  ⑥ 曝光补偿   → -1 / 0 / +1，看画面明暗
+  ⑦ 闪光       → 关 ↔ 强制
+
+步骤 3｜半按快门退出，随手拍一张验证
+</code></pre>
+<blockquote>
+<p>✅ <strong>过关</strong>：闭着菜单也能在 30 秒内把 ISO、WB、AF 三项改对。</p>
+</blockquote>
+<hr />
+<h2>分步：菜单迷路自救</h2>
+<p>新手常在 MENU 里找不到东西。记住这套「回家路线」：</p>
+<pre><code>不确定改哪 → 先按 OK 试 SCP（80% 设置都在）
+SCP 没有   → MENU → 按大类图标定位：
+   画质/ISO/降噪 …… 相机图标
+   对焦相关 ……… AF 菜单
+   网格/按钮/显示 … 自定义（齿轮）
+   格式化/时间/固件 … 扳手
+找不到就退 → 半按快门直接回到拍摄，不会改坏
+误入危险项 → 看到「重置/格式化」别乱确认
+</code></pre>
+<h3>必改项一次设置分步（第一天照做）</h3>
+<pre><code>1. 相机 → 图片质量 → LF
+2. 相机 → ISO → AUTO，上限 3200
+3. AF → 对焦模式 → S-AF；区域 → 单点
+4. 拍摄 → 防抖 → S-IS AUTO
+5. 自定义 → 网格线 → 3×3
+6. 扳手 → 格式化（新卡）→ 日期时间
+</code></pre>
+<hr />
+<h2>本章重点回顾</h2>
+<ul>
+<li><strong>OK = SCP</strong> 是日常主力</li>
+<li>必改：LF、ISO 上限 3200、S-AF、格式化</li>
+<li>第一个月<strong>别碰</strong>：重置、RAW、镜头校准</li>
+<li>人脸检测、网格、水平仪——第二周开</li>
+<li>菜单深不必全背，按本清单即可</li>
+</ul>
+<h2>常见误区</h2>
+<table>
+<thead>
+<tr>
+<th>误区</th>
+<th>真相</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>菜单要全背</td>
+<td>SCP + 10 项足够</td>
+</tr>
+<tr>
+<td>关掉所有降噪</td>
+<td>标准即可</td>
+</tr>
+<tr>
+<td>Adobe RGB 更专业</td>
+<td>不后期就 sRGB</td>
+</tr>
+<tr>
+<td>乱改按钮</td>
+<td>默认先学标准操作</td>
+</tr>
+</tbody>
+</table>
+<h2>拍摄练习</h2>
+<ol>
+<li>闭卷操作：MENU 找到格式化（不执行）、图片质量、ISO 上限</li>
+<li>SCP 练习：30 秒内改 ISO、WB、AF 模式</li>
+<li>开启网格+水平仪，拍 3 张风景</li>
+<li>浏览 AF 菜单，确认 S-AF + 单点 + 人脸开</li>
+<li>记录 3 个你「找不到」的菜单项，对照说明书索引</li>
+</ol>
+<p>问题排查 → <a href="#ch12">12-常见问题.md</a></p>
+</article>
+<article class="chapter" id="ch12">
+<h1>常见问题</h1>
+<blockquote>
+<p>本章目标：照片出问题时的「急救手册」——按现象找原因、按原因给解法。</p>
+</blockquote>
+<hr />
+<h2>使用方式</h2>
+<ol>
+<li>找到你的问题标题</li>
+<li>看「最可能原因」</li>
+<li>按顺序试「解决步骤」</li>
+<li>仍不行 → 查说明书或售后</li>
+</ol>
+<hr />
+<h2>为什么照片模糊？</h2>
+<h3>最可能原因（按概率）</h3>
+<table>
+<thead>
+<tr>
+<th>排名</th>
+<th>原因</th>
+<th>典型场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>快门太慢，手抖</td>
+<td>室内 F8、暗光</td>
+</tr>
+<tr>
+<td>2</td>
+<td>对焦错了</td>
+<td>对背景、对太近</td>
+</tr>
+<tr>
+<td>3</td>
+<td>主体在动</td>
+<td>小孩、宠物</td>
+</tr>
+<tr>
+<td>4</td>
+<td>镜头脏 / 雾</td>
+<td>指纹、冬天进暖室</td>
+</tr>
+<tr>
+<td>5</td>
+<td>镜头没锁紧</td>
+<td>罕见但严重</td>
+</tr>
+</tbody>
+</table>
+<h3>解决步骤</h3>
+<pre><code>1. 回放 → 按 INFO 看快门速度
+   - 手持：快门 ≥ 1/焦距等效（42mm → 1/60+）
+   - 150mm → 1/250+
+2. 快门太慢 → 开大光圈 F4 或提高 ISO
+3. 检查对焦框是否在主体上
+4. 运动主体 → C-AF 连拍 或 SCN 儿童/运动
+5. 擦镜头；确认镜头「咔」锁紧
+6. 确认防抖开启（S-IS AUTO）
+</code></pre>
+<p><img alt="模糊照片 EXIF 检查" src="images/diagrams/blur-exif.svg" /></p>
+<blockquote>
+<p>📷 <strong>建议图片</strong>：回放界面显示快门 1/8 秒的糊片截图。</p>
+</blockquote>
+<hr />
+<h2>为什么背景不虚？</h2>
+<h3>原因</h3>
+<table>
+<thead>
+<tr>
+<th>原因</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>光圈太小</td>
+<td>F8 背景更实</td>
+</tr>
+<tr>
+<td>焦段太短</td>
+<td>14mm 广角难虚化</td>
+</tr>
+<tr>
+<td>离主体太远</td>
+<td>套头常见</td>
+</tr>
+<tr>
+<td>主体离背景太近</td>
+<td>物理限制</td>
+</tr>
+<tr>
+<td>M4/3 景深较深</td>
+<td>系统特性</td>
+</tr>
+</tbody>
+</table>
+<h3>解决步骤</h3>
+<pre><code>1. A 模式 → F4 或 F3.5（14-42 广角端）
+2. 用 42mm 或 40-150 @ 80mm+
+3. 靠近主体（最近 0.2m/0.9m 注意）
+4. 让主体离背景尽量远（1m+）
+5. 接受套头极限——或日后 F1.8 定焦
+</code></pre>
+<p><strong>对比测试</strong>：同一人，14mm F3.5 vs 42mm F5.6 vs 150mm F5.6。</p>
+<hr />
+<h2>为什么颜色不好？</h2>
+<table>
+<thead>
+<tr>
+<th>现象</th>
+<th>原因</th>
+<th>解决</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>偏黄</td>
+<td>钨丝灯</td>
+<td>WB 白炽灯或 AUTO</td>
+</tr>
+<tr>
+<td>偏蓝</td>
+<td>阴天/shade</td>
+<td>AUTO 通常 OK</td>
+</tr>
+<tr>
+<td>发灰</td>
+<td>曝光不足</td>
+<td>+0.3～+0.7 EV</td>
+</tr>
+<tr>
+<td>过饱和</td>
+<td>ART 滤镜</td>
+<td>关 ART，标准模式</td>
+</tr>
+<tr>
+<td>肤色脏</td>
+<td>Mixed 光</td>
+<td>找单一光源</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="白平衡对比" src="images/diagrams/wb-compare.svg" /></p>
+<blockquote>
+<p>📷 <strong>建议图片</strong>：AUTO vs 白炽灯 WB 餐厅对比。</p>
+</blockquote>
+<p>第一个月：<strong>AUTO WB + 曝光补偿</strong> 解决 90%。</p>
+<hr />
+<h2>为什么夜景噪点很多？</h2>
+<table>
+<thead>
+<tr>
+<th>原因</th>
+<th>解决</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ISO 太高（6400+）</td>
+<td>上限改 3200；或接受 3200</td>
+</tr>
+<tr>
+<td>强行提亮 JPEG</td>
+<td>曝光时 +EV，别后期拉</td>
+</tr>
+<tr>
+<td>长曝光降噪关</td>
+<td>默认标准即可</td>
+</tr>
+<tr>
+<td>和手机比</td>
+<td>手机多帧降噪，相机单帧更「真实」</td>
+</tr>
+</tbody>
+</table>
+<p><strong>改善</strong>：</p>
+<ul>
+<li>三脚架 → ISO 200 + 慢门</li>
+<li>手持 → F4 + ISO 1600～3200，别 F8</li>
+</ul>
+<hr />
+<h2>为什么自动对焦失败？</h2>
+<table>
+<thead>
+<tr>
+<th>现象</th>
+<th>原因</th>
+<th>解决</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>拉风箱</td>
+<td>太暗、低对比</td>
+<td>对亮处；辅助 AF 灯</td>
+</tr>
+<tr>
+<td>一直糊</td>
+<td>最近距离内</td>
+<td>14-42 退到 20cm 外</td>
+</tr>
+<tr>
+<td>对不上</td>
+<td>玻璃/栅栏</td>
+<td>开大光圈无效，换角度</td>
+</tr>
+<tr>
+<td>人脸错</td>
+<td>多人</td>
+<td>改单点手动选对</td>
+</tr>
+<tr>
+<td>视频 AF 慢</td>
+<td>反差 AF 特性</td>
+<td>单次对焦后开拍</td>
+</tr>
+</tbody>
+</table>
+<p><strong>低光 AF 技巧</strong>：对路灯、橱窗，半按锁定， recompose。</p>
+<hr />
+<h2>为什么曝光不正常？</h2>
+<table>
+<thead>
+<tr>
+<th>现象</th>
+<th>原因</th>
+<th>解决</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>脸黑背景亮</td>
+<td>逆光</td>
+<td>+0.7～+1.0 EV 或 HDR</td>
+</tr>
+<tr>
+<td>天空一片白</td>
+<td>过曝</td>
+<td>-0.3～-0.7 EV</td>
+</tr>
+<tr>
+<td>整体偏暗</td>
+<td>相机保守</td>
+<td>+0.3 EV</td>
+</tr>
+<tr>
+<td>闪烁条纹</td>
+<td>荧光灯</td>
+<td>防闪烁 AUTO</td>
+</tr>
+<tr>
+<td>夜景过曝</td>
+<td>SCN 误判</td>
+<td>改 A 手动控</td>
+</tr>
+</tbody>
+</table>
+<p><strong>A 模式</strong>：前拨轮改曝光补偿是最快手段。</p>
+<hr />
+<h2>为什么照片比手机差？</h2>
+<table>
+<thead>
+<tr>
+<th>手机优势</th>
+<th>相机要补的课</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>计算摄影 HDR</td>
+<td>曝光补偿、SCN HDR</td>
+</tr>
+<tr>
+<td>人像模式算法虚化</td>
+<td>物理虚化技巧</td>
+</tr>
+<tr>
+<td>自动分享优化</td>
+<td>机内 Profile / ART</td>
+</tr>
+<tr>
+<td>随时在口袋</td>
+<td>你愿意带 EP7 吗？</td>
+</tr>
+</tbody>
+</table>
+<p><strong>真实差距</strong>：光学变焦（40-150）、暗光细节、打印放大——学会设置后会反超。</p>
+<p><strong>检查清单</strong>：</p>
+<ul>
+<li>[ ] 是否 LF 画质？</li>
+<li>[ ] 是否对焦准确？</li>
+<li>[ ] 是否用了 A 而非 iAUTO 乱闪？</li>
+<li>[ ] 是否和大太阳下看不清屏幕有关？</li>
+</ul>
+<hr />
+<h2>为什么人物脸发黑？</h2>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>解决</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>逆光</td>
+<td>+1.0 EV；SCN 逆光 HDR</td>
+</tr>
+<tr>
+<td>帽子阴影</td>
+<td>让人脸转向光</td>
+</tr>
+<tr>
+<td>背景太亮 ESP 测光</td>
+<td>点测光人脸或 +EV</td>
+</tr>
+<tr>
+<td>闪光未开</td>
+<td>室内强制闪光 -1EV</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>为什么屏幕看不清？</h2>
+<p>EP7 <strong>无取景器</strong>，强光下常见问题。</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>找阴影</td>
+<td>最实用</td>
+</tr>
+<tr>
+<td>手挡屏幕上方</td>
+<td>临时遮光罩</td>
+</tr>
+<tr>
+<td>调高亮度</td>
+<td>MENU 显示设置</td>
+</tr>
+<tr>
+<td>翻转角度</td>
+<td>减少反光</td>
+</tr>
+<tr>
+<td>戴偏光墨镜</td>
+<td>会看不清——摘墨镜</td>
+</tr>
+</tbody>
+</table>
+<p>不是故障，是设计取舍。</p>
+<hr />
+<h2>为什么镜头伸不出来 / 缩不回去？</h2>
+<table>
+<thead>
+<tr>
+<th>情况</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>14-42 EZ 开机不伸</td>
+<td>检查镜头是否锁紧；换电池</td>
+</tr>
+<tr>
+<td>关机缩回</td>
+<td><strong>正常</strong></td>
+</tr>
+<tr>
+<td>卡住</td>
+<td>关机，轻助转动，勿蛮力</td>
+</tr>
+<tr>
+<td>40-150 无伸缩</td>
+<td><strong>正常</strong>，机械变焦手动拧</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>为什么 SD 卡报错？</h2>
+<table>
+<thead>
+<tr>
+<th>原因</th>
+<th>解决</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>新卡未格式化</td>
+<td>MENU 格式化</td>
+</tr>
+<tr>
+<td>卡速不够拍 4K</td>
+<td>换 U3 / UHS-II</td>
+</tr>
+<tr>
+<td>卡满</td>
+<td>删除或换卡</td>
+</tr>
+<tr>
+<td>卡接触不良</td>
+<td>重新插入</td>
+</tr>
+<tr>
+<td>假卡</td>
+<td>正品渠道买</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>为什么 Wi-Fi 连不上手机？</h2>
+<table>
+<thead>
+<tr>
+<th>步骤</th>
+<th>操作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>手机装 OI.Share 或 OM Image Share</td>
+</tr>
+<tr>
+<td>2</td>
+<td>相机 MENU → Wi-Fi → 简单连接 / QR</td>
+</tr>
+<tr>
+<td>3</td>
+<td>关闭相机省电立即断连</td>
+</tr>
+<tr>
+<td>4</td>
+<td>传图时停止 USB 充电冲突</td>
+</tr>
+</tbody>
+</table>
+<p>第一个月可以不学 Wi-Fi，数据线或读卡器复制。</p>
+<hr />
+<h2>为什么闪光灯不弹 / 不闪？</h2>
+<table>
+<thead>
+<tr>
+<th>原因</th>
+<th>解决</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>闪光模式关</td>
+<td>SCP 改自动或强制开</td>
+</tr>
+<tr>
+<td>iAUTO 白天不需要</td>
+<td>正常</td>
+</tr>
+<tr>
+<td>充电中</td>
+<td>某些操作限制</td>
+</tr>
+<tr>
+<td>手动压回</td>
+<td>按闪光按钮弹出</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>为什么连拍很慢 / 停拍？</h2>
+<table>
+<thead>
+<tr>
+<th>原因</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SD 卡慢</td>
+<td>换 UHS-I U3 以上</td>
+</tr>
+<tr>
+<td>缓冲满</td>
+<td>等写入完成</td>
+</tr>
+<tr>
+<td>用 Silent 连拍</td>
+<td>速度不同</td>
+</tr>
+<tr>
+<td>4K 视频发热</td>
+<td>休息再拍</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>为什么照片有污点 / 黑点在固定位置？</h2>
+<p>传感器进灰。换镜头时<strong>关机、镜头朝下、快换</strong>。</p>
+<ul>
+<li>小光圈 F16 拍天空可见污点——<strong>日常 F5.6 不明显</strong></li>
+<li>MENU → 像素映射（官方建议流程）</li>
+<li>严重 → 清洁服务</li>
+</ul>
+<hr />
+<h2>为什么 ART 滤镜拍完无法变回普通？</h2>
+<p>ART 模式 JPEG 带滤镜，<strong>非 RAW 无法撤销</strong>。</p>
+<p>解决：重要场合用 A 模式；ART 当创意副本。</p>
+<hr />
+<h2>为什么 4K 视频抖？</h2>
+<table>
+<thead>
+<tr>
+<th>原因</th>
+<th>解决</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>视频防抖有限</td>
+<td>1080p + 广角 14mm</td>
+</tr>
+<tr>
+<td>手持长焦</td>
+<td>别用 150mm 拍视频</td>
+</tr>
+<tr>
+<td>走路拍摄</td>
+<td>稳定器或三脚架</td>
+</tr>
+</tbody>
+</table>
+<p>拍照防抖 ≠ 视频防抖同样强。</p>
+<hr />
+<h2>快速诊断流程图</h2>
+<pre><code>照片不满意
+    │
+    ├─ 模糊？ → 看快门 → 提 ISO / 开大光圈 / 三脚架
+    │
+    ├─ 太暗/太亮？ → 曝光补偿 ±
+    │
+    ├─ 颜色怪？ → WB AUTO / ±EV
+    │
+    ├─ 对不上焦？ → 单点对主体 / 够亮
+    │
+    └─ 和手机比？ → 检查设置 + 光学变焦场景
+</code></pre>
+<hr />
+<h2>何时该找售后？</h2>
+<ul>
+<li>新镜/new 机镜头异响异常大</li>
+<li>传感器明显划痕</li>
+<li>充电灯狂闪无法充进</li>
+<li>按键无反应（重启无效）</li>
+<li>严重偏色所有设置无效</li>
+</ul>
+<hr />
+<h2>实战 walkthrough：照片不满意「5 分钟自检」（分步）</h2>
+<p>拍完觉得不对劲，别瞎猜。按这套流程走一遍，90% 问题当场定位。</p>
+<pre><code>第 1 步｜回放 + 按 INFO 看参数
+  → 记下快门、光圈、ISO
+
+第 2 步｜判「糊」还是「脏」还是「暗」
+  · 糊  → 看快门：&lt;1/60 且手持？→ 手抖，提 ISO/开光圈/找支撑
+  · 脏(噪点) → 看 ISO：&gt;3200？→ 压 ISO 上限、别硬提亮
+  · 暗/亮 → 曝光补偿：暗+0.3~1，亮-0.3~0.7
+
+第 3 步｜判对焦
+  → 放大主体：清吗？主体虚背景清=对错地方
+  → 改单点，压在主体（人像=眼睛）重拍
+
+第 4 步｜判颜色
+  → 偏黄/偏蓝？→ WB 一般 AUTO 够；极端光源手动选
+
+第 5 步｜复拍验证
+  → 按上面结论改 1 个参数，重拍同一场景对比
+</code></pre>
+<h3>三个真实案例（照着诊断）</h3>
+<p><strong>案例 1：室内孩子照片全糊</strong></p>
+<pre><code>EXIF：F8, 1/15, ISO 400
+诊断：F8 太小→快门被拖到 1/15→手抖+孩子动
+处方：改 F4，ISO 上限放 3200，快门升到 1/200，H 连拍
+</code></pre>
+<p><strong>案例 2：逆光人脸黑</strong></p>
+<pre><code>EXIF：F5.6, 1/500, 0EV，背后是窗
+诊断：ESP 测光被亮背景骗，脸欠曝
+处方：曝光补偿 +1.0，或 SCN 逆光 HDR，或闪光 -1EV 补脸
+</code></pre>
+<p><strong>案例 3：夜景噪点多且发灰</strong></p>
+<pre><code>EXIF：F8, 1/8, ISO 6400，事后又拉亮
+诊断：ISO 过高 + 后期硬提亮
+处方：F3.5 全开、ISO 回 3200、拍时 +EV 一次到位；有三脚架就 ISO200 慢门
+</code></pre>
+<blockquote>
+<p>🎯 <strong>养成习惯</strong>：每次不满意都先看 EXIF 再改<strong>一个</strong>参数复拍。改一个变量才知道是什么在起作用。</p>
+</blockquote>
+<hr />
+<h2>本章重点回顾</h2>
+<ul>
+<li>糊片第一查 <strong>快门速度</strong></li>
+<li>背景不虚 → <strong>F4 + 长焦 + 靠近</strong></li>
+<li>脸黑 → <strong>逆光 +EV</strong></li>
+<li>噪点 → <strong>控 ISO 3200 + 三脚架夜景</strong></li>
+<li>比手机差 → 多半是 <strong>设置和场景</strong> 不是相机差</li>
+</ul>
+<h2>常见误区</h2>
+<table>
+<thead>
+<tr>
+<th>误区</th>
+<th>真相</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>糊了就是相机坏</td>
+<td>90% 快门或对焦</td>
+</tr>
+<tr>
+<td>噪点是 EP7 不行</td>
+<td>ISO 6400 任何小传感器都脏</td>
+</tr>
+<tr>
+<td>手机永远更好</td>
+<td>各擅长不同场景</td>
+</tr>
+<tr>
+<td>屏幕看不清要维修</td>
+<td>无 EVF 的常态</td>
+</tr>
+</tbody>
+</table>
+<h2>拍摄练习</h2>
+<ol>
+<li><strong>故意糊片</strong>：1/10 秒 handheld 1 张，再 1/250 1 张对比</li>
+<li><strong>虚化对比</strong>：14 F3.5 vs 150 F5.6 同背景</li>
+<li><strong>逆光 +0 / +1.0</strong> 人脸亮度对比</li>
+<li><strong>ISO 3200 vs 6400</strong> 夜景噪点对比</li>
+<li>建立个人「问题日志」：记录 5 次失败及原因</li>
+</ol>
+<hr />
+<h2>全书完结</h2>
+<p>恭喜你读完《从零开始使用 EP7》。</p>
+<p><strong>记住三条</strong>：</p>
+<ol>
+<li>日常 <strong>A 模式 + F5.6 + ISO AUTO</strong></li>
+<li>14-42 挂机，要拉近换 <strong>40-150</strong></li>
+<li>糊了看快门，暗了加 EV，虚了换焦段</li>
+</ol>
+<p>继续拍，比继续读更重要。</p>
+<hr />
+<h2>想继续进阶？</h2>
+<p>基础篇到此结束。当你用熟 A 模式后，可以进入<strong>进阶篇</strong>：</p>
+<ul>
+<li><a href="#ch13">13-RAW后期入门.md</a> —— 对 JPEG 不满意时学后期</li>
+<li><a href="#ch14">14-视频与Vlog.md</a> —— 拍视频和 Vlog</li>
+<li><a href="#ch15">15-旅行摄影.md</a> —— 一次旅行的完整拍摄流程</li>
+<li><a href="#ch16">16-术语表.md</a> —— 名词速查</li>
+</ul>
+<p>回到 <a href="#home">README.md</a> 查看学习路线。</p>
+</article>
+<article class="chapter" id="ch13">
+<h1>RAW 后期入门</h1>
+<blockquote>
+<p>本章目标：当你对 JPEG 直出不再满足时，用最小的学习成本迈入 RAW + 后期。<strong>新手第一个月可以跳过本章</strong>。</p>
+</blockquote>
+<hr />
+<h2>先问自己：你需要 RAW 吗？</h2>
+<table>
+<thead>
+<tr>
+<th>你的情况</th>
+<th>建议</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>刚上手，追求「拍清楚、直出好看」</td>
+<td><strong>先别碰 RAW</strong>，用 LF JPEG</td>
+</tr>
+<tr>
+<td>经常遇到「天空死白」「暗部死黑」救不回来</td>
+<td>可以开始学 RAW</td>
+</tr>
+<tr>
+<td>想要自己的统一风格 / 调色</td>
+<td>学 RAW</td>
+</tr>
+<tr>
+<td>拍逆光、夜景、婚礼等高反差场景</td>
+<td>强烈建议 RAW</td>
+</tr>
+<tr>
+<td>手机/电脑存储紧张、不想后期</td>
+<td>继续 JPEG</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>一句话：<strong>RAW 是「底片」，JPEG 是「冲印好的照片」</strong>。RAW 保留更多信息，但必须自己「冲洗」。</p>
+</blockquote>
+<hr />
+<h2>RAW 与 JPEG 的本质区别</h2>
+<table>
+<thead>
+<tr>
+<th>对比项</th>
+<th>JPEG（LF）</th>
+<th>RAW（ORF）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>本质</td>
+<td>相机已处理好的成品</td>
+<td>传感器原始数据</td>
+</tr>
+<tr>
+<td>白平衡</td>
+<td>拍摄时锁定</td>
+<td><strong>后期随意改，无损</strong></td>
+</tr>
+<tr>
+<td>曝光宽容度</td>
+<td>高光/暗部易死</td>
+<td><strong>可找回约 ±1～2 档</strong></td>
+</tr>
+<tr>
+<td>文件大小</td>
+<td>约 8～10MB</td>
+<td>约 20MB</td>
+</tr>
+<tr>
+<td>后期空间</td>
+<td>小，调多了发灰崩坏</td>
+<td>大</td>
+</tr>
+<tr>
+<td>直接分享</td>
+<td>手机电脑都能看</td>
+<td>需转换</td>
+</tr>
+<tr>
+<td>相机内滤镜/Profile</td>
+<td>已烘焙进画面</td>
+<td>仅作预览，可改</td>
+</tr>
+</tbody>
+</table>
+<p>EP7 的 RAW 文件后缀是 <strong><code>.ORF</code></strong>（Olympus RAW Format）。</p>
+<hr />
+<h2>在 EP7 上开启 RAW</h2>
+<p><strong>路径</strong>：MENU → 相机图标 → 图片质量</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>说明</th>
+<th>推荐</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LF</td>
+<td>仅大 JPEG</td>
+<td>纯直出</td>
+</tr>
+<tr>
+<td>RAW</td>
+<td>仅 RAW</td>
+<td>存储紧张的进阶者</td>
+</tr>
+<tr>
+<td><strong>RAW+LF</strong></td>
+<td>两个都存</td>
+<td>⭐ <strong>过渡期最稳</strong></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>💡 <strong>建议</strong>：刚学 RAW 时用 <strong>RAW+LF</strong>。JPEG 用来快速分享和对照，RAW 用来练后期。习惯后再决定是否只留 RAW。</p>
+</blockquote>
+<p>⚠️ <strong>存储提醒</strong>：RAW+LF 单张约 28～30MB，64GB 卡约拍 2000 张。多带一张卡。</p>
+<hr />
+<h2>后期软件怎么选</h2>
+<table>
+<thead>
+<tr>
+<th>软件</th>
+<th>平台</th>
+<th>价格</th>
+<th>适合</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>OM Workspace</strong></td>
+<td>Win/Mac</td>
+<td>免费</td>
+<td>OM/奥林巴斯官方，完美支持 ORF、可套用机内色彩</td>
+</tr>
+<tr>
+<td>Lightroom</td>
+<td>Win/Mac/移动</td>
+<td>订阅</td>
+<td>行业标准，管理 + 调色一体</td>
+</tr>
+<tr>
+<td>darktable</td>
+<td>Win/Mac/Linux</td>
+<td>免费开源</td>
+<td>Lightroom 的免费替代</td>
+</tr>
+<tr>
+<td>手机 Snapseed</td>
+<td>iOS/Android</td>
+<td>免费</td>
+<td>轻度修 JPEG，不推荐修 RAW</td>
+</tr>
+<tr>
+<td>Capture One</td>
+<td>Win/Mac</td>
+<td>较贵</td>
+<td>专业色彩，进阶</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>新手首选</strong>：<strong>OM Workspace</strong>（免费、官方、能还原机内色彩配置）。想要更强管理再上 Lightroom。</p>
+</blockquote>
+<hr />
+<h2>RAW 后期基础流程（5 步）</h2>
+<p>以 Lightroom / OM Workspace 通用逻辑为例：</p>
+<pre><code>1. 导入并挑片（删废片、标星）
+2. 定基调：白平衡 + 曝光
+3. 找回细节：高光 / 阴影 / 白色 / 黑色
+4. 加质感：对比度、清晰度、饱和/自然饱和度
+5. 局部与收尾：裁剪、镜头校正、降噪锐化、导出
+</code></pre>
+<h3>第 1 步：挑片</h3>
+<ul>
+<li>一次拍摄先删掉明显糊片、闭眼、重复</li>
+<li>给满意的打 ⭐，只修有价值的（后期很费时间）</li>
+</ul>
+<h3>第 2 步：白平衡 + 曝光（RAW 最大优势）</h3>
+<table>
+<thead>
+<tr>
+<th>滑块</th>
+<th>作用</th>
+<th>新手方向</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>色温</td>
+<td>冷暖</td>
+<td>偏黄拉蓝、偏蓝拉黄，或用吸管点白色物体</td>
+</tr>
+<tr>
+<td>色调</td>
+<td>绿/品红</td>
+<td>微调，一般不大动</td>
+</tr>
+<tr>
+<td>曝光</td>
+<td>整体明暗</td>
+<td>欠曝 +，过曝 -</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>RAW 改白平衡是<strong>完全无损</strong>的——这是 JPEG 做不到的最大好处。</p>
+</blockquote>
+<h3>第 3 步：找回高光与暗部</h3>
+<p>高反差场景（逆光、日落、窗边）的救命四滑块：</p>
+<table>
+<thead>
+<tr>
+<th>滑块</th>
+<th>什么时候拉</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>高光 Highlights</strong></td>
+<td>天空/亮部太亮 → 往左（负）</td>
+</tr>
+<tr>
+<td><strong>阴影 Shadows</strong></td>
+<td>暗部死黑看不清 → 往右（正）</td>
+</tr>
+<tr>
+<td>白色 Whites</td>
+<td>定义最亮点</td>
+</tr>
+<tr>
+<td>黑色 Blacks</td>
+<td>定义最暗点，避免发灰</td>
+</tr>
+</tbody>
+</table>
+<p><strong>典型逆光人像</strong>：高光 -40、阴影 +50，脸和天空同时有细节。</p>
+<h3>第 4 步：加质感</h3>
+<table>
+<thead>
+<tr>
+<th>滑块</th>
+<th>效果</th>
+<th>注意</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>对比度</td>
+<td>通透</td>
+<td>别过头显假</td>
+</tr>
+<tr>
+<td>清晰度 Clarity</td>
+<td>中间调锐利</td>
+<td>人像少用（显毛孔）</td>
+</tr>
+<tr>
+<td>自然饱和度 Vibrance</td>
+<td>智能提色</td>
+<td>⭐ 优先用它</td>
+</tr>
+<tr>
+<td>饱和度 Saturation</td>
+<td>全局提色</td>
+<td>容易过艳</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>人像慎用清晰度和高饱和；风景可稍多。</p>
+</blockquote>
+<h3>第 5 步：收尾导出</h3>
+<ul>
+<li><strong>裁剪</strong>：二次构图、拉正地平线</li>
+<li><strong>镜头校正</strong>：勾选自动，修畸变/暗角（14mm 尤其有用）</li>
+<li><strong>降噪</strong>：高 ISO 夜景往上拉「明亮度降噪」</li>
+<li><strong>锐化</strong>：适度，导出给屏幕看约 +40</li>
+<li><strong>导出</strong>：JPEG、sRGB、长边 2048～4096px 分享足够</li>
+</ul>
+<hr />
+<h2>EP7 专属：把机内色彩带进后期</h2>
+<p>OM Workspace 能读取拍摄时的 <strong>色彩 Profile / 艺术滤镜</strong> 作为起点：</p>
+<ul>
+<li>你喜欢机内某个直出风格，却想微调曝光 → RAW + OM Workspace 完美解决</li>
+<li>相当于「先要直出的色，再要 RAW 的宽容度」</li>
+</ul>
+<p>这是用官方软件修 OM 相机 RAW 的独特优势。</p>
+<hr />
+<h2>常见场景后期方向</h2>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>后期重点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>逆光人像</td>
+<td>阴影 +、高光 -、色温微暖、磨皮轻</td>
+</tr>
+<tr>
+<td>日落风景</td>
+<td>高光 -、自然饱和度 +、色温偏暖</td>
+</tr>
+<tr>
+<td>城市夜景</td>
+<td>阴影 +、明亮度降噪、清晰度小 +</td>
+</tr>
+<tr>
+<td>室内美食</td>
+<td>白平衡校准、曝光 +、自然饱和度 +</td>
+</tr>
+<tr>
+<td>阴天风景</td>
+<td>对比度 +、色温微暖、去灰</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>常见错误</h2>
+<table>
+<thead>
+<tr>
+<th>错误</th>
+<th>后果</th>
+<th>解决</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>拍时就欠曝很多，想后期拉回</td>
+<td>暗部噪点爆炸</td>
+<td>拍摄尽量曝光准确，RAW 不是万能</td>
+</tr>
+<tr>
+<td>饱和度拉满</td>
+<td>颜色假、断层</td>
+<td>用自然饱和度，克制</td>
+</tr>
+<tr>
+<td>每张都重度修</td>
+<td>耗时、风格乱</td>
+<td>建预设/风格，批量套用</td>
+</tr>
+<tr>
+<td>只存 RAW 手机看不了</td>
+<td>分享麻烦</td>
+<td>过渡期用 RAW+LF</td>
+</tr>
+<tr>
+<td>清晰度全局拉高</td>
+<td>人像显毛孔、噪点放大</td>
+<td>局部用，或人像少用</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>本章重点回顾</h2>
+<ul>
+<li>RAW = 底片，宽容度高，但要自己「冲洗」</li>
+<li>新手过渡期用 <strong>RAW+LF</strong>，习惯后再定</li>
+<li>后期软件首选免费 <strong>OM Workspace</strong>，进阶上 Lightroom</li>
+<li>核心流程：<strong>白平衡 → 曝光 → 高光/阴影 → 质感 → 导出</strong></li>
+<li>RAW 最大好处：<strong>无损改白平衡 + 找回高光暗部</strong></li>
+</ul>
+<h2>常见误区</h2>
+<table>
+<thead>
+<tr>
+<th>误区</th>
+<th>真相</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RAW 一定比 JPEG 好看</td>
+<td>未经后期的 RAW 往往更「灰、平」</td>
+</tr>
+<tr>
+<td>有 RAW 就能救一切</td>
+<td>严重欠曝/糊片仍救不回</td>
+</tr>
+<tr>
+<td>后期是「作弊」</td>
+<td>后期是摄影完整流程的一部分</td>
+</tr>
+<tr>
+<td>必须用付费软件</td>
+<td>OM Workspace / darktable 免费够用</td>
+</tr>
+</tbody>
+</table>
+<h2>练习</h2>
+<ol>
+<li>同一逆光场景拍 RAW+LF，对比：JPEG 直出 vs RAW 拉回高光暗部</li>
+<li>用吸管工具校准一张暖光餐厅照片的白平衡</li>
+<li>挑 5 张 RAW，只用「曝光 + 高光 + 阴影 + 自然饱和度」四项修完</li>
+<li>建立 1 个你自己的预设，批量套用到 10 张同场景照片</li>
+<li>导出对比：sRGB JPEG 2048px vs 原图，看分享是否够用</li>
+</ol>
+<hr />
+<p>相关：<a href="#ch03">03-第一次开机设置.md</a>（画质设置） | <a href="#ch12">12-常见问题.md</a>（颜色/曝光问题）</p>
+</article>
+<article class="chapter" id="ch14">
+<h1>视频与 Vlog 实操</h1>
+<blockquote>
+<p>本章目标：用 EP7 拍出稳定、清晰、声音够用的日常视频和 Vlog——并诚实告诉你它的短板。</p>
+</blockquote>
+<hr />
+<h2>先认清 EP7 的视频定位</h2>
+<p>EP7 是<strong>照片优先</strong>的相机，视频是「够用但不专业」：</p>
+<table>
+<thead>
+<tr>
+<th>能力</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>4K 30p</td>
+<td>有，但有裁切、无强力防抖协同</td>
+</tr>
+<tr>
+<td>1080p 60p</td>
+<td>⭐ 日常 Vlog 主力，流畅稳定</td>
+</tr>
+<tr>
+<td>机身防抖</td>
+<td>拍照很强，<strong>视频明显减弱</strong></td>
+</tr>
+<tr>
+<td>麦克风</td>
+<td>仅机内立体声，<strong>无 3.5mm 外接口</strong></td>
+</tr>
+<tr>
+<td>耳机监听</td>
+<td>无</td>
+</tr>
+<tr>
+<td>翻转屏</td>
+<td>可下翻自拍，方便 Vlog</td>
+</tr>
+<tr>
+<td>对焦</td>
+<td>反差 AF，视频追焦一般</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>一句话：<strong>日常记录、旅行 Vlog、口播——够用；商业视频、剧烈运动、专业收音——不合适。</strong></p>
+</blockquote>
+<hr />
+<h2>视频基础设置</h2>
+<p><strong>路径</strong>：模式转盘 → 视频（摄像机图标）→ MENU 视频菜单</p>
+<table>
+<thead>
+<tr>
+<th>设置</th>
+<th>新手推荐</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>分辨率/帧率</td>
+<td><strong>1080p 60fps</strong></td>
+<td>流畅、防抖裁切小、文件适中</td>
+</tr>
+<tr>
+<td>4K</td>
+<td>30p（需要时）</td>
+<td>画质高但裁切大、文件大、发热</td>
+</tr>
+<tr>
+<td>视频防抖 (IS)</td>
+<td><strong>开（M-IS 1）</strong></td>
+<td>手持必开</td>
+</tr>
+<tr>
+<td>对焦模式</td>
+<td>C-AF</td>
+<td>视频建议连续对焦</td>
+</tr>
+<tr>
+<td>图片模式/Profile</td>
+<td>自然 或 标准</td>
+<td>别用高对比，后期空间大</td>
+</tr>
+<tr>
+<td>曝光</td>
+<td>A 或 P，或手动</td>
+<td>想控景深用 A</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>💡 <strong>帧率怎么选</strong>：日常/口播 <strong>30fps</strong> 够；想要顺滑或轻微慢动作用 <strong>60fps</strong>。</p>
+</blockquote>
+<hr />
+<h2>曝光与快门：视频的关键规则</h2>
+<p>拍视频有一条和拍照不同的核心规则：</p>
+<pre><code>视频快门速度 ≈ 帧率 × 2
+
+30fps → 1/60 秒
+60fps → 1/125 秒
+</code></pre>
+<p><strong>为什么？</strong> 快门太快视频会「顿」（缺少自然运动模糊），太慢会拖影。</p>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>帧率</th>
+<th>快门</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>日常口播</td>
+<td>30fps</td>
+<td>1/50～1/60</td>
+</tr>
+<tr>
+<td>走路 Vlog</td>
+<td>60fps</td>
+<td>1/125</td>
+</tr>
+<tr>
+<td>强光下开大光圈</td>
+<td>任意</td>
+<td>需要 <strong>ND 滤镜</strong> 压光</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>白天想用大光圈虚化背景，但快门被规则限制 → 加 <strong>ND 减光镜</strong>（进阶）。</p>
+</blockquote>
+<hr />
+<h2>稳定：EP7 视频防抖有限，怎么办</h2>
+<p>拍照防抖 ≠ 视频防抖同样强。手持视频会「果冻」和飘。</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>效果</th>
+<th>成本</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>开机内视频防抖 M-IS</td>
+<td>基础</td>
+<td>免费</td>
+</tr>
+<tr>
+<td>用 14mm 广角端</td>
+<td>广角抖动更不明显</td>
+<td>免费</td>
+</tr>
+<tr>
+<td>双手夹紧 + 屏息移动</td>
+<td>明显改善</td>
+<td>免费</td>
+</tr>
+<tr>
+<td>走路用「猫步」（膝盖微屈滑步）</td>
+<td>减少上下颠</td>
+<td>免费</td>
+</tr>
+<tr>
+<td>小型三脚架 / 桌面架</td>
+<td>固定机位口播稳</td>
+<td>便宜</td>
+</tr>
+<tr>
+<td>手持稳定器（gimbal）</td>
+<td>电影感移动</td>
+<td>较贵</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>别用 40-150 长焦拍手持视频</strong>——放大抖动，几乎必果冻。</p>
+</blockquote>
+<hr />
+<h2>声音：没有外接口怎么救</h2>
+<p>EP7 只有机内立体声麦，收音一般且会收环境噪。</p>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>方案</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>安静室内口播</td>
+<td>机内麦 + 靠近相机说话</td>
+</tr>
+<tr>
+<td>户外/有风</td>
+<td>机内麦会呼呼响，尽量背风</td>
+</tr>
+<tr>
+<td>想要好声音</td>
+<td>用<strong>手机/录音笔单独录音</strong>，后期对轨</td>
+</tr>
+<tr>
+<td>严肃 Vlog</td>
+<td>相机拍画面 + 领夹麦录到手机，剪辑合并</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>EP7 无麦克风接口是硬伤。追求人声清晰，<strong>双系统录音（相机画面 + 手机声音）</strong> 是最实惠的解法。</p>
+</blockquote>
+<hr />
+<h2>Vlog 自拍设置</h2>
+<p>EP7 屏幕可<strong>下翻</strong>，适合对着自己拍：</p>
+<pre><code>模式：视频
+分辨率：1080p 30 或 60fps
+镜头：14-42 @ 14mm（等效 28mm，手臂长度能入镜）
+对焦：C-AF + 人脸检测
+防抖：M-IS 开
+光圈：F4～F5.6（自拍别太浅景深，容易脱焦）
+</code></pre>
+<blockquote>
+<p>⚠️ 下翻屏时若装了大镜头或三脚架，可能挡屏——用小架或桌面支架。</p>
+</blockquote>
+<hr />
+<h2>常见拍摄场景配方</h2>
+<h3>固定口播 / 教程</h3>
+<pre><code>三脚架固定，1080p 30fps
+14-42 @ 25mm，距离 1～1.5m
+C-AF + 人脸检测
+窗边侧光或补光灯
+声音：靠近 + 安静环境，或外录
+</code></pre>
+<h3>旅行走动 Vlog</h3>
+<pre><code>1080p 60fps
+14mm 广角，M-IS 开
+猫步移动，转身用身体带动而非甩手
+多拍空镜（风景、细节、脚步）方便剪辑
+</code></pre>
+<h3>B-roll 空镜（提升质感）</h3>
+<pre><code>1080p 或 4K
+慢速平移、推拉、固定几秒
+光圈 F4 浅景深拍局部细节
+每个镜头拍 5～10 秒，剪辑时好用
+</code></pre>
+<h3>慢动作</h3>
+<pre><code>高速模式（帧率高，无声音）
+后期放慢，适合流水、奔跑、飘动
+注意需要更快快门和更亮光线
+</code></pre>
+<hr />
+<h2>剪辑：最简工作流</h2>
+<table>
+<thead>
+<tr>
+<th>环节</th>
+<th>工具建议</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>手机快剪</td>
+<td>剪映、CapCut</td>
+</tr>
+<tr>
+<td>电脑入门</td>
+<td>剪映专业版、DaVinci Resolve（免费）</td>
+</tr>
+<tr>
+<td>音画对轨</td>
+<td>拍摄时拍一下手/打板，方便对齐</td>
+</tr>
+<tr>
+<td>导出</td>
+<td>1080p H.264，分享平台通用</td>
+</tr>
+</tbody>
+</table>
+<p><strong>剪辑基本节奏</strong>：开头 3 秒抓人 → 主体内容 → 空镜过渡 → 结尾。</p>
+<hr />
+<h2>电池与发热</h2>
+<table>
+<thead>
+<tr>
+<th>问题</th>
+<th>说明</th>
+<th>应对</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>4K 发热</td>
+<td>长时间可能提示过热</td>
+<td>分段拍、间歇休息</td>
+</tr>
+<tr>
+<td>视频耗电快</td>
+<td>比拍照费电</td>
+<td>备用电池、边充边拍（USB）</td>
+</tr>
+<tr>
+<td>卡速不够</td>
+<td>4K 需 U3</td>
+<td>用 UHS-I U3 以上</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>本章重点回顾</h2>
+<ul>
+<li>日常 Vlog 主力：<strong>1080p 60fps + M-IS 防抖 + 14mm 广角</strong></li>
+<li>快门守则：<strong>帧率 ×2</strong>（30fps→1/60，60fps→1/125）</li>
+<li>稳定靠：广角 + 猫步 + 三脚架/稳定器</li>
+<li>声音硬伤：无外接口，认真做就<strong>手机外录对轨</strong></li>
+<li>4K 有裁切和发热，非必要用 1080p</li>
+</ul>
+<h2>常见误区</h2>
+<table>
+<thead>
+<tr>
+<th>误区</th>
+<th>真相</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>拍照防抖强，视频也一样稳</td>
+<td>视频防抖弱很多</td>
+</tr>
+<tr>
+<td>4K 一定比 1080p 好</td>
+<td>裁切、发热、文件大，日常 1080p 更实用</td>
+</tr>
+<tr>
+<td>快门越快视频越清晰</td>
+<td>太快会「顿」，要遵守帧率×2</td>
+</tr>
+<tr>
+<td>机内麦够专业用</td>
+<td>环境噪大，重要人声要外录</td>
+</tr>
+<tr>
+<td>长焦也能手持拍视频</td>
+<td>长焦手持视频几乎必果冻</td>
+</tr>
+</tbody>
+</table>
+<h2>练习</h2>
+<ol>
+<li>同一段走路：14mm vs 42mm 对比抖动差异</li>
+<li>固定口播 30 秒：测试机内麦在安静 vs 有风环境的收音</li>
+<li>拍 5 个 B-roll 空镜（各 8 秒），尝试剪成 20 秒短片</li>
+<li>30fps 1/60 vs 30fps 1/500 对比运动流畅度</li>
+<li>手机外录人声 + 相机画面，练一次音画对轨</li>
+</ol>
+<hr />
+<p>相关：<a href="#ch04">04-模式转盘.md</a>（视频模式） | <a href="#ch05">05-14-42EZ镜头.md</a>（广角自拍） | <a href="#ch11">11-菜单详解.md</a>（视频菜单）</p>
+</article>
+<article class="chapter" id="ch15">
+<h1>旅行摄影全流程</h1>
+<blockquote>
+<p>本章目标：把 EP7 双镜头套装用在一次真实旅行里——从行前打包到当天拍摄，再到回家整理。</p>
+</blockquote>
+<hr />
+<h2>为什么 EP7 是理想的旅行机</h2>
+<table>
+<thead>
+<tr>
+<th>优势</th>
+<th>对旅行的意义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>轻（机身约 337g）</td>
+<td>挂脖一天不累</td>
+</tr>
+<tr>
+<td>双镜头覆盖 28～300mm</td>
+<td>一机走天下，广角到长焦全包</td>
+</tr>
+<tr>
+<td>防抖强</td>
+<td>教堂、博物馆等暗处手持可拍</td>
+</tr>
+<tr>
+<td>直出好看</td>
+<td>旅途随手发圈不用后期</td>
+</tr>
+<tr>
+<td>USB 充电</td>
+<td>充电宝就能续命</td>
+</tr>
+</tbody>
+</table>
+<p>短板也要认：<strong>无取景器</strong>（强光屏幕难看清）、<strong>不防雨</strong>、<strong>长焦暗光弱</strong>。</p>
+<hr />
+<h2>行前打包清单</h2>
+<h3>必带</h3>
+<pre><code>□ EP7 机身 + 14-42 EZ（挂机）
+□ 40-150 R（放包侧袋）
+□ 满电电池 + 至少 1 块备用
+□ 充电器 + USB 线（或充电宝）
+□ 主 SD 卡（64GB+）+ 备用卡
+□ 气吹 + 镜头布
+□ 肩带（装好）
+</code></pre>
+<h3>按目的地增减</h3>
+<table>
+<thead>
+<tr>
+<th>目的地类型</th>
+<th>加带</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>海岛/沙滩</td>
+<td>密封袋防沙、镜头布多带</td>
+</tr>
+<tr>
+<td>雪山/极寒</td>
+<td>电池贴身保暖、多带备用电</td>
+</tr>
+<tr>
+<td>城市夜景</td>
+<td>小型三脚架</td>
+</tr>
+<tr>
+<td>雨林/多雨</td>
+<td>相机雨衣/塑料袋、干燥剂</td>
+</tr>
+<tr>
+<td>长途多天</td>
+<td>读卡器、移动硬盘/云备份</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>💡 <strong>过安检</strong>：电池随身不托运；镜头、机身放防震隔层。</p>
+</blockquote>
+<hr />
+<h2>出发前相机预设</h2>
+<p>用 <a href="#ch07">07-第一次出去拍照.md</a> 的标准配置，再针对旅行微调：</p>
+<pre><code class="language-text">模式：A
+光圈：F5.6（合影 F8）
+ISO：AUTO 上限 3200
+画质：LF 或 RAW+LF（想后期）
+对焦：S-AF 单点 + 人脸检测
+防抖：S-IS AUTO
+网格线：3×3 开
+水平仪：开（拍建筑/海平面）
+镜头：14-42 挂机
+</code></pre>
+<blockquote>
+<p>想认真修图选 <strong>RAW+LF</strong>，随手发圈选 <strong>LF</strong>。</p>
+</blockquote>
+<hr />
+<h2>一天旅行的镜头与参数节奏</h2>
+<table>
+<thead>
+<tr>
+<th>时段</th>
+<th>场景</th>
+<th>镜头/参数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>清晨</td>
+<td>街道、早餐、晨光</td>
+<td>14-42 @ 14～25mm, F5.6</td>
+</tr>
+<tr>
+<td>上午</td>
+<td>地标合影、广场</td>
+<td>14-42 @ 14mm, F8</td>
+</tr>
+<tr>
+<td>中午</td>
+<td>远处山/塔/对岸</td>
+<td>换 40-150 @ 100～150mm, F5.6</td>
+</tr>
+<tr>
+<td>午后</td>
+<td>美食、咖啡馆</td>
+<td>14-42 @ 25mm, F5.6, +0.3EV</td>
+</tr>
+<tr>
+<td>黄昏</td>
+<td>日落、剪影</td>
+<td>14-42 @ 14mm, F8, -0.3EV</td>
+</tr>
+<tr>
+<td>夜晚</td>
+<td>夜景、灯光</td>
+<td>14-42 @ 17mm, F4, ISO≤3200</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>旅行常见题材配方</h2>
+<h3>地标 + 人（到此一游升级版）</h3>
+<pre><code>14-42 @ 14mm, A, F8
+人物放三分线，别死站正中
+蹲低一点让人显高、地标更雄伟
+对焦人物，景深覆盖背景
+</code></pre>
+<h3>街头人文</h3>
+<pre><code>14-42 @ 25mm（融入）或 40-150 @ 80mm（远距离低调）
+A, F5.6, 快门≥1/250
+预对焦 + 抓表情/动作瞬间
+</code></pre>
+<h3>风光大场景</h3>
+<pre><code>14-42 @ 14mm, A, F8, ISO 200
+前景（石头/花/人）+ 中景 + 远景，制造层次
+地平线用水平仪拉平，别放正中（放上/下三分线）
+</code></pre>
+<h3>长焦压缩（旅行大片感）</h3>
+<pre><code>40-150 @ 100～150mm, A, F5.6
+拍层叠的山、密集的屋顶、远处的塔
+长焦「压缩」让元素叠在一起，更有张力
+</code></pre>
+<h3>美食与细节</h3>
+<pre><code>14-42 @ 25mm, A, F5.6, +0.3～+0.7EV
+45° 或俯拍，靠窗自然光最佳
+拍局部细节（纹理、手部动作）丰富故事
+</code></pre>
+<hr />
+<h2>应对旅行难题</h2>
+<table>
+<thead>
+<tr>
+<th>难题</th>
+<th>解法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>大太阳看不清屏幕</td>
+<td>找阴影构图、手遮屏幕、调高亮度</td>
+</tr>
+<tr>
+<td>景点人太多</td>
+<td>长焦压缩避开人群，或等空隙、用低角度</td>
+</tr>
+<tr>
+<td>室内禁闪光</td>
+<td>SCN 静音 / 提 ISO + 防抖手持</td>
+</tr>
+<tr>
+<td>逆光剪影 vs 补脸</td>
+<td>要脸 +1.0EV，要剪影 -1.0EV，各拍一张</td>
+</tr>
+<tr>
+<td>换镜头怕进灰</td>
+<td>背风、机身朝下、快速换；风沙大就不换</td>
+</tr>
+<tr>
+<td>电量告急</td>
+<td>关屏省电、降回放、充电宝随充</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>存储与备份（旅途别丢照片）</h2>
+<p>EP7 是<strong>单卡槽</strong>——卡坏 = 全丢。旅行务必养成备份习惯：</p>
+<pre><code>每天回酒店：
+1. 照片导入手机（Wi-Fi / 读卡器）或笔电
+2. 上传一份到云盘（重要的）
+3. 卡快满 → 换备用卡，别现场删原图
+</code></pre>
+<blockquote>
+<p>⚠️ <strong>不要在相机里边看边删重要照片</strong>——回家大屏再筛。</p>
+</blockquote>
+<hr />
+<h2>一次「拍摄故事线」思维</h2>
+<p>旅行照片好看的关键不是单张，而是<strong>能讲一个故事</strong>：</p>
+<pre><code>到达（车站/机场/招牌）
+  → 环境（街道全景）
+  → 细节（食物、招牌、手作）
+  → 人物（同行者、当地人）
+  → 高潮（地标/日落大片）
+  → 结束（夜晚灯光/离开）
+</code></pre>
+<p>每个环节拍几张，回家就能排成一条完整游记。</p>
+<hr />
+<h2>回家整理流程</h2>
+<ol>
+<li>全部导入电脑，按日期/地点建文件夹</li>
+<li>第一轮：删糊片、闭眼、重复</li>
+<li>第二轮：每个场景选 1～3 张精修</li>
+<li>RAW 的按 <a href="#ch13">13-RAW后期入门.md</a> 调色</li>
+<li>挑 20～30 张排成游记，其余归档</li>
+<li>备份两处（本地 + 云）</li>
+</ol>
+<hr />
+<h2>本章重点回顾</h2>
+<ul>
+<li>EP7 轻 + 双镜头 28～300mm = 理想旅行机</li>
+<li>打包：机身 + 双镜头 + <strong>备用电 + 备用卡</strong> + 清洁</li>
+<li>一天按光线节奏换镜头：广角合影、长焦远景、黄昏负补偿</li>
+<li>单卡槽务必<strong>每天备份</strong></li>
+<li>用「故事线」思维成组拍摄，回家能排游记</li>
+</ul>
+<h2>常见误区</h2>
+<table>
+<thead>
+<tr>
+<th>误区</th>
+<th>真相</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>带越多器材越好</td>
+<td>双镜头足够，越轻越愿意拍</td>
+</tr>
+<tr>
+<td>只拍地标大景</td>
+<td>细节和人物才让游记有温度</td>
+</tr>
+<tr>
+<td>到此一游站正中</td>
+<td>三分构图 + 低角度更好看</td>
+</tr>
+<tr>
+<td>现场边拍边删</td>
+<td>小屏易误删，回家大屏筛</td>
+</tr>
+<tr>
+<td>一张卡走天下</td>
+<td>单卡槽风险高，备卡 + 每天备份</td>
+</tr>
+</tbody>
+</table>
+<h2>练习</h2>
+<ol>
+<li>出发前按清单打包并拍照记录（防漏带）</li>
+<li>同一地标：14mm 环境 vs 150mm 局部 各拍一张</li>
+<li>用「故事线」在一个下午拍满 6 个环节</li>
+<li>黄昏拍日落：+1.0EV 补脸 vs -1.0EV 剪影 对比</li>
+<li>回家完整走一遍整理+备份流程</li>
+</ol>
+<hr />
+<p>相关：<a href="#ch06">06-40-150R镜头.md</a> | <a href="#ch09">09-拍风景.md</a> | <a href="#ch10">10-夜景.md</a> | <a href="#ch13">13-RAW后期入门.md</a></p>
+</article>
+<article class="chapter" id="ch16">
+<h1>摄影术语表</h1>
+<blockquote>
+<p>本章目标：一页看懂全书出现的所有名词。看到不懂的词，回这里查。按主题分组，附「人话解释」。</p>
+</blockquote>
+<hr />
+<h2>曝光三要素</h2>
+<table>
+<thead>
+<tr>
+<th>术语</th>
+<th>英文/缩写</th>
+<th>人话解释</th>
+<th>记忆点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>光圈</td>
+<td>Aperture / F 值</td>
+<td>镜头进光孔大小</td>
+<td>F 数字<strong>越小</strong>孔<strong>越大</strong>、进光越多、背景越虚</td>
+</tr>
+<tr>
+<td>快门速度</td>
+<td>Shutter Speed</td>
+<td>感光时间长短</td>
+<td>越快越能凝固运动，越慢越亮但易糊</td>
+</tr>
+<tr>
+<td>感光度</td>
+<td>ISO</td>
+<td>传感器对光的敏感度</td>
+<td>越高越亮但<strong>噪点越多</strong></td>
+</tr>
+<tr>
+<td>曝光</td>
+<td>Exposure</td>
+<td>照片整体明暗</td>
+<td>三要素共同决定</td>
+</tr>
+<tr>
+<td>曝光补偿</td>
+<td>EV / Exposure Comp.</td>
+<td>在自动基础上手动调亮/暗</td>
+<td>+变亮，-变暗</td>
+</tr>
+<tr>
+<td>测光</td>
+<td>Metering</td>
+<td>相机判断该多亮</td>
+<td>ESP 默认够用</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>三者关系：一个变了，另外的要补偿才能维持同样亮度——这叫<strong>互易</strong>。</p>
+</blockquote>
+<hr />
+<h2>对焦相关</h2>
+<table>
+<thead>
+<tr>
+<th>术语</th>
+<th>缩写</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>单次自动对焦</td>
+<td>S-AF</td>
+<td>半按对焦一次锁定，拍静物人像</td>
+</tr>
+<tr>
+<td>连续自动对焦</td>
+<td>C-AF</td>
+<td>持续追焦，拍运动/宠物</td>
+</tr>
+<tr>
+<td>手动对焦</td>
+<td>MF</td>
+<td>自己拧对焦，微距/星空</td>
+</tr>
+<tr>
+<td>对焦峰值</td>
+<td>Peaking</td>
+<td>MF 时高亮已合焦边缘</td>
+</tr>
+<tr>
+<td>人脸/眼部检测</td>
+<td>Face/Eye AF</td>
+<td>自动找人脸/眼睛对焦</td>
+</tr>
+<tr>
+<td>单点对焦</td>
+<td>Single Point</td>
+<td>一个小框，最精准</td>
+</tr>
+<tr>
+<td>追踪对焦</td>
+<td>C-AF+TR</td>
+<td>锁定主体并跟随</td>
+</tr>
+<tr>
+<td>拉风箱</td>
+<td>Hunting</td>
+<td>对不上焦来回伸缩，多因太暗/低反差</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>镜头相关</h2>
+<table>
+<thead>
+<tr>
+<th>术语</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>焦距</td>
+<td>镜头 mm 数，决定视角（小=广、大=远）</td>
+</tr>
+<tr>
+<td>等效焦距</td>
+<td>换算成全画幅视角；M4/3 = 实际 ×2</td>
+</tr>
+<tr>
+<td>变焦镜头</td>
+<td>焦距可变（如 14-42）</td>
+</tr>
+<tr>
+<td>定焦镜头</td>
+<td>焦距固定，通常光圈更大更锐</td>
+</tr>
+<tr>
+<td>电动变焦</td>
+<td>EZ，电子控制伸缩（14-42 EZ）</td>
+</tr>
+<tr>
+<td>饼干头</td>
+<td>Pancake，很薄的镜头</td>
+</tr>
+<tr>
+<td>最近对焦距离</td>
+<td>能合焦的最近距离，比它近就对不上</td>
+</tr>
+<tr>
+<td>遮光罩</td>
+<td>挡杂光、防眩光的罩子</td>
+</tr>
+<tr>
+<td>滤镜口径</td>
+<td>镜头前端螺纹直径（如 37mm、58mm）</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>传感器与系统</h2>
+<table>
+<thead>
+<tr>
+<th>术语</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>M4/3 / Micro Four Thirds</td>
+<td>EP7 用的传感器与卡口标准，等效系数 2×</td>
+</tr>
+<tr>
+<td>全画幅</td>
+<td>更大的传感器，景深更浅、暗光更好、更重更贵</td>
+</tr>
+<tr>
+<td>APS-C</td>
+<td>介于 M4/3 和全画幅之间</td>
+</tr>
+<tr>
+<td>像素</td>
+<td>画面细节数量，EP7 约 2000 万</td>
+</tr>
+<tr>
+<td>无反相机</td>
+<td>无反光镜，比单反轻小（EP7 属此类）</td>
+</tr>
+<tr>
+<td>五轴防抖</td>
+<td>IBIS，机身内稳定，手持更稳</td>
+</tr>
+<tr>
+<td>传感器除尘</td>
+<td>开机振动抖掉灰尘</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>画质与文件</h2>
+<table>
+<thead>
+<tr>
+<th>术语</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>JPEG</td>
+<td>相机处理好的成品图，通用易分享</td>
+</tr>
+<tr>
+<td>LF</td>
+<td>Large Fine，大尺寸高质量 JPEG（新手默认）</td>
+</tr>
+<tr>
+<td>RAW / ORF</td>
+<td>原始数据「底片」，后期空间大（EP7 为 .ORF）</td>
+</tr>
+<tr>
+<td>白平衡</td>
+<td>WB，校正光线偏色，让白色是白</td>
+</tr>
+<tr>
+<td>色温</td>
+<td>光的冷暖，单位开尔文 K</td>
+</tr>
+<tr>
+<td>动态范围</td>
+<td>同一张里最亮到最暗的记录能力</td>
+</tr>
+<tr>
+<td>噪点</td>
+<td>高 ISO/暗光下的杂色颗粒</td>
+</tr>
+<tr>
+<td>直方图</td>
+<td>显示明暗分布的图表</td>
+</tr>
+<tr>
+<td>高光/阴影</td>
+<td>画面的亮部/暗部</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>构图与用光</h2>
+<table>
+<thead>
+<tr>
+<th>术语</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>三分法</td>
+<td>主体放九宫格线交点，更耐看</td>
+</tr>
+<tr>
+<td>景深</td>
+<td>画面中清晰的前后范围（浅=背景虚，深=都清晰）</td>
+</tr>
+<tr>
+<td>虚化 / 散景</td>
+<td>Bokeh，背景模糊的效果</td>
+</tr>
+<tr>
+<td>黄金时刻</td>
+<td>日出后/日落前 1 小时，光线最美</td>
+</tr>
+<tr>
+<td>逆光</td>
+<td>光从主体背后来，易剪影</td>
+</tr>
+<tr>
+<td>顺光</td>
+<td>光从拍摄者方向照主体</td>
+</tr>
+<tr>
+<td>侧光</td>
+<td>从侧面来，立体感强</td>
+</tr>
+<tr>
+<td>剪影</td>
+<td>主体全黑只剩轮廓</td>
+</tr>
+<tr>
+<td>压缩感</td>
+<td>长焦让远近元素「叠」在一起</td>
+</tr>
+<tr>
+<td>畸变</td>
+<td>广角边缘变形（拉伸/弯曲）</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>模式与功能</h2>
+<table>
+<thead>
+<tr>
+<th>术语</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>iAUTO</td>
+<td>全自动，相机全权决定</td>
+</tr>
+<tr>
+<td>P / A / S / M</td>
+<td>程序 / 光圈优先 / 快门优先 / 全手动</td>
+</tr>
+<tr>
+<td>SCN</td>
+<td>场景模式，预设参数</td>
+</tr>
+<tr>
+<td>ART</td>
+<td>艺术滤镜，机内创意效果</td>
+</tr>
+<tr>
+<td>AP</td>
+<td>高级拍摄模式（Live Composite 等）</td>
+</tr>
+<tr>
+<td>B 门 / BULB</td>
+<td>长时间曝光，按住多久曝多久</td>
+</tr>
+<tr>
+<td>Live Composite</td>
+<td>实时叠加光轨，背景不过曝（烟花/星轨）</td>
+</tr>
+<tr>
+<td>HDR</td>
+<td>合成多张，扩展动态范围</td>
+</tr>
+<tr>
+<td>包围曝光</td>
+<td>Bracketing，连拍不同曝光</td>
+</tr>
+<tr>
+<td>SCP</td>
+<td>超级控制面板，按 OK 调出的快捷设置</td>
+</tr>
+<tr>
+<td>连拍</td>
+<td>H/L，一次多张（运动、儿童）</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>视频相关</h2>
+<table>
+<thead>
+<tr>
+<th>术语</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>帧率 fps</td>
+<td>每秒画面数，30/60 常用</td>
+</tr>
+<tr>
+<td>4K / 1080p</td>
+<td>分辨率高低</td>
+</tr>
+<tr>
+<td>B-roll</td>
+<td>空镜/辅助镜头，剪辑过渡用</td>
+</tr>
+<tr>
+<td>M-IS</td>
+<td>视频电子+机身防抖</td>
+</tr>
+<tr>
+<td>ND 滤镜</td>
+<td>减光镜，强光下开大光圈用</td>
+</tr>
+<tr>
+<td>果冻效应</td>
+<td>手持视频晃动导致的扭曲</td>
+</tr>
+<tr>
+<td>猫步</td>
+<td>拍视频时膝盖微屈滑步走，减颠簸</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>常见缩写速查</h2>
+<table>
+<thead>
+<tr>
+<th>缩写</th>
+<th>全称</th>
+<th>中文</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>EV</td>
+<td>Exposure Value</td>
+<td>曝光值/补偿</td>
+</tr>
+<tr>
+<td>WB</td>
+<td>White Balance</td>
+<td>白平衡</td>
+</tr>
+<tr>
+<td>AF / MF</td>
+<td>Auto/Manual Focus</td>
+<td>自动/手动对焦</td>
+</tr>
+<tr>
+<td>IS / IBIS</td>
+<td>Image Stabilization</td>
+<td>防抖</td>
+</tr>
+<tr>
+<td>ISO</td>
+<td>—</td>
+<td>感光度</td>
+</tr>
+<tr>
+<td>EXIF</td>
+<td>—</td>
+<td>照片拍摄参数信息</td>
+</tr>
+<tr>
+<td>EVF</td>
+<td>Electronic Viewfinder</td>
+<td>电子取景器（EP7 <strong>无</strong>）</td>
+</tr>
+<tr>
+<td>SCP</td>
+<td>Super Control Panel</td>
+<td>超级控制面板</td>
+</tr>
+<tr>
+<td>ORF</td>
+<td>Olympus RAW Format</td>
+<td>奥林巴斯 RAW 格式</td>
+</tr>
+<tr>
+<td>M4/3</td>
+<td>Micro Four Thirds</td>
+<td>微 4/3 系统</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>记住这几个就够开始</h2>
+<p>新手最先要理解的 5 个词：</p>
+<ol>
+<li><strong>光圈（F 值）</strong>——控背景虚化</li>
+<li><strong>快门速度</strong>——控糊不糊</li>
+<li><strong>ISO</strong>——控亮度与噪点</li>
+<li><strong>曝光补偿（EV）</strong>——一键调亮/暗</li>
+<li><strong>对焦（S-AF/单点）</strong>——对准主体</li>
+</ol>
+<p>其余的用到再回来查即可。</p>
+<hr />
+<p>相关：全书各章。曝光详解见 <a href="#ch04">04-模式转盘.md</a>，问题排查见 <a href="#ch12">12-常见问题.md</a>。</p>
+</article>
+        <div class="pager" id="pager">
+          <a class="prev" href="#" id="prevLink"><span class="lbl">上一章</span><span id="prevTitle"></span></a>
+          <a class="next" href="#" id="nextLink"><span class="lbl">下一章</span><span id="nextTitle"></span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<button class="scrolltop" id="scrollTop">↑</button>
+<script>
+(function(){
+  var links = Array.prototype.slice.call(document.querySelectorAll('.nav-link'));
+  var chapters = Array.prototype.slice.call(document.querySelectorAll('.chapter'));
+  var order = links.map(function(l){return l.getAttribute('data-target');});
+  var sidebar = document.getElementById('sidebar');
+  var reader = document.getElementById('reader');
+  var prevLink = document.getElementById('prevLink');
+  var nextLink = document.getElementById('nextLink');
+  var prevTitle = document.getElementById('prevTitle');
+  var nextTitle = document.getElementById('nextTitle');
+
+  function titleOf(id){
+    var l = links.filter(function(x){return x.getAttribute('data-target')===id;})[0];
+    return l ? l.textContent : '';
+  }
+
+  function show(id, push){
+    if(order.indexOf(id) === -1){ id = order[0]; }
+    chapters.forEach(function(c){ c.classList.toggle('active', c.id===id); });
+    links.forEach(function(l){ l.classList.toggle('active', l.getAttribute('data-target')===id); });
+    var idx = order.indexOf(id);
+    setPager(prevLink, prevTitle, order[idx-1]);
+    setPager(nextLink, nextTitle, order[idx+1]);
+    if(push){ history.replaceState(null,'', '#'+id); }
+    reader.scrollIntoView({block:'start'});
+    window.scrollTo(0,0);
+    sidebar.classList.remove('open');
+  }
+
+  function setPager(link, label, id){
+    if(id){ link.classList.remove('disabled'); link.setAttribute('data-target', id); label.textContent = titleOf(id); }
+    else { link.classList.add('disabled'); label.textContent=''; }
+  }
+
+  document.getElementById('nav').addEventListener('click', function(e){
+    var a = e.target.closest('.nav-link'); if(!a) return;
+    e.preventDefault(); show(a.getAttribute('data-target'), true);
+  });
+  document.getElementById('pager').addEventListener('click', function(e){
+    var a = e.target.closest('a'); if(!a || a.classList.contains('disabled')) return;
+    e.preventDefault(); show(a.getAttribute('data-target'), true);
+  });
+  reader.addEventListener('click', function(e){
+    var a = e.target.closest('a[href^="#sec-"]'); if(!a) return;
+    e.preventDefault(); show(a.getAttribute('href').slice(1), true);
+  });
+
+  var menuBtn = document.getElementById('menuBtn');
+  if(menuBtn){ menuBtn.addEventListener('click', function(){ sidebar.classList.toggle('open'); }); }
+
+  var st = document.getElementById('scrollTop');
+  window.addEventListener('scroll', function(){ st.style.display = window.scrollY>400 ? 'block':'none'; });
+  st.addEventListener('click', function(){ window.scrollTo({top:0,behavior:'smooth'}); });
+
+  var initial = location.hash ? location.hash.slice(1) : order[0];
+  show(initial, false);
+})();
+</script>
+</body>
+</html>

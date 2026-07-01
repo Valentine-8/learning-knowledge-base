@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 320" font-family="Microsoft YaHei, Segoe UI, sans-serif">
+
+<defs>
+  <linearGradient id="gPaper" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#faf6ee"/><stop offset="1" stop-color="#ece3d2"/>
+  </linearGradient>
+  <linearGradient id="gSilver" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#fdfdfb"/><stop offset="0.5" stop-color="#e2ded5"/><stop offset="1" stop-color="#bfb9ab"/>
+  </linearGradient>
+  <linearGradient id="gTop" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#d6d1c6"/>
+  </linearGradient>
+  <linearGradient id="gLeather" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#403c37"/><stop offset="1" stop-color="#1f1d1a"/>
+  </linearGradient>
+  <linearGradient id="gDial" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#f0eee8"/><stop offset="1" stop-color="#b3ada0"/>
+  </linearGradient>
+  <radialGradient id="gGlass" cx="0.38" cy="0.32" r="0.8">
+    <stop offset="0" stop-color="#9dc2de"/><stop offset="0.4" stop-color="#33566f"/><stop offset="1" stop-color="#0b1720"/>
+  </radialGradient>
+  <linearGradient id="gSky" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#6fb4ff"/><stop offset="1" stop-color="#d3edff"/>
+  </linearGradient>
+  <linearGradient id="gSunset" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#ff6f43"/><stop offset="0.5" stop-color="#ffb74d"/><stop offset="1" stop-color="#5c6bc0"/>
+  </linearGradient>
+  <linearGradient id="gNight" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#0a1230"/><stop offset="1" stop-color="#24386b"/>
+  </linearGradient>
+  <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
+    <feDropShadow dx="0" dy="5" stdDeviation="7" flood-color="#000" flood-opacity="0.20"/>
+  </filter>
+  <filter id="blur"><feGaussianBlur stdDeviation="6"/></filter>
+  <filter id="blurLite"><feGaussianBlur stdDeviation="2.4"/></filter>
+  <marker id="arrow" markerWidth="12" markerHeight="12" refX="9" refY="4" orient="auto">
+    <path d="M0,0 L9,4 L0,8 Z" fill="#5c7a4a"/>
+  </marker>
+</defs>
+
+<rect width="520" height="320" fill="url(#gPaper)"/>
+<text x="260" y="34" text-anchor="middle" font-size="20" font-weight="700" fill="#2c2a24">肩带穿法</text>
+<g transform="translate(150,90) scale(0.72)" filter="url(#soft)"><rect x="6" y="26" width="288" height="150" rx="16" fill="url(#gSilver)" stroke="#9a927f" stroke-width="2"/><rect x="6" y="26" width="288" height="34" rx="16" fill="url(#gTop)" stroke="#b7b1a4" stroke-width="1"/><rect x="6" y="48" width="288" height="14" fill="url(#gTop)"/><rect x="14" y="70" width="210" height="98" rx="8" fill="url(#gLeather)"/><rect x="14" y="70" width="210" height="98" rx="8" fill="none" stroke="#000" stroke-opacity="0.25"/><rect x="250" y="66" width="40" height="104" rx="12" fill="url(#gSilver)" stroke="#9a927f"/><rect x="120" y="10" width="46" height="18" rx="3" fill="#c9c3b5" stroke="#8a7f6e"/><rect x="128" y="14" width="30" height="10" rx="2" fill="#6f6a5e"/><circle cx="248" cy="42" r="21" fill="url(#gDial)" stroke="#7d7768" stroke-width="2"/><text x="248" y="47" text-anchor="middle" font-size="15" font-weight="700" fill="#2c2a24">A</text><circle cx="206" cy="44" r="12" fill="url(#gDial)" stroke="#7d7768"/><circle cx="206" cy="44" r="6" fill="#b5651d"/><circle cx="44" cy="150" r="15" fill="url(#gDial)" stroke="#7d7768" stroke-width="1.5"/><circle cx="44" cy="150" r="4" fill="#8a7f6e"/><circle cx="150" cy="120" r="58" fill="#d9d4c8" stroke="#9a927f" stroke-width="3"/><circle cx="150" cy="120" r="50" fill="#2a2723"/><circle cx="150" cy="120" r="42" fill="url(#gGlass)" stroke="#0b1720" stroke-width="2"/><ellipse cx="136" cy="104" rx="16" ry="10" fill="#ffffff" fill-opacity="0.35"/><circle cx="150" cy="120" r="42" fill="none" stroke="#5c6b74" stroke-opacity="0.5"/><circle cx="150" cy="64" r="4" fill="#c0392b"/><text x="40" y="46" font-size="12" font-weight="700" fill="#4a453d" letter-spacing="1">PEN</text></g><path d="M150 130 Q260 40 372 130" fill="none" stroke="#5c7a4a" stroke-width="8" stroke-linecap="round"/><rect x="140" y="120" width="16" height="16" rx="4" fill="#8a7f6e"/><rect x="366" y="120" width="16" height="16" rx="4" fill="#8a7f6e"/><text x="260" y="290" text-anchor="middle" font-size="14" fill="#6b6355">从外向内穿入挂耳，防止滑脱</text>
+</svg>

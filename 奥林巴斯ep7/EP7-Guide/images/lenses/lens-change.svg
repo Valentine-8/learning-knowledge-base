@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 210" font-family="Microsoft YaHei, Segoe UI, sans-serif">
+
+<defs>
+  <linearGradient id="gPaper" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#faf6ee"/><stop offset="1" stop-color="#ece3d2"/>
+  </linearGradient>
+  <linearGradient id="gSilver" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#fdfdfb"/><stop offset="0.5" stop-color="#e2ded5"/><stop offset="1" stop-color="#bfb9ab"/>
+  </linearGradient>
+  <linearGradient id="gTop" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#d6d1c6"/>
+  </linearGradient>
+  <linearGradient id="gLeather" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#403c37"/><stop offset="1" stop-color="#1f1d1a"/>
+  </linearGradient>
+  <linearGradient id="gDial" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#f0eee8"/><stop offset="1" stop-color="#b3ada0"/>
+  </linearGradient>
+  <radialGradient id="gGlass" cx="0.38" cy="0.32" r="0.8">
+    <stop offset="0" stop-color="#9dc2de"/><stop offset="0.4" stop-color="#33566f"/><stop offset="1" stop-color="#0b1720"/>
+  </radialGradient>
+  <linearGradient id="gSky" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#6fb4ff"/><stop offset="1" stop-color="#d3edff"/>
+  </linearGradient>
+  <linearGradient id="gSunset" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#ff6f43"/><stop offset="0.5" stop-color="#ffb74d"/><stop offset="1" stop-color="#5c6bc0"/>
+  </linearGradient>
+  <linearGradient id="gNight" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#0a1230"/><stop offset="1" stop-color="#24386b"/>
+  </linearGradient>
+  <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
+    <feDropShadow dx="0" dy="5" stdDeviation="7" flood-color="#000" flood-opacity="0.20"/>
+  </filter>
+  <filter id="blur"><feGaussianBlur stdDeviation="6"/></filter>
+  <filter id="blurLite"><feGaussianBlur stdDeviation="2.4"/></filter>
+  <marker id="arrow" markerWidth="12" markerHeight="12" refX="9" refY="4" orient="auto">
+    <path d="M0,0 L9,4 L0,8 Z" fill="#5c7a4a"/>
+  </marker>
+</defs>
+
+<rect width="760" height="210" fill="url(#gPaper)"/>
+<text x="380" y="34" text-anchor="middle" font-size="20" font-weight="700" fill="#2c2a24">换镜头标准流程</text>
+<g filter="url(#soft)"><rect x="30" y="70" width="104" height="86" rx="10" fill="#fffdf8" stroke="#d8cfbf"/></g>
+<circle cx="82" cy="100" r="15" fill="#5c7a4a"/>
+<text x="82" y="105" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">1</text>
+<text x="82" y="140" text-anchor="middle" font-size="12" fill="#2c2a24">关机</text>
+<text x="142" y="118" font-size="20" fill="#8a7f6e">›</text>
+<g filter="url(#soft)"><rect x="148" y="70" width="104" height="86" rx="10" fill="#fffdf8" stroke="#d8cfbf"/></g>
+<circle cx="200" cy="100" r="15" fill="#5c7a4a"/>
+<text x="200" y="105" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">2</text>
+<text x="200" y="140" text-anchor="middle" font-size="12" fill="#2c2a24">卸镜头</text>
+<text x="260" y="118" font-size="20" fill="#8a7f6e">›</text>
+<g filter="url(#soft)"><rect x="266" y="70" width="104" height="86" rx="10" fill="#fffdf8" stroke="#d8cfbf"/></g>
+<circle cx="318" cy="100" r="15" fill="#5c7a4a"/>
+<text x="318" y="105" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">3</text>
+<text x="318" y="140" text-anchor="middle" font-size="12" fill="#2c2a24">盖后盖</text>
+<text x="378" y="118" font-size="20" fill="#8a7f6e">›</text>
+<g filter="url(#soft)"><rect x="384" y="70" width="104" height="86" rx="10" fill="#fffdf8" stroke="#d8cfbf"/></g>
+<circle cx="436" cy="100" r="15" fill="#5c7a4a"/>
+<text x="436" y="105" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">4</text>
+<text x="436" y="140" text-anchor="middle" font-size="12" fill="#2c2a24">装新镜头</text>
+<text x="496" y="118" font-size="20" fill="#8a7f6e">›</text>
+<g filter="url(#soft)"><rect x="502" y="70" width="104" height="86" rx="10" fill="#fffdf8" stroke="#d8cfbf"/></g>
+<circle cx="554" cy="100" r="15" fill="#5c7a4a"/>
+<text x="554" y="105" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">5</text>
+<text x="554" y="140" text-anchor="middle" font-size="12" fill="#2c2a24">锁紧</text>
+<text x="614" y="118" font-size="20" fill="#8a7f6e">›</text>
+<g filter="url(#soft)"><rect x="620" y="70" width="104" height="86" rx="10" fill="#fffdf8" stroke="#d8cfbf"/></g>
+<circle cx="672" cy="100" r="15" fill="#5c7a4a"/>
+<text x="672" y="105" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">6</text>
+<text x="672" y="140" text-anchor="middle" font-size="12" fill="#2c2a24">开机试拍</text>
+<text x="380" y="185" text-anchor="middle" font-size="13" fill="#c0392b">户外换镜头：背风、机身朝下、快速完成</text>
+</svg>

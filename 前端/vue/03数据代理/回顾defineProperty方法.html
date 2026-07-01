@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>回顾object.defineproperty</title>
+        <!-- 引入vue-->
+        <script type="text/javascript" src="../js/vue.js"></script>
+    </head>
+
+<body>
+    <div id="root">
+    	
+    </div>
+    <script type="text/javascript">
+        //Vue.config.productionTip = false
+        //创建实例
+        const vm = new Vue({
+            data:function(){  
+                return {
+                    
+                }
+            }
+        })
+        vm.$mount('#root')
+        let number = 26;
+        let person = {
+            name:"zhangsan",
+            xingbie:"man"
+        }
+        //defineProperty方法加进去的属性默认是不能枚举或者说被遍历的
+        Object.defineProperty(person,'age',{
+            //value:18,
+            //enumerable:true,  //控制属性是否可以枚举
+            //writable:true,  //控制属性能否被覆盖
+            //configurable:true,  ///控制属性能否被删除
+            //当有人读取person的age属性时，才会调用getter
+            get:function(){
+                return number
+            },
+
+            set(value){
+                number = value
+            }
+        })
+
+        for (const key in person) {
+            if (Object.hasOwnProperty.call(person, key)) {
+                const element = person[key];
+                //console.log(element)
+            }
+        }
+        console.log(person)
+    </script>
+</body>
+</html> 

@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 185" font-family="Microsoft YaHei, Segoe UI, sans-serif">
+
+<defs>
+  <linearGradient id="gPaper" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#faf6ee"/><stop offset="1" stop-color="#ece3d2"/>
+  </linearGradient>
+  <linearGradient id="gSilver" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#fdfdfb"/><stop offset="0.5" stop-color="#e2ded5"/><stop offset="1" stop-color="#bfb9ab"/>
+  </linearGradient>
+  <linearGradient id="gTop" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#d6d1c6"/>
+  </linearGradient>
+  <linearGradient id="gLeather" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#403c37"/><stop offset="1" stop-color="#1f1d1a"/>
+  </linearGradient>
+  <linearGradient id="gDial" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#f0eee8"/><stop offset="1" stop-color="#b3ada0"/>
+  </linearGradient>
+  <radialGradient id="gGlass" cx="0.38" cy="0.32" r="0.8">
+    <stop offset="0" stop-color="#9dc2de"/><stop offset="0.4" stop-color="#33566f"/><stop offset="1" stop-color="#0b1720"/>
+  </radialGradient>
+  <linearGradient id="gSky" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#6fb4ff"/><stop offset="1" stop-color="#d3edff"/>
+  </linearGradient>
+  <linearGradient id="gSunset" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#ff6f43"/><stop offset="0.5" stop-color="#ffb74d"/><stop offset="1" stop-color="#5c6bc0"/>
+  </linearGradient>
+  <linearGradient id="gNight" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#0a1230"/><stop offset="1" stop-color="#24386b"/>
+  </linearGradient>
+  <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
+    <feDropShadow dx="0" dy="5" stdDeviation="7" flood-color="#000" flood-opacity="0.20"/>
+  </filter>
+  <filter id="blur"><feGaussianBlur stdDeviation="6"/></filter>
+  <filter id="blurLite"><feGaussianBlur stdDeviation="2.4"/></filter>
+  <marker id="arrow" markerWidth="12" markerHeight="12" refX="9" refY="4" orient="auto">
+    <path d="M0,0 L9,4 L0,8 Z" fill="#5c7a4a"/>
+  </marker>
+</defs>
+
+<rect width="720" height="185" fill="url(#gPaper)"/>
+<text x="360" y="34" text-anchor="middle" font-size="20" font-weight="700" fill="#2c2a24">第一次按快门：六步法</text>
+<g filter="url(#soft)"><rect x="30" y="66" width="98" height="92" rx="10" fill="#fffdf8" stroke="#d8cfbf"/></g>
+<circle cx="79" cy="96" r="16" fill="#5c7a4a"/>
+<text x="79" y="101" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">1</text>
+<text x="79" y="138" text-anchor="middle" font-size="12" fill="#2c2a24">举起相机</text>
+<text x="136" y="116" font-size="20" fill="#8a7f6e">›</text>
+<g filter="url(#soft)"><rect x="142" y="66" width="98" height="92" rx="10" fill="#fffdf8" stroke="#d8cfbf"/></g>
+<circle cx="191" cy="96" r="16" fill="#5c7a4a"/>
+<text x="191" y="101" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">2</text>
+<text x="191" y="138" text-anchor="middle" font-size="12" fill="#2c2a24">选好焦段</text>
+<text x="248" y="116" font-size="20" fill="#8a7f6e">›</text>
+<g filter="url(#soft)"><rect x="254" y="66" width="98" height="92" rx="10" fill="#fffdf8" stroke="#d8cfbf"/></g>
+<circle cx="303" cy="96" r="16" fill="#5c7a4a"/>
+<text x="303" y="101" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">3</text>
+<text x="303" y="138" text-anchor="middle" font-size="12" fill="#2c2a24">触摸对焦</text>
+<text x="360" y="116" font-size="20" fill="#8a7f6e">›</text>
+<g filter="url(#soft)"><rect x="366" y="66" width="98" height="92" rx="10" fill="#fffdf8" stroke="#d8cfbf"/></g>
+<circle cx="415" cy="96" r="16" fill="#5c7a4a"/>
+<text x="415" y="101" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">4</text>
+<text x="415" y="138" text-anchor="middle" font-size="12" fill="#2c2a24">半按合焦</text>
+<text x="472" y="116" font-size="20" fill="#8a7f6e">›</text>
+<g filter="url(#soft)"><rect x="478" y="66" width="98" height="92" rx="10" fill="#fffdf8" stroke="#d8cfbf"/></g>
+<circle cx="527" cy="96" r="16" fill="#5c7a4a"/>
+<text x="527" y="101" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">5</text>
+<text x="527" y="138" text-anchor="middle" font-size="12" fill="#2c2a24">完全按下</text>
+<text x="584" y="116" font-size="20" fill="#8a7f6e">›</text>
+<g filter="url(#soft)"><rect x="590" y="66" width="98" height="92" rx="10" fill="#fffdf8" stroke="#d8cfbf"/></g>
+<circle cx="639" cy="96" r="16" fill="#5c7a4a"/>
+<text x="639" y="101" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">6</text>
+<text x="639" y="138" text-anchor="middle" font-size="12" fill="#2c2a24">回放检查</text>
+</svg>

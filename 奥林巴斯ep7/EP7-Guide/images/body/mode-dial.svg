@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 510" font-family="Microsoft YaHei, Segoe UI, sans-serif">
+
+<defs>
+  <linearGradient id="gPaper" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#faf6ee"/><stop offset="1" stop-color="#ece3d2"/>
+  </linearGradient>
+  <linearGradient id="gSilver" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#fdfdfb"/><stop offset="0.5" stop-color="#e2ded5"/><stop offset="1" stop-color="#bfb9ab"/>
+  </linearGradient>
+  <linearGradient id="gTop" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#d6d1c6"/>
+  </linearGradient>
+  <linearGradient id="gLeather" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#403c37"/><stop offset="1" stop-color="#1f1d1a"/>
+  </linearGradient>
+  <linearGradient id="gDial" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#f0eee8"/><stop offset="1" stop-color="#b3ada0"/>
+  </linearGradient>
+  <radialGradient id="gGlass" cx="0.38" cy="0.32" r="0.8">
+    <stop offset="0" stop-color="#9dc2de"/><stop offset="0.4" stop-color="#33566f"/><stop offset="1" stop-color="#0b1720"/>
+  </radialGradient>
+  <linearGradient id="gSky" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#6fb4ff"/><stop offset="1" stop-color="#d3edff"/>
+  </linearGradient>
+  <linearGradient id="gSunset" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#ff6f43"/><stop offset="0.5" stop-color="#ffb74d"/><stop offset="1" stop-color="#5c6bc0"/>
+  </linearGradient>
+  <linearGradient id="gNight" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#0a1230"/><stop offset="1" stop-color="#24386b"/>
+  </linearGradient>
+  <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
+    <feDropShadow dx="0" dy="5" stdDeviation="7" flood-color="#000" flood-opacity="0.20"/>
+  </filter>
+  <filter id="blur"><feGaussianBlur stdDeviation="6"/></filter>
+  <filter id="blurLite"><feGaussianBlur stdDeviation="2.4"/></filter>
+  <marker id="arrow" markerWidth="12" markerHeight="12" refX="9" refY="4" orient="auto">
+    <path d="M0,0 L9,4 L0,8 Z" fill="#5c7a4a"/>
+  </marker>
+</defs>
+
+<rect width="520" height="510" fill="url(#gPaper)"/>
+<text x="260" y="34" text-anchor="middle" font-size="20" font-weight="700" fill="#2c2a24">EP7 模式转盘</text>
+<g filter="url(#soft)">
+<circle cx="260" cy="280" r="168" fill="url(#gDial)" stroke="#7d7768" stroke-width="4"/>
+<circle cx="260" cy="280" r="152" fill="none" stroke="#c8c2b4" stroke-width="2"/>
+<circle cx="260" cy="280" r="30" fill="#cfc9bb" stroke="#8a7f6e" stroke-width="2"/>
+</g>
+<path d="M252 106 L268 106 L260 120 Z" fill="#c0392b"/>
+<line x1="260.0" y1="120.0" x2="260.0" y2="130.0" stroke="#8a7f6e" stroke-width="2"/>
+<text x="260.0" y="146.0" text-anchor="middle" dominant-baseline="middle" font-size="16" font-weight="500" fill="#2c2a24">iAUTO</text>
+<line x1="354.0" y1="150.6" x2="348.2" y2="158.6" stroke="#8a7f6e" stroke-width="2"/>
+<text x="338.8" y="171.6" text-anchor="middle" dominant-baseline="middle" font-size="16" font-weight="500" fill="#2c2a24">SCN</text>
+<line x1="412.2" y1="230.6" x2="402.7" y2="233.6" stroke="#8a7f6e" stroke-width="2"/>
+<text x="387.4" y="238.6" text-anchor="middle" dominant-baseline="middle" font-size="16" font-weight="500" fill="#2c2a24">AP</text>
+<line x1="412.2" y1="329.4" x2="402.7" y2="326.4" stroke="#8a7f6e" stroke-width="2"/>
+<text x="387.4" y="321.4" text-anchor="middle" dominant-baseline="middle" font-size="16" font-weight="500" fill="#2c2a24">ART</text>
+<line x1="354.0" y1="409.4" x2="348.2" y2="401.4" stroke="#8a7f6e" stroke-width="2"/>
+<text x="338.8" y="388.4" text-anchor="middle" dominant-baseline="middle" font-size="16" font-weight="500" fill="#2c2a24">P</text>
+<line x1="260.0" y1="440.0" x2="260.0" y2="430.0" stroke="#8a7f6e" stroke-width="2"/>
+<circle cx="260.0" cy="414.0" r="17" fill="#5c7a4a"/>
+<text x="260.0" y="414.0" text-anchor="middle" dominant-baseline="middle" font-size="16" font-weight="700" fill="#fff">A</text>
+<line x1="166.0" y1="409.4" x2="171.8" y2="401.4" stroke="#8a7f6e" stroke-width="2"/>
+<text x="181.2" y="388.4" text-anchor="middle" dominant-baseline="middle" font-size="16" font-weight="500" fill="#2c2a24">S</text>
+<line x1="107.8" y1="329.4" x2="117.3" y2="326.4" stroke="#8a7f6e" stroke-width="2"/>
+<text x="132.6" y="321.4" text-anchor="middle" dominant-baseline="middle" font-size="16" font-weight="500" fill="#2c2a24">M</text>
+<line x1="107.8" y1="230.6" x2="117.3" y2="233.6" stroke="#8a7f6e" stroke-width="2"/>
+<text x="132.6" y="238.6" text-anchor="middle" dominant-baseline="middle" font-size="16" font-weight="500" fill="#2c2a24">B</text>
+<line x1="166.0" y1="150.6" x2="171.8" y2="158.6" stroke="#8a7f6e" stroke-width="2"/>
+<text x="181.2" y="171.6" text-anchor="middle" dominant-baseline="middle" font-size="16" font-weight="500" fill="#2c2a24">视频</text>
+<text x="260" y="482" text-anchor="middle" font-size="14" fill="#5c7a4a">新手建议：日常用 A 模式（光圈优先）</text>
+</svg>

@@ -1,0 +1,2227 @@
+# 面试题大全 Q&A
+
+> **适用**：Java 后端 7 年 / 资深工程师 / 架构师 / AI 应用开发  
+> **用法**：按章节复习；不会的题记入 [错题与易忘概念.md](../00-通用/错题与易忘概念.md)  
+> **说明**：答案力求面试可口述；部分题有多种答法，以「结论 + 原理 + 实践」三层组织
+
+---
+
+## 目录
+
+- [一、Java 语言基础](#一java-语言基础)
+- [二、Java 集合框架](#二java-集合框架)
+- [三、Java 并发与多线程](#三java-并发与多线程)
+- [四、JVM](#四jvm)
+- [五、Spring 生态](#五spring-生态)
+- [六、C++](#六c)
+- [七、MySQL 与 SQL](#七mysql-与-sql)
+- [八、Redis](#八redis)
+- [九、消息队列](#九消息队列)
+- [十、Elasticsearch](#十elasticsearch)
+- [十一、分布式系统](#十一分布式系统)
+- [十二、系统设计](#十二系统设计)
+- [十三、AI 与大模型应用开发](#十三ai-与大模型应用开发)
+- [十四、Linux 与运维](#十四linux-与运维)
+- [十五、Docker 与 Kubernetes](#十五docker-与-kubernetes)
+- [十六、计算机网络](#十六计算机网络)
+- [十七、操作系统](#十七操作系统)
+- [十八、数据结构与算法（概念）](#十八数据结构与算法概念)
+- [十九、设计模式](#十九设计模式)
+- [二十、场景题与软技能](#二十场景题与软技能)
+- [二十一、Java 深挖追问](#二十一java-深挖追问)
+- [二十二、数据库与中间件深挖](#二十二数据库与中间件深挖)
+- [二十三、分布式与运维深挖](#二十三分布式与运维深挖)
+- [专题文档](#专题文档)
+
+**专题拆分（更深更全）**：
+- [面试题大全-C++专题.md](../C++嵌入式/面试题大全-C++专题.md) — **120 题**
+- [面试题大全-AI专题.md](../AI工程/面试题大全-AI专题.md) — **120 题**
+
+---
+
+# 一、Java 语言基础
+
+### Q1. Java 语言有哪些特点？
+
+**A：** 面向对象、平台无关（JVM + 字节码）、自动内存管理（GC）、强类型、多线程支持、生态成熟。编译为 `.class` 字节码，由 JVM 解释/JIT 执行。
+
+---
+
+### Q2. JDK、JRE、JVM 的区别？
+
+**A：**
+- **JVM**：运行字节码的虚拟机，负责加载、执行、内存管理
+- **JRE**：JVM + 核心类库，只能运行不能开发
+- **JDK**：JRE + 开发工具（javac、jar、jdb 等）
+
+---
+
+### Q3. == 和 equals 的区别？
+
+**A：** `==` 比较引用（基本类型比较值）。`equals` 默认同 `==`，可被重写比较逻辑相等。String 重写了 equals 比较内容。重写 equals 必须重写 hashCode（哈希容器契约）。
+
+---
+
+### Q4. 为什么重写 equals 必须重写 hashCode？
+
+**A：** `hashCode` 相等的对象 equals 不一定 true，但 equals 为 true 的对象 hashCode 必须相等。否则 HashMap/HashSet 中「相等」对象可能落在不同桶，破坏集合语义。
+
+---
+
+### Q5. String 为什么不可变？有什么好处？
+
+**A：** 内部 `final char[]/byte[]`，无修改方法。好处：线程安全、可缓存 hash、字符串常量池复用、作为类加载等安全场景的可靠键。
+
+---
+
+### Q6. String、StringBuilder、StringBuffer 区别？
+
+**A：**
+- **String**：不可变，拼接产生新对象
+- **StringBuilder**：可变，非线程安全，单线程拼接快
+- **StringBuffer**：可变，方法 synchronized，线程安全但慢
+
+---
+
+### Q7. 字符串常量池是什么？
+
+**A：** 堆中特殊区域（JDK7+ 在堆），字面量 `"abc"` 和 `intern()` 可复用同一对象，减少内存。`new String("abc")` 在堆创建新对象，不一定入池。
+
+---
+
+### Q8. 基本类型和包装类型？自动装箱拆箱陷阱？
+
+**A：** int/Integer 等 8 对。自动装箱调用 `valueOf`，拆箱调用 `xxxValue()`。陷阱：`Integer cache` -128～127 复用；`null` 拆箱 NPE；`==` 比较 Integer 对象可能错（应用 equals）。
+
+---
+
+### Q9. 接口和抽象类的区别？Java 8 之后？
+
+**A：**
+| | 接口 | 抽象类 |
+|---|------|--------|
+| 多继承 | 可实现多个 | 单继承 |
+| 方法 | Java8+ default/static | 可有实现方法 |
+| 构造器 | 无 | 有 |
+| 设计 | 能力契约 | is-a 模板 |
+
+---
+
+### Q10. final 关键字作用？
+
+**A：** 修饰类不可继承；修饰方法不可被子类重写（private final 方法不算真正多态重写）；修饰变量引用不可变（对象内容仍可变）。
+
+---
+
+### Q11. static 关键字含义？
+
+**A：** 类级别成员，加载类时初始化，所有实例共享。静态方法不能访问实例成员。静态块用于类初始化。注意：静态方法不存在多态（看引用类型）。
+
+---
+
+### Q12. Java 异常体系？Checked 和 Unchecked？
+
+**A：** Throwable → Error（不应捕获，如 OOM）/ Exception。Exception → RuntimeException（非受检）和其他（受检）。受检异常编译期必须处理。业务异常常用 RuntimeException。
+
+---
+
+### Q13. try-catch-finally 执行顺序？return 在 try 里？
+
+**A：** finally 几乎总是执行（除 System.exit、线程 kill）。try 里 return 会先计算返回值，再执行 finally；若 finally 也有 return 会覆盖（不推荐）。
+
+---
+
+### Q14. 泛型擦除是什么？有什么影响？
+
+**A：** 编译后泛型类型信息被擦除为边界或 Object。不能在运行时 `new T()`、不能 `instanceof T`、不能创建泛型数组。需要时用 Class 对象传递类型。
+
+---
+
+### Q15. 什么是 PECS 原则？
+
+**A：** Producer Extends, Consumer Super。`? extends T` 只能读取（生产者）；`? super T` 只能写入（消费者）。例：`Collections.copy(List<? super T> dest, List<? extends T> src)`。
+
+---
+
+### Q16. 反射是什么？优缺点？
+
+**A：** 运行时获取类元信息、动态创建对象、调用方法。优点：框架、动态代理。缺点：破坏封装、性能较低、安全问题。JDK 后 MethodHandle/VarHandle 可优化热点。
+
+---
+
+### Q17. 注解是什么？元注解有哪些？
+
+**A：** 给代码贴标签，编译/运行时可被解析。元注解：`@Target`、`@Retention`、`@Documented`、`@Inherited`、`@Repeatable`。Spring 大量用注解做配置。
+
+---
+
+### Q18. Java 8 有哪些重要新特性？
+
+**A：** Lambda、Stream API、Optional、接口 default/static 方法、新日期时间 API、CompletableFuture、方法引用。Java 9+ 模块系统；17 Record/Sealed；21 Virtual Thread。
+
+---
+
+### Q19. Lambda 本质是什么？
+
+**A：** 函数式接口的实例（只有一个抽象方法的接口）。编译器生成 invokedynamic + 实现类，非匿名内部类（早期实现方式）。
+
+---
+
+### Q20. Optional 正确使用方式？
+
+**A：** 避免 `get()` 裸调；用 `orElse/orElseGet/orElseThrow/ifPresent/map/flatMap`。不要用 Optional 作字段/参数滥用（仅适合返回值可能为空）。
+
+---
+
+### Q21. Stream 中间操作和终止操作？惰性求值？
+
+**A：** 中间操作（filter/map）返回 Stream，惰性，链式不立即执行；终止操作（collect/forEach/count）触发 pipeline 执行。短路操作 findFirst/anyMatch 可提前结束。
+
+---
+
+### Q22. Parallel Stream 有什么风险？
+
+**A：** 共用 ForkJoinPool.commonPool()，默认线程数=CPU-1。IO 阻塞任务不适合；需保证无共享可变状态；顺序敏感操作（forEachOrdered）可能抵消并行收益。
+
+---
+
+### Q23. Java 21 Virtual Thread 是什么？
+
+**A：** 轻量级线程，JVM 调度，适合 IO 密集型。大量阻塞 IO 时可替代平台线程池，减少线程栈内存。不适合 CPU 密集长时间占用 carrier 线程。
+
+---
+
+### Q24. Record 和 Sealed Class 用途？
+
+**A：** Record：不可变数据载体，自动生成 equals/hashCode/toString/构造器。Sealed：限制继承层次，配合 pattern matching 做 exhaustive switch。
+
+---
+
+### Q25. 深拷贝和浅拷贝？
+
+**A：** 浅拷贝复制引用；深拷贝递归复制对象图。实现：Cloneable（浅）、序列化、拷贝构造、第三方库。Collection 的 clone 通常是浅拷贝。
+
+---
+
+# 二、Java 集合框架
+
+### Q26. Collection 和 Collections 区别？
+
+**A：** Collection 是接口根；Collections 是工具类（sort、binarySearch、synchronizedXxx、emptyXxx）。
+
+---
+
+### Q27. ArrayList 底层原理？扩容机制？
+
+**A：** 动态数组 Object[]。默认容量 10（首次 add）。扩容 1.5 倍 `old + (old>>1)`，Arrays.copyOf。随机访问 O(1)，中间插入 O(n)。
+
+---
+
+### Q28. LinkedList 适用场景？和 ArrayDeque？
+
+**A：** 双向链表，头尾操作 O(1)，随机访问 O(n)。作队列/栈不如 ArrayDeque（数组实现，缓存友好）。LinkedList 还实现了 Deque。
+
+---
+
+### Q29. HashMap JDK7 和 JDK8 区别？
+
+**A：**
+- JDK7：数组+链表，头插，扩容 rehash 可能死循环（并发）
+- JDK8：数组+链表+红黑树，尾插，树化阈值 8、退化 6，扩容保持 2 的幂
+
+---
+
+### Q30. HashMap put 流程？
+
+**A：** 算 hash → 索引 `(n-1)&hash` → 桶空则放 → 否则遍历链表/树：key 相等覆盖，否则插入 → size++ → 超阈值 resize(2倍)。
+
+---
+
+### Q31. HashMap 为什么线程不安全？
+
+**A：** 并发 put 可能丢失数据；扩容 transfer 竞态（JDK7 链表环）；size 不准确。并发用 ConcurrentHashMap。
+
+---
+
+### Q32. HashMap 容量为什么 2 的幂？
+
+**A：** 索引计算 `(n-1)&hash` 等价 mod n 且更快；保证散列均匀利用低位 bit；扩容时可通过高位分流 rehash。
+
+---
+
+### Q33. ConcurrentHashMap JDK7 和 JDK8？
+
+**A：** JDK7：Segment 分段锁。JDK8：Node 数组 + 对每个桶头节点 synchronized/CAS，粒度更细，取消 Segment。
+
+---
+
+### Q34. HashTable 和 ConcurrentHashMap？
+
+**A：** HashTable 全表 synchronized，过时。CHM 分段/桶锁，吞吐高。CHM 不允许 null key/value（无法区分缺失与 null）。
+
+---
+
+### Q35. TreeMap 和 HashMap？
+
+**A：** TreeMap 红黑树，key 有序 O(log n)，需 Comparable/Comparator。HashMap O(1) 均摊，无序。
+
+---
+
+### Q36. LinkedHashMap 如何实现 LRU？
+
+**A：** 继承 HashMap，双向链表维护访问/插入顺序。`removeEldestEntry` 返回 true 时删除最老 entry。构造参数 accessOrder=true 为访问序。
+
+---
+
+### Q37. fail-fast 和 fail-safe？
+
+**A：** fail-fast（ArrayList、HashMap 迭代器）检测 modCount 变化抛 ConcurrentModificationException。fail-safe（CopyOnWriteArrayList）迭代副本，弱一致，不抛异常。
+
+---
+
+### Q38. CopyOnWriteArrayList 原理？适用场景？
+
+**A：** 写时复制整个数组，读无锁。适合读多写极少（监听器列表）。写开销大，数据短暂不一致。
+
+---
+
+### Q39. PriorityQueue 原理？
+
+**A：** 小顶堆数组实现，offer/poll O(log n)。非线程安全。迭代不保证顺序。
+
+---
+
+### Q40. WeakHashMap 用途？
+
+**A：** key 为 WeakReference，GC 可回收 key，用于缓存避免内存泄漏（配合 ReferenceQueue）。
+
+---
+
+# 三、Java 并发与多线程
+
+### Q41. 进程和线程区别？
+
+**A：** 进程资源分配单位，独立地址空间；线程调度单位，共享进程堆和方法区。线程切换开销小但需同步。
+
+---
+
+### Q42. 线程有几种创建方式？
+
+**A：** 继承 Thread；实现 Runnable/Callable；线程池提交；CompletableFuture。推荐 Runnable + 线程池，避免继承限制。
+
+---
+
+### Q43. 线程生命周期状态？
+
+**A：** NEW → RUNNABLE → BLOCKED（等 monitor）/ WAITING / TIMED_WAITING → TERMINATED。
+
+---
+
+### Q44. sleep 和 wait 区别？
+
+**A：** sleep 是 Thread 静态方法，不释放锁，TimeUnit。wait 是 Object 方法，需在 synchronized 内，释放锁，需 notify 唤醒。
+
+---
+
+### Q45. 什么是 happens-before？
+
+**A：** JMM 保证的顺序规则：程序次序、monitor 锁、volatile、线程 start/join、传递性等。保证可见性，非物理时间先后。
+
+---
+
+### Q46. synchronized 原理？锁升级？
+
+**A：** 基于 monitor（对象头 Mark Word）。偏向锁（同一线程）→ 轻量锁（CAS）→ 重量锁（OS mutex）。JDK15+ 偏向锁默认关闭趋势。
+
+---
+
+### Q47. synchronized 和 ReentrantLock 区别？
+
+**A：**
+| | synchronized | ReentrantLock |
+|---|--------------|---------------|
+| 释放 | 自动 | 需 unlock |
+| 尝试/超时 | 否 | tryLock |
+| 公平 | 非公平 | 可选公平 |
+| 条件队列 | 单个 wait set | 多个 Condition |
+
+---
+
+### Q48. volatile 作用？能保证原子性吗？
+
+**A：** 保证可见性、禁止指令重排（内存屏障）。不保证 i++ 原子性。适用状态标志、双重检查单例的 instance。
+
+---
+
+### Q49. CAS 是什么？ABA 问题？
+
+**A：** Compare-And-Swap 无锁原子更新。ABA：值 A→B→A 误认为未变。解决：AtomicStampedReference 加版本号。
+
+---
+
+### Q50. 什么是 AQS？
+
+**A：** AbstractQueuedSynchronizer，CLH 队列 + state 变量。ReentrantLock、Semaphore、CountDownLatch 等基于 AQS 实现。
+
+---
+
+### Q51. ThreadLocal 原理？内存泄漏？
+
+**A：** 每个 Thread 有 ThreadLocalMap，key 弱引用 ThreadLocal，value 强引用。线程池复用线程且未 remove 时 value 无法回收。必须 finally 中 remove。
+
+---
+
+### Q52. 线程池 7 参数？
+
+**A：** corePoolSize、maximumPoolSize、keepAliveTime、unit、workQueue、threadFactory、handler（拒绝策略）。
+
+---
+
+### Q53. 线程池执行流程？
+
+**A：** 任务来 → core 未满则新建 core 线程 → 否则入队 → 队满则扩到 max → 仍满则拒绝策略。
+
+---
+
+### Q54. 四种拒绝策略？
+
+**A：** AbortPolicy 抛异常；CallerRunsPolicy 调用者跑；DiscardPolicy 丢弃；DiscardOldestPolicy 丢队首。业务可自定义降级。
+
+---
+
+### Q55. 为什么 Executors 工厂方法不推荐？
+
+**A：** `newFixedThreadPool` 无界队列可能 OOM；`newCachedThreadPool` max 无限可能创建过多线程；`newSingleThreadExecutor` 同样无界队列。
+
+---
+
+### Q56. CountDownLatch 和 CyclicBarrier？
+
+**A：** CountDown 一次性，主线程等子任务；CyclicBarrier 可重用，多线程互相等到齐再继续（栅栏）。
+
+---
+
+### Q57. Semaphore 用途？
+
+**A：** 信号量控制并发数，如限流 N 个 DB 连接同时访问。
+
+---
+
+### Q58. CompletableFuture 常用方法？
+
+**A：** supplyAsync、thenApply、thenCompose、thenCombine、allOf、anyOf、exceptionally、handle。异步编排避免回调地狱。
+
+---
+
+### Q59. 死锁四个条件？如何避免？
+
+**A：** 互斥、占有且等待、不可抢占、循环等待。破坏任一：固定加锁顺序、tryLock 超时、银行家算法（理论）。
+
+---
+
+### Q60. 如何排查死锁？
+
+**A：** jstack 看 "Found one Java-level deadlock"；Arthas thread -b；VisualVM。预防：统一锁顺序、减小锁粒度。
+
+---
+
+# 四、JVM
+
+### Q61. JVM 内存结构？
+
+**A：** 线程私有：程序计数器、虚拟机栈、本地方法栈。线程共享：堆（对象）、方法区/MetaSpace（类元信息）、直接内存（NIO DirectBuffer，非 JVM 运行时数据区但相关）。
+
+---
+
+### Q62. 堆分代结构？
+
+**A：** 新生代（Eden + Survivor0/1）+ 老年代。对象优先 Eden，Minor GC 存活进 Survivor，年龄达阈值进 Old。
+
+---
+
+### Q63. 哪些 GC 算法？
+
+**A：** 标记-清除（碎片）、标记-复制（新生代）、标记-整理（老年代）。收集器：Serial、Parallel、CMS（已 deprecated）、G1、ZGC、Shenandoah。
+
+---
+
+### Q64. Minor GC 和 Full GC？
+
+**A：** Minor 清理新生代，频繁但快。Full 整堆+通常 MetaSpace，STW 长，应尽量减少。
+
+---
+
+### Q65. G1 特点？
+
+**A：** 分区 Region，可预测停顿（MaxGCPauseMillis），Mixed GC 回收部分 Old，适合大堆低延迟。JDK9+ 默认。
+
+---
+
+### Q66. ZGC 特点？
+
+**A：** 超低延迟（亚毫秒级 STW 目标），着色指针、读屏障，适合超大堆。JDK15+ 生产可用，JDK21 分代 ZGC。
+
+---
+
+### Q67. 如何排查 OOM？
+
+**A：** `-XX:+HeapDumpOnOutOfMemoryError`；MAT 分析 Dominator Tree、Leak Suspects；看 GC Roots 引用链；常见原因：缓存无界、ThreadLocal、类加载器泄漏、大对象。
+
+---
+
+### Q68. 类加载过程？
+
+**A：** 加载 → 验证 → 准备（静态变量默认值）→ 解析（符号引用转直接）→ 初始化（`<clinit>`）。主动使用触发初始化。
+
+---
+
+### Q69. 双亲委派模型？如何打破？
+
+**A：** 类加载请求先委派父加载器。打破：SPI（Thread Context ClassLoader）、Tomcat WebappClassLoader、OSGi、自定义加密类加载。
+
+---
+
+### Q70. 常用 JVM 参数？
+
+**A：** `-Xms/-Xmx` 堆；`-XX:MaxMetaspaceSize`；`-XX:+UseG1GC`；`-XX:MaxGCPauseMillis`；`-Xlog:gc*`；`-XX:+HeapDumpOnOutOfMemoryError`。
+
+---
+
+### Q71. 对象一定在堆上吗？
+
+**A：** 多数在堆。逃逸分析后可能栈上分配、标量替换。TLAB 线程本地分配缓冲加速堆分配。
+
+---
+
+### Q72. 强软弱虚引用？
+
+**A：** Strong 默认；Soft OOM 前回收（缓存）；Weak 下次 GC 回收（WeakHashMap）；Phantom 跟踪对象回收，用于堆外资源清理。
+
+---
+
+### Q73. JIT 是什么？
+
+**A：** 热点代码编译为本地机器码，C1/C2 编译器。OSR 栈上替换。`-XX:CompileThreshold` 控制。
+
+---
+
+### Q74. safepoint 是什么？
+
+**A：** 线程可安全暂停做 GC 的点。过长循环需可 polled 才能及时进入 safepoint。
+
+---
+
+# 五、Spring 生态
+
+### Q75. IoC 和 DI 是什么？
+
+**A：** 控制反转：对象创建交给容器。依赖注入：容器注入依赖（构造器、setter、字段）。降低耦合，便于测试。
+
+---
+
+### Q76. Bean 生命周期？
+
+**A：** 实例化 → 属性填充 → Aware 回调 → BeanPostProcessor before → @PostConstruct → InitializingBean → init-method → BPP after → 使用 → @PreDestroy → destroy → 销毁。
+
+---
+
+### Q77. Spring 如何解决循环依赖？
+
+**A：** 单例 + 属性注入：三级缓存（singletonObjects、earlySingletonObjects、singletonFactories）提前暴露半成品 Bean。构造器循环依赖无法解决。
+
+---
+
+### Q78. @Autowired 注入原理？
+
+**A：** AutowiredAnnotationBeanPostProcessor 解析 @Autowired/@Value/@Inject，DependencyDescriptor 找 Bean，按类型/名称/Qualifier 匹配。
+
+---
+
+### Q79. Spring AOP 原理？
+
+**A：** 动态代理。有接口 JDK Proxy；无接口 CGLIB 子类。切面在 BeanPostProcessor 阶段包装为代理对象。
+
+---
+
+### Q80. JDK 动态代理和 CGLIB 区别？
+
+**A：** JDK 基于接口 InvocationHandler；CGLIB 继承生成子类，不能代理 final 类/方法。Spring Boot 2 默认 CGLIB 代理类。
+
+---
+
+### Q81. Spring 事务传播行为？
+
+**A：** REQUIRED（默认，加入或新建）、REQUIRES_NEW（挂起当前新建）、NESTED（保存点嵌套）、SUPPORTS、NOT_SUPPORTED、MANDATORY、NEVER。
+
+---
+
+### Q82. @Transactional 失效场景？
+
+**A：** 同类内部调用（无代理）；方法非 public；异常被吞或非 RuntimeException 且未 rollbackFor；数据库/引擎不支持事务；多线程事务不传播。
+
+---
+
+### Q83. Spring Boot 自动配置原理？
+
+**A：** `@SpringBootApplication` → `@EnableAutoConfiguration` → `@Import(AutoConfigurationImportSelector)` → 读 `META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports` → `@ConditionalOnXxx` 条件装配。
+
+---
+
+### Q84. Spring MVC 请求流程？
+
+**A：** DispatcherServlet → HandlerMapping 找 Handler → HandlerAdapter 执行 Controller → 返回 ModelAndView/Body → ViewResolver 或 MessageConverter 写响应。
+
+---
+
+### Q85. Filter 和 Interceptor 区别？
+
+**A：** Filter Servlet 规范，DispatcherServlet 前后都可；Interceptor Spring MVC，Controller 前后，可访问 Handler。顺序：Filter → Interceptor → Controller。
+
+---
+
+### Q86. Spring Cloud 常见组件？
+
+**A：** Nacos/Eureka 注册发现；Config/Nacos 配置；Gateway/Zuul 网关；OpenFeign 声明式 HTTP；Sentinel/Hystrix 熔断限流；Seata 分布式事务。
+
+---
+
+### Q87. OpenFeign 原理？
+
+**A：** 动态代理 + 注解解析，整合 Ribbon/LoadBalancer 负载均衡，整合 Sentinel 等。本质是 HTTP 客户端封装。
+
+---
+
+### Q88. MyBatis 一级二级缓存？
+
+**A：** 一级 SqlSession 级别，默认开，同 Session 重复查询命中。二级 Mapper namespace 级别，需配置，跨 Session，更新 flush。注意脏读风险。
+
+---
+
+### Q89. #{} 和 ${} 区别？
+
+**A：** `#{}` 预编译占位符，防 SQL 注入。`${}` 字符串替换，用于动态表名/列名，需严格校验。
+
+---
+
+# 六、C++（概要 · 详见专题 120 题）
+
+> **完整版**：[面试题大全-C++专题.md](../C++嵌入式/面试题大全-C++专题.md)（C1～C120：现代 C++、STL、并发、模板、JNI 等）
+
+### Q90. C++ 和 Java 主要区别？
+
+**A：** C++ 编译为机器码无 VM；手动/RAII 内存管理；多继承；模板元编程；指针算术；无 GC。Java 字节码+JVM+GC，跨平台，单继承+接口。
+
+---
+
+### Q91. C++ 内存分区？
+
+**A：** 栈（局部变量、函数参数）、堆（new/malloc）、全局/静态区、常量区、代码区。栈自动回收，堆需 delete/free 或智能指针。
+
+---
+
+### Q92. 指针和引用的区别？
+
+**A：** 指针是变量存地址，可 null、可 reassignment、需 `*` 解引用。引用是别名，必须初始化、不能改绑、语法像值。函数参数引用避免拷贝。
+
+---
+
+### Q93. 左值、右值、移动语义？
+
+**A：** 左值可取地址持久对象；右值临时量。C++11 右值引用 `T&&` 启用移动构造/赋值，转移资源所有权，避免深拷贝。`std::move` 转右值。
+
+---
+
+### Q94. 智能指针有哪些？
+
+**A：**
+- `unique_ptr` 独占，不可拷贝可 move
+- `shared_ptr` 引用计数共享
+- `weak_ptr` 打破 shared_ptr 循环引用
+
+---
+
+### Q95. RAII 是什么？
+
+**A：** Resource Acquisition Is Initialization，构造获取资源析构释放。mutex lock_guard、文件 fstream、智能指针都是 RAII，异常安全。
+
+---
+
+### Q96. virtual 关键字作用？虚表？
+
+**A：** 运行时多态，基类指针调派生类重写方法。对象含 vptr 指向 vtable（虚函数表）。析构函数应 virtual 若通过基类指针 delete 派生对象。
+
+---
+
+### Q97. 纯虚函数和抽象类？
+
+**A：** `virtual void f() = 0;` 纯虚，类不可实例化。接口式抽象。C++ 无 interface 关键字，用全纯虚类模拟。
+
+---
+
+### Q98. 深拷贝和浅拷贝（C++）？
+
+**A：** 默认拷贝构造浅拷贝指针成员。需自定义 Rule of Three/Five：析构、拷贝构造、拷贝赋值（+移动构造、移动赋值）。深拷贝分配新资源。
+
+---
+
+### Q99. const 在 C++ 中的用法？
+
+**A：** const 变量、const 指针/引用、成员函数后 const（不修改成员）、constexpr 编译期常量。const 正确性。
+
+---
+
+### Q100. static 在 C++ 中？
+
+**A：** 静态成员变量类共享；静态成员函数无 this；文件作用域 static 内部链接（C++ 匿名 namespace 替代）。局部 static 单例线程安全（C++11 magic static）。
+
+---
+
+### Q101. STL 六大组件？
+
+**A：** 容器（vector/map）、迭代器、算法（sort/find）、仿函数、适配器（stack/queue on deque）、空间配置器（allocator）。
+
+---
+
+### Q102. vector 和 list 区别？
+
+**A：** vector 连续内存，随机访问 O(1)，中间插入 O(n)，扩容 amortized。list 双向链表，插入 O(1)，无随机访问，内存不连续缓存差。多数场景 vector 优先。
+
+---
+
+### Q103. map 和 unordered_map？
+
+**A：** map 红黑树 O(log n) 有序。unordered_map 哈希 O(1) 均摊无序。选键需 hash 和 equal。
+
+---
+
+### Q104. 迭代器失效（vector）？
+
+**A：** vector 扩容或 erase 后，指向被删元素及之后的迭代器失效。插入可能全部失效。erase 应 `it = vec.erase(it)`。
+
+---
+
+### Q105. 模板和 Java 泛型区别？
+
+**A：** C++ 模板是编译期代码生成（duck typing），每个实例化独立代码。Java 泛型擦除，运行时无类型信息。C++ 模板错误信息难读。
+
+---
+
+### Q106. 多线程 C++11 起？
+
+**A：** std::thread、mutex、lock_guard、unique_lock、condition_variable、atomic、future/promise、async。避免裸 pthread。
+
+---
+
+### Q107. atomic 和 mutex？
+
+**A：** atomic 无锁原子操作，适合简单计数/标志。mutex 保护临界区复杂逻辑。atomic 不能替代所有同步。
+
+---
+
+### Q108. 内存对齐为什么？
+
+**A：** CPU 按字长访问效率；未对齐可能性能降或崩溃（某些架构）。`alignas`、`sizeof/alignof` 结构体 padding。
+
+---
+
+### Q109. 构造函数初始化列表？
+
+**A：** `: member(val)` 在体前初始化，const/引用成员必须用。比赋值更高效（避免二次构造）。
+
+---
+
+### Q110. 三种 C++ 内存管理方式？
+
+**A：** static/auto 栈；new/delete；malloc/free（不调用构造/析构）。推荐 make_unique/make_shared。
+
+---
+
+### Q111. extern "C" 作用？
+
+**A：** C++ 名字修饰（name mangling）与 C 互操作，导出 C 链接符号给 JNI 等场景。
+
+---
+
+### Q112. JNI 中 C++ 和 Java 交互注意点？
+
+**A：** 局部引用及时 DeleteLocalRef；全局引用 GlobalRef；字符串 GetStringUTFChars/Release；异常 CheckException；不在 wrong 线程 Attach 当前线程。
+
+---
+
+# 七、MySQL 与 SQL
+
+### Q113. InnoDB 和 MyISAM？
+
+**A：** InnoDB 事务、行锁、外键、MVCC、崩溃恢复，默认。MyISAM 表锁、无事务、全文索引（旧），不适合 OLTP。
+
+---
+
+### Q114. B+ 树为什么适合索引？
+
+**A：** 多路平衡，树高低 IO 少；叶子链表便于范围扫描；非叶只存 key 扇出大。B 树数据也在非叶，范围查询不如 B+。
+
+---
+
+### Q115. 聚簇索引和非聚簇索引？
+
+**A：** InnoDB 聚簇索引叶子存整行，表即索引。二级索引叶子存主键值，回表查聚簇。覆盖索引避免回表。
+
+---
+
+### Q116. 什么是覆盖索引？
+
+**A：** 查询列全在索引中，Extra 显示 Using index，无需回表。
+
+---
+
+### Q117. 最左前缀原则？
+
+**A：** 联合索引 (a,b,c) 可用到 a；a,b；a,b,c 的顺序前缀。跳过左列无法用索引（除 index skip scan 优化有限场景）。
+
+---
+
+### Q118. 索引下推 ICP？
+
+**A：** 二级索引扫描时，存储引擎层先按 WHERE 部分条件过滤，减少回表行数。
+
+---
+
+### Q119. explain 关键字段？
+
+**A：** type（system>const>eq_ref>ref>range>index>ALL，越左越好）、key、rows、Extra（Using index、Using filesort、Using temporary 需关注）。
+
+---
+
+### Q120. 事务 ACID？
+
+**A：** Atomicity 原子 undo log；Consistency 业务+约束；Isolation 隔离 MVCC+锁；Durability redo log。
+
+---
+
+### Q121. 四种隔离级别？现象？
+
+**A：** 读未提交（脏读）；读已提交 RC（不可重复读）；可重复读 RR（InnoDB 默认，MVCC 防快照幻读，当前读 gap lock）；串行化。
+
+---
+
+### Q122. MVCC 原理？
+
+**A：** 隐藏列 trx_id、roll_pointer 指向 undo 版本链。Read View 判断可见性。快照读不加锁；当前读 select for update 加锁。
+
+---
+
+### Q123. 间隙锁 next-key lock？
+
+**A：** 锁住记录及间隙，防 RR 下当前读幻读。可能导致死锁和插入阻塞。
+
+---
+
+### Q124. redo log 和 binlog？
+
+**A：** redo InnoDB 物理页修改，崩溃恢复，循环写。binlog Server 层逻辑/sql，主从复制、PITR。两阶段提交保证一致。
+
+---
+
+### Q125. 慢 SQL 优化步骤？
+
+**A：** 开启慢日志 → explain → 索引/改写 SQL → 避免 select * → 分页深翻页优化 → 读写分离/归档。
+
+---
+
+### Q126. 分库分表策略？
+
+**A：** 垂直拆库按业务；水平拆表按 user_id hash 或 range。问题：跨库 join、全局 ID、排序分页。ShardingSphere 等中间件。
+
+---
+
+### Q127. 分布式 ID 方案？
+
+**A：** 雪花算法（时间+机器+序列）；号段模式（DB/Leaf）；UUID（无序索引差）；Redis INCR。
+
+---
+
+### Q128. 雪花算法时钟回拨？
+
+**A：** 检测回拨等待或抛异常；备用 workerId；美团 Leaf 等改进方案。
+
+---
+
+### Q129. 乐观锁和悲观锁？
+
+**A：** 乐观 version 字段 CAS 更新；悲观 select for update。读多写少乐观，冲突多悲观。
+
+---
+
+### Q130. 大表 DDL 怎么做？
+
+**A：** pt-online-schema-change、gh-ost 在线改表；或双写迁移。避免直接 alter 锁表。
+
+---
+
+# 八、Redis
+
+### Q131. Redis 为什么快？
+
+**A：** 内存、单线程避免锁（6.0 多 IO 线程）、IO 多路复用 epoll、高效数据结构。
+
+---
+
+### Q132. 五种基本类型？
+
+**A：** String、Hash、List、Set、Sorted Set。外加 Bitmap、HyperLogLog、GEO、Stream。
+
+---
+
+### Q133. 持久化 RDB 和 AOF？
+
+**A：** RDB 快照，恢复快可能丢最后一次快照后数据。AOF 日志 append，everysec 丢 1 秒。混合持久化 Redis 4+。rewrite 压缩 AOF。
+
+---
+
+### Q134. 缓存穿透、击穿、雪崩？
+
+**A：**
+- **穿透**：查不存在的数据，打穿 DB → 布隆过滤器/缓存空值
+- **击穿**：热点 key 过期瞬间并发 → 互斥锁/逻辑过期
+- **雪崩**：大量 key 同时过期 → 随机 TTL/多级缓存/限流
+
+---
+
+### Q135. 缓存与 DB 一致性？
+
+**A：** Cache Aside：读 miss 查 DB 写缓存；写先更新 DB 再删缓存（延迟双删）。强一致需分布式事务或订阅 binlog 异步删。
+
+---
+
+### Q136. Redis 分布式锁实现？
+
+**A：** `SET key uuid NX PX ttl`；释放用 Lua 比较 uuid 再 del。Redisson 看门狗续期。RedLock 有争议，主从切换可能丢锁。
+
+---
+
+### Q137. Redis 集群模式？
+
+**A：** 主从复制+哨兵高可用；Cluster 16384 slot 分片，MOVED/ASK 重定向；Codis/Twemproxy 代理方案。
+
+---
+
+### Q138. 热 key 问题？
+
+**A：** 本地缓存、多副本 key 分散、读写分离、热 key 探测迁移。
+
+---
+
+### Q139. 大 key 问题？
+
+**A：** 删除阻塞、内存不均、迁移慢。拆分、异步 unlink、定期 scan。
+
+---
+
+### Q140. Redis 事务？
+
+**A：** MULTI/EXEC 非回滚（命令错误全不执行，运行时错误不回滚）。Watch 乐观锁。与关系库事务不同。
+
+---
+
+# 九、消息队列
+
+### Q141. 为什么用 MQ？
+
+**A：** 解耦、异步、削峰填谷、最终一致性、广播。
+
+---
+
+### Q142. Kafka 架构？
+
+**A：** Topic 分区，每分区有序；Consumer Group 消费；Broker 存 log segment；ZooKeeper/KRaft 元数据。
+
+---
+
+### Q143. Kafka 如何保证消息不丢？
+
+**A：** 生产者 acks=all、retries；Broker 副本 ISR；消费者先处理再 commit offset（或事务）。
+
+---
+
+### Q144. 消息重复消费怎么办？
+
+**A：** 幂等：业务唯一键、Redis set、DB 唯一索引、状态机。
+
+---
+
+### Q145. 消息顺序？
+
+**A：** 单分区单消费者；或按 key hash 到同分区。全局顺序代价大。
+
+---
+
+### Q146. RocketMQ 和 Kafka 选型？
+
+**A：** Kafka 吞吐日志流；RocketMQ 延迟消息、事务消息、业务 MQ 功能丰富，国内生态好。
+
+---
+
+### Q147. 事务消息？
+
+**A：** RocketMQ 半消息+本地事务+回查。Kafka 事务 API 0.11+。保证本地事务与发送一致。
+
+---
+
+### Q148. 积压怎么处理？
+
+**A：** 扩容消费者（≤分区数）、临时降级、批量消费、跳过非核心、增加分区（需规划）。
+
+---
+
+# 十、Elasticsearch
+
+### Q149. ES 为什么快？
+
+**A：** 倒排索引、Lucene 段、近实时搜索、分布式分片并行、缓存 filter context。
+
+---
+
+### Q150. 倒排索引是什么？
+
+**A：** 词项 → 文档 ID 列表（+positions/offsets）。正排是 doc → content。
+
+---
+
+### Q151. text 和 keyword？
+
+**A：** text 分词全文检索；keyword 不分词精确匹配、聚合、排序。
+
+---
+
+### Q152. 深分页问题？
+
+**A：** from+size 大 offset 昂贵。用 search_after、scroll（导出）、PIT+search_after。
+
+---
+
+### Q153. ES 和 MySQL 同步？
+
+**A：** Canal 监听 binlog；Logstash JDBC；双写（不推荐）；MQ 异步。
+
+---
+
+# 十一、分布式系统
+
+### Q154. CAP 定理？
+
+**A：** 分区容错 P 必选；C 强一致和 A 可用不可兼得。CP 如 ZooKeeper；AP 如 Eureka。
+
+---
+
+### Q155. BASE 理论？
+
+**A：** Basically Available、Soft state、Eventually consistent。实践妥协。
+
+---
+
+### Q156. 分布式事务方案？
+
+**A：** 2PC/XA 强一致性能差；TCC  Try Confirm Cancel；Saga 长事务补偿；本地消息表；MQ 事务消息；Seata AT（undo_log 自动回滚）。
+
+---
+
+### Q157. TCC 空悬挂、幂等、悬挂？
+
+**A：** 空悬挂 Try 未执行收到 Cancel；幂等多次 Confirm；悬挂 Cancel 比 Try 先到。需防悬挂表、幂等键。
+
+---
+
+### Q158. 限流算法？
+
+**A：** 固定窗口、滑动窗口、漏桶、令牌桶。Sentinel 滑动窗口+预热。
+
+---
+
+### Q159. 熔断和降级？
+
+**A：** 熔断器 Closed→Open→Half-Open，失败率超阈值打开。降级返回默认值/缓存，保核心可用。
+
+---
+
+### Q160. 一致性哈希？
+
+**A：** 节点和数据 hash 到环，顺时针找节点。虚拟节点解决倾斜。用于缓存、分片。
+
+---
+
+### Q161. Raft 简要？
+
+**A：** 选举 Leader；日志复制 majority 提交；Leader 换选保证一致性。Etcd、Consul 使用。
+
+---
+
+### Q162. 服务注册发现？
+
+**A：** 服务启动注册 Nacos/Eureka，客户端拉取或订阅变更，负载均衡调用。健康检查剔除实例。
+
+---
+
+### Q163. 灰度发布？
+
+**A：** 按用户/Header/比例路由到新版本。Gateway 权重、K8s Ingress、Feature Flag。
+
+---
+
+# 十二、系统设计
+
+### Q164. 如何设计短链系统？
+
+**A：** 62 进制 id 或 hash+冲突检测；301/302 跳转；Redis 缓存热点；分库分表；防爬虫/QPS 限流；统计 UV/PV 异步 MQ。
+
+---
+
+### Q165. 如何设计秒杀？
+
+**A：** 静态化/CDN；按钮防重复；Redis 预减库存+Lua；MQ 异步下单；限流；库存独立服务；超卖用 DB 乐观锁兜底。
+
+---
+
+### Q166. 如何估算 QPS 和存储？
+
+**A：** DAU × 人均请求 / 86400 × 峰值系数；存储 = 条数 × 单条大小 × 副本 × 保留天数。
+
+---
+
+### Q167. 高可用怎么做？
+
+**A：** 多副本、无单点、健康检查、自动 failover、多 AZ/机房、限流熔断、降级、监控告警。
+
+---
+
+### Q168. 如何设计分布式 ID？
+
+**A：** 见 Q127；要求趋势递增可选 DB 号段；全局唯一雪花；安全考虑 workerId 分配中心。
+
+---
+
+### Q169. Feed 流推拉模型？
+
+**A：** 推模式写扩散（关注少）；拉模式读扩散（大 V）；混合推拉。
+
+---
+
+# 十三、AI 与大模型应用开发（概要 · 详见专题 120 题）
+
+> **完整版**：[面试题大全-AI专题.md](../AI工程/面试题大全-AI专题.md)（A1～A120：Transformer、RAG、Agent、微调、Spring AI、Cursor 等）
+
+### Q170. 什么是 LLM？Transformer 核心？
+
+**A：** 大语言模型，Decoder-only Transformer 为主。Self-Attention 捕获上下文依赖，并行训练，生成下一个 token。
+
+---
+
+### Q171. Token 是什么？
+
+**A：** 模型输入输出最小单位，非严格一字。影响计费、上下文长度、速度。中英文 token 密度不同。
+
+---
+
+### Q172. Temperature 和 Top-p？
+
+**A：** Temperature 越高随机性越大，代码用 0～0.3。Top-p 核采样截断概率质量。控制多样性。
+
+---
+
+### Q173. 什么是幻觉？如何缓解？
+
+**A：** 模型生成 plausible 但错误内容。缓解：RAG grounding、降低 temperature、Structured Output、人工审核、引用溯源。
+
+---
+
+### Q174. RAG 是什么？流程？
+
+**A：** Retrieval-Augmented Generation。文档切分 → Embedding → 向量库 → 查询检索 Top-K → 拼入 Prompt → LLM 生成。解决私有知识和时效。
+
+---
+
+### Q175. RAG 和微调怎么选？
+
+**A：** 知识更新选 RAG；改行为/风格/格式选微调 SFT/LoRA；实时工具用 Agent。常组合：RAG+Prompt。
+
+---
+
+### Q176. Embedding 是什么？
+
+**A：** 文本映射高维向量，语义相似距离近。同一模型索引和查询。OpenAI text-embedding、BGE、M3E 等。
+
+---
+
+### Q177. 向量数据库选型？
+
+**A：** Milvus 大规模；Qdrant 易用过滤；Pgvector 运维简单；ES kNN 混合检索。看规模、运维、混合需求。
+
+---
+
+### Q178. Hybrid Search？
+
+**A：** 向量检索 + BM25 关键词，RRF 融合。提高专有名词、数字命中。
+
+---
+
+### Q179. Reranker 作用？
+
+**A：** 对 Top-50 精排到 Top-5，Cross-encoder 更准确但更慢。提升 RAG 答案质量。
+
+---
+
+### Q180. Chunk 切分策略？
+
+**A：** 固定长度、按标题、RecursiveCharacterTextSplitter、语义切分。512～1024 token 常见，重叠 overlap 防断句。
+
+---
+
+### Q181. 什么是 Agent？
+
+**A：** LLM + 规划 + Tool 调用 + 记忆，多步自主完成任务。ReAct：Thought-Action-Observation 循环。
+
+---
+
+### Q182. Function Calling 原理？
+
+**A：** 模型输出 JSON 指定函数名和参数；应用执行函数；结果塞回 messages；模型继续推理。OpenAI tools、Spring AI Function。
+
+---
+
+### Q183. MCP 是什么？
+
+**A：** Model Context Protocol，标准化 AI 应用连接外部工具和数据源。Client（Cursor）↔ MCP Server（DB/API/文件）。
+
+---
+
+### Q184. Prompt Injection 如何防？
+
+**A：** 输入过滤、System/User 分隔、权限最小化 Tool、输出校验、敏感操作 Human-in-the-loop、不要 concaten 不可信文本到 system。
+
+---
+
+### Q185. Context Window 超限怎么办？
+
+**A：** 摘要历史、滑动窗口、RAG 外挂、Map-Reduce 长文档、选长上下文模型。
+
+---
+
+### Q186. 流式输出 SSE 好处？
+
+**A：** 降低 TTFT，用户体验好。Server-Sent Events 或 WebSocket。Spring WebFlux/SseEmitter。
+
+---
+
+### Q187. LLM 应用如何控成本？
+
+**A：** 小模型路由、缓存相同 query、缩短 Prompt、RAG 减少无关 context、批 Embedding、限流配额、监控 token。
+
+---
+
+### Q188. 如何评估 RAG 效果？
+
+**A：** 构建 golden QA 集；指标 faithfulness、answer relevance、context precision；RAGAS 框架；人工抽检；A/B 测试。
+
+---
+
+### Q189. LoRA 是什么？
+
+**A：** Low-Rank Adaptation，低秩矩阵微调大模型少量参数，单卡可训，不改变基座权重。
+
+---
+
+### Q190. RLHF 简要？
+
+**A：** 监督微调 SFT → 训练奖励模型 RM → PPO 强化学习使输出符合人类偏好。ChatGPT 关键步骤。
+
+---
+
+### Q191. Spring AI 核心概念？
+
+**A：** ChatClient、Prompt、Message、Advisor（含 RAG）、VectorStore、EmbeddingModel、FunctionCallback。
+
+---
+
+### Q192. LangChain4j 是什么？
+
+**A：** Java 版 LangChain，链式组合 LLM、Memory、Tool、RAG。与 Spring AI 可对比选型。
+
+---
+
+### Q193. Ollama 和 vLLM？
+
+**A：** Ollama 本地易用跑模型；vLLM 生产级高吞吐推理服务，PagedAttention，GPU 部署。
+
+---
+
+### Q194. 多模态 LLM？
+
+**A：** 图文音输入，GPT-4V、Qwen-VL。应用：截图排错、文档 OCR+理解。
+
+---
+
+### Q195. AI 代码助手如何安全使用？
+
+**A：** Review 每行 diff；不提交密钥；测编译和测试；防编造 API；敏感逻辑人工写；遵守公司数据政策。
+
+---
+
+### Q196. Cursor Rules 作用？
+
+**A：** 项目级持久 Prompt，约束 AI 编码风格、架构、框架版本，提高生成一致性。
+
+---
+
+### Q197. JSON Mode / Structured Output？
+
+**A：** 强制模型输出合法 JSON/schema，便于程序解析，减少后处理。OpenAI response_format、Spring AI BeanOutputConverter。
+
+---
+
+### Q198. 长文档 QA 架构？
+
+**A：** 解析→切分→向量化→索引；查询时 retrieve→rerank→generate with citations；异步 pipeline 更新索引。
+
+---
+
+### Q199. Agent 死循环怎么防？
+
+**A：** max_iterations 上限、超时、重复检测、Human approval、Tool 返回明确错误。
+
+---
+
+### Q200. LLM-as-Judge？
+
+**A：** 用强模型评估弱模型输出质量，自动化评估，注意偏见和成本。
+
+---
+
+# 十四、Linux 与运维
+
+### Q201. 常用排查命令？
+
+**A：** top/htop、ps、free -h、df -h、iostat、vmstat、netstat/ss、lsof、tcpdump、journalctl、dmesg。
+
+---
+
+### Q202. 如何查端口占用？
+
+**A：** `ss -tlnp | grep 8080` 或 `lsof -i:8080`。
+
+---
+
+### Q203. 如何查 CPU 高？
+
+**A：** top 找进程 → perf/top -H 找线程 → jstack/Arthas（Java）或 py-spy（Python）→ 火焰图。
+
+---
+
+### Q204. 如何查内存高？
+
+**A：** free、/proc/meminfo、进程 RSS、pmap；Java 用 jmap -heap、MAT。
+
+---
+
+### Q205. 如何查磁盘满？
+
+**A：** df -h、du -sh /* 找大目录；清理日志、core dump、临时文件；logrotate。
+
+---
+
+### Q206. load average 含义？
+
+**A：** 1/5/15 分钟运行队列+不可中断 IO 平均长度。CPU 密集高 load 正常；IO wait 高也升 load。结合 core 数看。
+
+---
+
+### Q207. 软链接和硬链接？
+
+**A：** 硬链接同 inode 增引用；软链接符号路径。目录只能软链。删原文件硬链仍有效软链断。
+
+---
+
+### Q208. 文件权限 rwx？
+
+**A：** 421 累加，u/g/o 或 ugo。chmod 755。umask 默认屏蔽。
+
+---
+
+### Q209. cron 和 systemd timer？
+
+**A：** crontab 定时任务；systemd timer 现代替代，依赖清晰。
+
+---
+
+### Q210. tail -f 和 less？
+
+**A：** tail -f 实时日志；less +F 类似可中断搜索。
+
+---
+
+### Q211. 零拷贝 sendfile？
+
+**A：** 文件到 socket 内核态直接传，减少用户态拷贝。Netty、Kafka 使用。
+
+---
+
+### Q212. ulimit 是什么？
+
+**A：** 进程资源限制，open files、core size。高并发需调 `nofile`。`/etc/security/limits.conf`。
+
+---
+
+### Q213. SSH 隧道用途？
+
+**A：** 本地端口转发访问内网服务；跳板机；`-L -R -D`。
+
+---
+
+### Q214. 日志规范？
+
+**A：** 结构化 JSON、traceId、级别规范、不打敏感信息、集中 ELK/Loki、采样与轮转。
+
+---
+
+### Q215. 监控四大黄金信号？
+
+**A：** Google SRE：Latency、Traffic、Errors、Saturation。Prometheus+Grafana 实践。
+
+---
+
+### Q216. 告警设计原则？
+
+**A：**  actionable、避免告警疲劳、分级、关联 runbook、on-call 轮值。
+
+---
+
+# 十五、Docker 与 Kubernetes
+
+### Q217. Docker 镜像和容器？
+
+**A：** 镜像是只读层模板；容器是镜像可写层+运行实例。Union FS 联合文件系统。
+
+---
+
+### Q218. Dockerfile 最佳实践？
+
+**A：** 多阶段构建减小镜像；非 root 用户；少层合并 RUN；.dockerignore；固定版本 tag 非 latest。
+
+---
+
+### Q219. Docker 网络模式？
+
+**A：** bridge 默认；host 共享主机网络；none 无网；overlay Swarm/K8s 跨主机。
+
+---
+
+### Q220. K8s 核心对象？
+
+**A：** Pod 最小调度单元；Deployment 无状态副本；StatefulSet 有状态；Service 服务发现；Ingress 七层路由；ConfigMap/Secret 配置。
+
+---
+
+### Q221. Pod 生命周期？
+
+**A：** Pending → Running → Succeeded/Failed。探针 liveness 重启、readiness 摘流量、startup 慢启动。
+
+---
+
+### Q222. Service ClusterIP/NodePort/LoadBalancer？
+
+**A：** ClusterIP 集群内；NodePort 节点端口；LoadBalancer 云 LB。Ingress 七层域名路由。
+
+---
+
+### Q223. 滚动更新和回滚？
+
+**A：** Deployment strategy RollingUpdate maxSurge/maxUnavailable；`kubectl rollout undo`。
+
+---
+
+### Q224. HPA 是什么？
+
+**A：** Horizontal Pod Autoscaler 按 CPU/自定义指标扩缩副本。
+
+---
+
+### Q225. ConfigMap 热更新？
+
+**A：** 挂载 volume，更新 ConfigMap 后需重启 Pod 或用 subPath 除外；部分应用 watch 文件 reload。
+
+---
+
+### Q226. K8s 调度流程？
+
+**A：** API Server → Scheduler 选 Node（资源、亲和/反亲和、污点容忍）→ kubelet 拉镜像起容器。
+
+---
+
+### Q227. CI/CD 典型流程？
+
+**A：** git push → CI 构建测试 → 打镜像 push registry → CD 更新 Deployment/Helm → 健康检查。
+
+---
+
+### Q228. Helm 是什么？
+
+**A：** K8s 包管理，Chart 模板化 yaml，values 配置，版本 release。
+
+---
+
+# 十六、计算机网络
+
+### Q229. OSI 和 TCP/IP 模型？
+
+**A：** OSI 七层；TCP/IP 四层：链路、网络 IP、传输 TCP/UDP、应用 HTTP/DNS。
+
+---
+
+### Q230. TCP 三次握手四次挥手？
+
+**A：** 握手 SYN→SYN+ACK→ACK 确认双方收发能力。挥手 FIN+ACK 四次因全双工需双方关闭。TIME_WAIT 2MSL 防旧包。
+
+---
+
+### Q231. TCP 和 UDP？
+
+**A：** TCP 可靠有序连接、拥塞控制。UDP 无连接快、丢包不重传。视频、DNS 用 UDP；HTTP 用 TCP（HTTP/3 QUIC over UDP）。
+
+---
+
+### Q232. HTTP 1.1 / 2 / 3？
+
+**A：** 1.1 长连接、管道化有限。2 多路复用、头部压缩 HPACK、二进制帧。3 QUIC 基于 UDP，解决队头阻塞、连接迁移。
+
+---
+
+### Q233. HTTPS 握手过程？
+
+**A：** TLS：ClientHello → ServerHello 证书 → 密钥交换 → 对称密钥加密 HTTP。证书链 CA 验证防中间人。
+
+---
+
+### Q234. GET 和 POST 区别？
+
+**A：** 语义 GET 幂等取资源，POST 提交。GET 参数 URL，POST body。缓存、书签、长度限制差异。实际安全不取决于方法。
+
+---
+
+### Q235. 状态码 301/302/304/401/403/429/502？
+
+**A：** 301 永久重定向；302 临时；304 未修改缓存；401 未认证；403 无权限；429 限流；502 网关上游错误。
+
+---
+
+### Q236. Cookie 和 Session？
+
+**A：** Session 服务端存状态，Cookie 带 SessionId。JWT 无状态自包含，注意过期和撤销。
+
+---
+
+### Q237. DNS 解析过程？
+
+**A：** 浏览器缓存 → OS 缓存 → 递归解析器 → 根 → TLD → 权威 DNS。CDN CNAME 就近接入。
+
+---
+
+### Q238. WebSocket 和 HTTP？
+
+**A：** WebSocket 全双工长连接，适合 IM、推送。HTTP 请求响应。SSE 服务端单向流。
+
+---
+
+### Q239. 粘包拆包 TCP？
+
+**A：** TCP 字节流无消息边界。应用层定长、分隔符、长度头。Netty LengthFieldBasedFrameDecoder。
+
+---
+
+### Q240. CDN 原理？
+
+**A：** 边缘节点缓存静态资源，DNS 智能解析就近，回源、刷新、预热。
+
+---
+
+# 十七、操作系统
+
+### Q241. 进程和线程（OS 视角）？
+
+**A：** 进程 PCB 独立资源；线程共享地址空间轻量调度。内核线程 vs 用户线程。
+
+---
+
+### Q242. 进程间通信 IPC？
+
+**A：** 管道、命名管道、消息队列、共享内存（快）、信号量、Socket、信号。
+
+---
+
+### Q243. 用户态和内核态？
+
+**A：** 特权级，系统调用、中断、异常切换内核态。上下文切换有开销。
+
+---
+
+### Q244. 虚拟内存？
+
+**A：** 页表映射虚拟地址到物理页，MMU。好处：隔离、大于物理内存、共享库、lazy allocation。
+
+---
+
+### Q245. 页面置换算法？
+
+**A：** FIFO、LRU、LFU、Clock。Belady 异常 FIFO 可能增缺页。
+
+---
+
+### Q246. 死锁（OS）条件？
+
+**A：** 同并发 Q59。银行家算法避免不安全状态。
+
+---
+
+### Q247. 磁盘 IO 调度？
+
+**A：** FCFS、SCAN、C-SCAN。SSD 不同优化（无寻道）。
+
+---
+
+### Q248. epoll 和 select/poll？
+
+**A：** select  fd 集合大小限制 O(n) 扫描。poll 无 1024 限仍 O(n)。epoll 事件驱动 O(1) 活跃连接，边缘/水平触发。
+
+---
+
+# 十八、数据结构与算法（概念）
+
+### Q249. 时间复杂度 Big O 常见？
+
+**A：** O(1) O(log n) O(n) O(n log n) O(n²) O(2^n)。均摊分析 amortized。
+
+---
+
+### Q250. 数组和链表？
+
+**A：** 数组连续 O(1) 随机访问插入慢；链表 O(1) 插入删指针 O(n) 查找。跳表 Redis ZSet O(log n)。
+
+---
+
+### Q251. 栈和队列应用？
+
+**A：** 栈：括号匹配、单调栈、DFS。队列：BFS、滑动窗口、任务调度。
+
+---
+
+### Q252. 哈希表冲突解决？
+
+**A：** 链地址法（HashMap）；开放寻址线性/二次探测（ThreadLocalMap）。
+
+---
+
+### Q253. 二叉树遍历？
+
+**A：** 前中后序、层序。递归或栈/队列迭代。BST 中序有序。
+
+---
+
+### Q254. 红黑树特点？
+
+**A：** 自平衡 BST，黑高平衡，插入删除 O(log n)。HashMap 树化、TreeMap。
+
+---
+
+### Q255. 堆和应用？
+
+**A：** 完全二叉树，大/小顶堆。TopK、优先队列、堆排序 O(n log n)。
+
+---
+
+### Q256. 二分查找前提？
+
+**A：** 有序、无重复或可接受。边界 `left=0, right=n-1` 或 `right=n`，防溢出 mid=left+(right-left)/2。
+
+---
+
+### Q257. 动态规划三要素？
+
+**A：** 最优子结构、重叠子问题、状态转移方程。自顶向下记忆化或自底向上。
+
+---
+
+### Q258. BFS 和 DFS？
+
+**A：** BFS 队列最短路径（无权）；DFS 栈/递归路径、连通分量、回溯。
+
+---
+
+### Q259. 拓扑排序？
+
+**A：** DAG 入度减一，Kahn 或 DFS 后序逆序。依赖排序、课程表。
+
+---
+
+### Q260. 并查集？
+
+**A：** 路径压缩+按秩合并，近乎 O(1) 合并查询。连通性、最小生成树 Kruskal。
+
+---
+
+# 十九、设计模式
+
+### Q261. 单例模式几种写法？
+
+**A：** 饿汉；懒汉 synchronized；DCL+volatile；静态内部类；枚举（最佳防反射序列化）。
+
+---
+
+### Q262. 工厂 vs 抽象工厂？
+
+**A：** 工厂方法一个产品等级；抽象工厂一族产品（UI 主题）。
+
+---
+
+### Q263. 策略模式场景？
+
+**A：** 多算法可替换，消除 if-else。支付渠道、促销规则。
+
+---
+
+### Q264. 观察者模式？
+
+**A：** 发布订阅，Spring Event、MQ 类似。解耦事件生产消费。
+
+---
+
+### Q265. 代理模式？
+
+**A：** 静态代理；JDK 动态代理；CGLIB。AOP、RPC 客户端 stub。
+
+---
+
+### Q266. 装饰器模式？
+
+**A：** 包装增强功能，IO 流 BufferedReader、Java I/O 经典。
+
+---
+
+### Q267. 责任链模式？
+
+**A：** 请求沿链传递，Filter、Interceptor、审批流。
+
+---
+
+### Q268. 模板方法？
+
+**A：** 父类定义骨架，子类实现步骤。JdbcTemplate、Servlet 生命周期。
+
+---
+
+# 二十、场景题与软技能
+
+### Q269. 线上接口突然变慢怎么排查？
+
+**A：** 监控看 RT/错误率 → 链路追踪慢 span → 线程池/GC/DB 慢 SQL/下游超时 → 限流保护 → 回滚/扩容 → 复盘。
+
+---
+
+### Q270. 如何保证接口幂等？
+
+**A：** 唯一业务键+DB 唯一索引；Token 防重提交；Redis setnx；状态机 CAS；MQ 消费幂等表。
+
+---
+
+### Q271. 如何设计 RESTful API？
+
+**A：** 资源名词 URI、HTTP 动词、状态码、版本 /v1、分页、错误码结构、HATEOAS 可选、OpenAPI 文档。
+
+---
+
+### Q272. 微服务拆分原则？
+
+**A：** DDD 限界上下文、高内聚低耦合、数据独立、团队边界、避免分布式单体、渐进拆分。
+
+---
+
+### Q273. 技术选型怎么做？
+
+**A：** 场景、非功能需求（QPS、延迟、一致性）、团队熟悉度、运维成本、社区、POC、避免 resume driven。
+
+---
+
+### Q274. 如何做 Code Review？
+
+**A：** 正确性、可读性、边界、安全、性能、测试、符合规范。友善具体建议，自动化 lint 辅助。
+
+---
+
+### Q275. 故障复盘写什么？
+
+**A：** 时间线、影响面、根因（5 Whys）、触发条件、修复动作、短期长期改进、负责人 deadline。
+
+---
+
+### Q276. 你最大的技术挑战？（开放题框架）
+
+**A：** STAR：背景规模 → 你的任务 → 技术行动 2～3 点 → 量化结果。准备 5 个故事见 [面试与晋升素材库.md](../00-通用/面试与晋升素材库.md)。
+
+---
+
+### Q277. 为什么离开上一家公司？（HR）
+
+**A：** 积极：寻求更大技术挑战/业务域/成长空间。不贬前雇主。与岗位匹配。
+
+---
+
+### Q278. 未来 3 年规划？
+
+**A：** 深度（架构/领域专家）或广度（全栈/AI 应用）择一主线。与应聘岗位对齐，具体可执行。
+
+---
+
+### Q279. 如何带新人？
+
+**A：**  onboarding 文档、Buddy、小任务递进、Review 反馈、分享会、鼓励提问。
+
+---
+
+### Q280. 996 看法？
+
+**A：** 客观：项目紧急短期可接受，长期损害效率健康。强调效率、优先级、可持续交付。（按个人价值观诚实答）
+
+---
+
+# 二十一、Java 深挖追问
+
+> 主问题答完后常见追问，面试加分项。
+
+### Q281. HashMap 为什么树化阈值是 8，退化是 6？
+
+**A：** Poisson 分布下单桶长度≥8 概率极低（约千万分之一），树化防哈希攻击 O(n)→O(log n)。退化 6 防频繁树化/链表抖动（中间留 buffer）。
+
+---
+
+### Q282. HashMap resize 时 rehash 怎么优化 JDK8？
+
+**A：** 不需要重新 mod 算索引，看 old 容量对应 bit： `(hash & oldCap) != 0` 则新索引 = oldIndex + oldCap，O(1) 迁移。
+
+---
+
+### Q283. ConcurrentHashMap size 如何统计？
+
+**A：** JDK8 baseCount + CounterCell 数组分散累加，类似 LongAdder，减少 CAS 竞争。size() 求和可能不精确。
+
+---
+
+### Q284. synchronized 锁升级能降级吗？
+
+**A：** 偏向锁可撤销（批量重偏向）；膨胀为重量锁后不会自动降回轻量。GC 移动对象会重置锁状态。
+
+---
+
+### Q285. volatile 和 synchronized 可见性区别？
+
+**A：** 都能保证可见性。volatile 不保证复合操作原子性；synchronized 同时保证互斥+可见性+有序性（释放锁 happens-before 获锁）。
+
+---
+
+### Q286. ThreadPoolExecutor 核心线程会回收吗？
+
+**A：** 默认不会，`allowCoreThreadTimeOut(true)` 且 keepAlive>0 时核心线程超时也可回收。
+
+---
+
+### Q287. ForkJoinPool 和 ThreadPoolExecutor 区别？
+
+**A：** FJP 工作窃取，适合可分解计算任务。commonPool 被 Parallel Stream 默认使用，阻塞任务会饿死其他任务。
+
+---
+
+### Q288. Full GC 触发条件有哪些？
+
+**A：** Old 区满、Metaspace 满、System.gc()（建议不调用）、CMS Concurrent Mode Failure、G1 Allocation Failure 等。
+
+---
+
+### Q289. MetaSpace 和永久代区别？
+
+**A：** JDK8 去 PermGen，类元数据放 native MetaSpace，默认只受 OS 内存限制，可 `-XX:MaxMetaspaceSize`  cap。字符串常量池在堆。
+
+---
+
+### Q290. 如何判断对象可被 GC？
+
+**A：** 从 GC Roots（栈引用、静态变量、JNI、JVM 内部）不可达的对象可回收。不是「引用计数为零」。
+
+---
+
+### Q291. 安全点 safepoint 和 STW？
+
+**A：** STW 停所有用户线程做 GC 等。safepoint 是线程可安全暂停的位置。长时间 counted loop 需可 polled 进入 safepoint。
+
+---
+
+### Q292. Spring 三级缓存分别存什么？
+
+**A：** 一级 singletonObjects 成品；二级 earlySingletonObjects 早期暴露；三级 singletonFactories 工厂可生成早期引用（AOP 代理在此）。
+
+---
+
+### Q293. Spring 循环依赖为什么构造器注入不行？
+
+**A：** 构造器注入时 Bean 尚未创建完，无法提前暴露半成品到缓存。Setter/字段注入对象已 allocate 可 early expose。
+
+---
+
+### Q294. @Transactional self-invocation 怎么解决？
+
+**A：** 注入自身代理、`AopContext.currentProxy()`、拆 Service、AspectJ compile-time weaving。
+
+---
+
+### Q295. MyBatis 一级缓存作用域？
+
+**A：** SqlSession 级别，同 Session 同 Mapper 同语句+参数命中。UPDATE/INSERT/DELETE 会 clear。二级缓存 Mapper 级跨 Session 慎用。
+
+---
+
+### Q296. ArrayList fail-fast 原理？
+
+**A：** 迭代器检查 expectedModCount == modCount，结构修改 modCount++ 抛 ConcurrentModificationException。不是线程安全检测。
+
+---
+
+### Q297. LinkedHashMap accessOrder 和 insertOrder？
+
+**A：** insertOrder 插入顺序；accessOrder=true get 后移到最后，配合 removeEldestEntry 实现 LRU。
+
+---
+
+### Q298. Java 泛型 `<T extends Number>` 和 `<T super Number>` 能声明类吗？
+
+**A：** 类声明只能用 extends T（上界），不能用 super。通配符 `? super/` `? extends` 用于方法参数和变量。
+
+---
+
+### Q299. CompletableFuture 和 Future 区别？
+
+**A：** Future 只能 get 阻塞；CompletableFuture 支持链式组合、异常处理、多任务 allOf/anyOf，非阻塞回调。
+
+---
+
+### Q300. 为什么 String hashCode 缓存？
+
+**A：** 字符串不可变，hashCode 计算一次缓存 int hash 字段，HashMap 高频 key 时避免重复算。
+
+---
+
+### Q301. Integer 128 陷阱？
+
+**A：** -128～127 IntegerCache 复用，`==` 可能 true。超出范围不同对象 `==` false，用 equals。
+
+---
+
+### Q302. 类加载器有哪些？
+
+**A：** Bootstrap（C++，rt.jar）、Extension、Application（AppClassLoader）。自定义 ClassLoader 继承 URLClassLoader 等。
+
+---
+
+### Q303. SPI 和双亲委派？
+
+**A：** ServiceLoader 用线程上下文类加载器加载 META-INF/services 实现，打破双亲委派加载实现类。
+
+---
+
+### Q304. Netty 为什么高性能？
+
+**A：** NIO 多路复用、零拷贝、内存池 ByteBuf、无锁设计、业务 Handler 链、本地 epoll。
+
+---
+
+### Q305. BIO NIO AIO 区别？
+
+**A：** BIO 一连接一线程阻塞；NIO Selector 多路复用非阻塞；AIO 异步回调（Linux 上 aio 支持有限，Netty 少用）。
+
+---
+
+### Q306. 深拷贝实现方式 Java？
+
+**A：** 序列化反序列化；手动递归 clone；第三方库。Cloneable 默认浅拷贝。
+
+---
+
+### Q307. 接口 Java 8 default 方法冲突？
+
+**A：** 类实现两接口同签名 default 必须重写。类方法优先于接口 default。
+
+---
+
+### Q308. Stream parallel 用 ForkJoinPool.commonPool 风险？
+
+**A：** 阻塞 IO 占满 commonPool 影响其他 parallel Stream 和 CompletableFuture 默认池。
+
+---
+
+### Q309. G1 Remembered Set 作用？
+
+**A：** 记录跨 Region 引用，Minor GC 时避免扫描整个堆找 Old→Young 引用。
+
+---
+
+### Q310. ZGC 着色指针（了解）？
+
+**A：** 64 位指针多余 bit 存 metadata，配合读屏障实现并发压缩和 relocation，超低延迟。
+
+---
+
+# 二十二、数据库与中间件深挖
+
+### Q311. InnoDB 一页多大？默认 16KB？
+
+**A：** 默认 16KB，可配置。页是 InnoDB IO 最小单位。B+ 树节点通常一页。
+
+---
+
+### Q312. 回表是什么？如何避免？
+
+**A：** 二级索引查到主键后再查聚簇索引取整行。覆盖索引 Include 所需列可避免回表。
+
+---
+
+### Q313. 索引下推 ICP 举例？
+
+**A：** 联合索引 (name, age)，查 `name like '张%' and age=20`，5.6+ 在索引层过滤 age，减少回表。
+
+---
+
+### Q314. 为什么用自增主键？
+
+**A：** 顺序插入聚簇索引页尾，减少页分裂。随机 UUID 主键导致频繁分裂和碎片。
+
+---
+
+### Q315. binlog row/statement/mixed？
+
+**A：** Statement 记 SQL 可能不一致；Row 记行变更准确体积大；Mixed 混合。主从复制推荐 Row。
+
+---
+
+### Q316. Redis 6.0 多线程做了什么？
+
+**A：** IO 线程处理 read/write/parse，命令执行仍主线程单线程。提高网络 IO 密集吞吐。
+
+---
+
+### Q317. Redis 过期策略？
+
+**A：** 惰性删除访问时检查；定期采样删除。内存满时 volatile 键 LRU/LFU 淘汰（maxmemory-policy）。
+
+---
+
+### Q318. Kafka 零拷贝？
+
+**A：** sendfile 从磁盘到网卡少用户态拷贝。Page cache 利用 OS 缓存。
+
+---
+
+### Q319. Kafka ISR 是什么？
+
+**A：** In-Sync Replicas 与 Leader 同步的副本集合。acks=all 需 ISR 全部确认。ISR 缩小影响可用性。
+
+---
+
+### Q320. ES refresh interval？
+
+**A：** 默认 1s refresh 新 segment 近实时可见。增大 refresh 间隔提高写入吞吐延迟可见性。
+
+---
+
+### Q321. 延迟双删缓存？
+
+**A：** 更新 DB → 删缓存 → sleep 几百 ms → 再删缓存。防读写并发旧数据写回缓存。最终一致。
+
+---
+
+### Q322. 布隆过滤器误判？
+
+**A：** 不存在一定不存在；存在可能误判存在。不能删元素。降低误判率增大 bit 数组。
+
+---
+
+### Q323. Seata AT 模式原理？
+
+**A：** 拦截 SQL 生成 undo_log，提交删 undo，失败用 undo 回滚。需支持事务 DB，写隔离默认读未提交需 `@GlobalTransactional`。
+
+---
+
+### Q324. Canal 原理？
+
+**A：** 伪装 MySQL slave 拉 binlog，解析 row 事件推 MQ，下游消费同步 ES/缓存。
+
+---
+
+### Q325. 分库分表后全局 ID 排序分页？
+
+**A：** 禁止 offset 大分页；游标/id 范围；搜索引擎；中间件聚合（代价高）。
+
+---
+
+# 二十三、分布式与运维深挖
+
+### Q326. 2PC 为什么不适合微服务？
+
+**A：** 同步阻塞、单点协调者、数据不一致（参与者 commit 协调者 hang）、性能差。用 TCC/Saga/消息最终一致。
+
+---
+
+### Q327. Sentinel 滑动窗口限流？
+
+**A：** 把时间分多个 slot 统计请求数，滑动求和超阈值拒绝。支持 QPS、并发线程数、热点参数。
+
+---
+
+### Q328. Hystrix 线程池隔离和信号量隔离？
+
+**A：** 线程池完全隔离防阻塞传播；信号量轻量但无法 timeout 和异步。Sentinel 类似概念。
+
+---
+
+### Q329. etcd 和 ZooKeeper？
+
+**A：** 都 CP。etcd gRPC+Raft，K8s 用；ZK ZAB，Kafka 旧版依赖，注册配置。
+
+---
+
+### Q330. K8s Pod 驱逐？
+
+**A：** 节点资源不足 kubelet 按 QoS 驱逐：BestEffort → Burstable → Guaranteed 最后。
+
+---
+
+### Q331. liveness 和 readiness 区别？
+
+**A：** liveness 失败重启容器；readiness 失败从 Service 端点摘除不接收流量。startup 慢启动保护。
+
+---
+
+### Q332. TIME_WAIT 过多怎么办？
+
+**A：** 主动关闭方等待 2MSL。调 tcp_tw_reuse（需 conntrack）、减少短连接、连接池、让客户端关闭。
+
+---
+
+### Q333. HTTP Keep-Alive？
+
+**A：** 同一 TCP 连接发多个 HTTP 请求减握手。1.1 默认开启。超时需 server/client 配置。
+
+---
+
+### Q334. QUIC 相对 TCP+TLS 优势？
+
+**A：** 0-RTT 建连、无 TCP 队头阻塞（流级别）、连接迁移（换 IP 不断连）、内置 TLS1.3。
+
+---
+
+### Q335. Prometheus pull 模型？
+
+**A：** Prometheus 定时 scrape 目标 /metrics HTTP。Pushgateway 补短任务。Alertmanager 告警。
+
+---
+
+### Q336. 链路追踪 traceId spanId？
+
+**A：** 一次请求 traceId 全局唯一；span 每个操作一段，parent spanId 构成树。SkyWalking/Jaeger/OpenTelemetry。
+
+---
+
+### Q337. 蓝绿部署和金丝雀？
+
+**A：** 蓝绿两套环境切换流量；金丝雀逐步放量新版本（5%→50%→100%）观察指标。
+
+---
+
+### Q338. Git rebase 和 merge？
+
+**A：** merge 保留分支历史 merge commit；rebase 变基线性历史，改写 commit 不推公共分支。团队规范定。
+
+---
+
+### Q339. 容器 CPU limit 和 throttle？
+
+**A：** CFS quota 超 limit CPU 被 throttle 延迟。不设 limit 可能饿死其他 Pod。request 保证调度。
+
+---
+
+### Q340. 如何设计幂等表？
+
+**A：** 唯一 request_id 插入幂等表成功才执行业务；或业务表唯一索引；状态机 CAS 更新。
+
+---
+
+# 专题文档
+
+| 专题 | 题量 | 链接 |
+|------|------|------|
+| C++ 全专题 | 120 | [面试题大全-C++专题.md](../C++嵌入式/面试题大全-C++专题.md) |
+| AI 全专题 | 120 | [面试题大全-AI专题.md](../AI工程/面试题大全-AI专题.md) |
+| AI 概念手册 | — | [AI时代开发者技能与概念手册.md](../AI工程/AI时代开发者技能与概念手册.md) |
+
+---
+
+# 附录 A：快速复习清单（按优先级）
+
+| 优先级 | 模块 | 必背题号 |
+|--------|------|----------|
+| P0 | Java 集合+并发+JVM | Q27～Q74、Q281～Q310 |
+| P0 | MySQL+Redis | Q113～Q140、Q311～Q325 |
+| P0 | Spring | Q75～Q89、Q292～Q295 |
+| P1 | 分布式+系统设计 | Q154～Q169、Q326～Q340 |
+| P1 | 网络+OS | Q229～Q248、Q332～Q334 |
+| P1 | AI 应用 | Q170～Q200 + **[AI 专题 A1～A120](../AI工程/面试题大全-AI专题.md)** |
+| P2 | C++ | Q90～Q112 + **[C++ 专题 C1～C120](../C++嵌入式/面试题大全-C++专题.md)** |
+| P2 | K8s+运维 | Q201～Q228、Q330～Q339 |
+| P2 | 算法概念+设计模式 | Q249～Q268 |
+
+---
+
+# 附录 B：关联文档
+
+| 文档 | 用途 |
+|------|------|
+| [README.md](../README.md) | 学习体系总入口 |
+| [面试题大全-C++专题.md](../C++嵌入式/面试题大全-C++专题.md) | C++ 120 题 |
+| [面试题大全-AI专题.md](../AI工程/面试题大全-AI专题.md) | AI 120 题 |
+| [项目经历面试手册.md](./项目经历面试手册.md) | **6 个项目**经历 Q&A |
+| [面试与晋升素材库.md](../00-通用/面试与晋升素材库.md) | STAR 故事 |
+| [错题与易忘概念.md](../00-通用/错题与易忘概念.md) | 错题沉淀 |
+| [7年Java工程师技能清单.md](./7年Java工程师技能清单.md) | 能力地图 |
+| [AI时代开发者技能与概念手册.md](../AI工程/AI时代开发者技能与概念手册.md) | AI 概念详解 |
+
+---
+
+# 附录 C：项目经历面试（6 个项目）
+
+> 完整技术路线、亮点、STAR、30 道追问题见 **[项目经历面试手册.md](./项目经历面试手册.md)**
+
+| 项目 | 一句话 |
+|------|--------|
+| mall | Java17 商城 + MySQL 轻量 RAG + AI 客服 |
+| AICRM | React+FastAPI 多租户 AI CRM + Weaviate |
+| cloudbb-svc | 教育内容 PG+Mongo + OSS + 经销商返佣 |
+| cc-site-svc | Experience Site 无状态 BFF + OpenCall |
+| one-main-svc | CloudCC CRM 核心 WAR + 审批/站点引擎 |
+| cc-setup-service | Lightning Setup Java21 + 元数据/Redisson |
+
+---
+
+## 题量统计
+
+| 文档 | 题量 |
+|------|------|
+| 面试题大全Q&A.md（本文） | **340** |
+| C++ 专题 | **120** |
+| AI 专题 | **120** |
+| **合计** | **580** |
+
+---
+
+*主库 340 题 + 两专题各 120 题 = 580 题。建议主库 24 天每天 14 题，专题各 12 天每天 10 题，共 4 轮后模拟面试。*

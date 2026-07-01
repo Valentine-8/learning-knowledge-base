@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>
+            计算属性
+        </title>
+        <!-- 引入vue-->
+        <script type="text/javascript" src="../js/vue.js"></script>
+    </head>
+
+<body>
+    <div id="root">
+    	姓：<input type="text" v-model="lastname"> <br></br>
+        名：<input type="text" v-model="firstname"> <br></br>
+        姓名：<span>{{firstname}}-{{lastname}}</span>
+    </div>
+    <script type="text/javascript">
+        //Vue.config.productionTip = false
+        Vue.config.keyCodes.huiche = 13
+        //创建实例
+        const vm = new Vue({
+            data:function(){  
+                return {
+                   lastname :'',
+                   firstname:''
+                }
+            },
+            methods:{
+                showinfo(e){
+                    console.log(e.target.value)
+                }
+            }
+        })
+        vm.$mount('#root')
+    </script>
+</body>
+</html> 
