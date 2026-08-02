@@ -3,6 +3,9 @@
 > 一本写给零基础新手的 EP7 实用教程  
 > 套装：E-P7 + M.Zuiko 14-42mm F3.5-5.6 EZ + M.Zuiko 40-150mm F4.0-5.6 R
 
+> **在线阅读（推荐）**：[打开 EP7 网页版（侧边栏目录）](index.html) — 手机可「添加到主屏幕」。  
+> 本页为 Markdown 目录；在 [知识库 Docsify 站](https://valentine-8.github.io/learning-knowledge-base/#/奥林巴斯ep7/EP7-Guide/README.md) 内点下方章节链接亦可阅读。
+
 ---
 
 ## 这本书是写给谁的？

@@ -98,5 +98,6 @@
   * [Go](/技术成长/07-扩展语言/02-Go/README.md)
 
 * 其他
-  * [奥林巴斯 EP7 指南](/奥林巴斯ep7/EP7-Guide/README.md)
+  * [奥林巴斯 EP7 指南（网页版 ★）](/奥林巴斯ep7/EP7-Guide/index.html ':ignore')
+  * [EP7 Markdown 目录](/奥林巴斯ep7/EP7-Guide/README.md)
   * [规范文档](/规范文档/README.md)
