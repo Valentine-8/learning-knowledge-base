@@ -1,0 +1,154 @@
+/* Docsify 米色阅读主题（与 .vscode/md-preview-beige.css 同色系） */
+
+:root {
+  --theme-color: #5c7a4a;
+  --theme-color-dark: #4a6340;
+  --text-color-base: #3d3a33;
+  --text-color-secondary: #6b6558;
+  --border-color: #d9d0c0;
+  --bg-color: #f5f0e6;
+  --sidebar-bg: #efe9dd;
+  --code-bg: #ebe4d8;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color-base);
+}
+
+.sidebar {
+  background-color: var(--sidebar-bg);
+  border-right: 1px solid var(--border-color);
+}
+
+.sidebar-nav li {
+  line-height: 1.6;
+}
+
+.sidebar-nav > ul > li > a {
+  font-weight: 600;
+}
+
+.markdown-section {
+  max-width: 920px;
+  padding: 2rem 2.5rem 4rem;
+}
+
+.markdown-section h1,
+.markdown-section h2,
+.markdown-section h3,
+.markdown-section h4 {
+  color: #2c2a24;
+  border-bottom-color: #ddd5c5;
+}
+
+.markdown-section p,
+.markdown-section li,
+.markdown-section td {
+  color: var(--text-color-base);
+}
+
+.markdown-section a {
+  color: var(--theme-color);
+  border-bottom: none;
+}
+
+.markdown-section a:hover {
+  color: var(--theme-color-dark);
+  text-decoration: underline;
+}
+
+.markdown-section code {
+  background-color: var(--code-bg);
+  color: var(--text-color-base);
+  border-radius: 3px;
+}
+
+.markdown-section pre {
+  background-color: var(--code-bg);
+  border: 1px solid var(--border-color);
+}
+
+.markdown-section blockquote {
+  border-left: 4px solid #c9bfa8;
+  background-color: #efe9dd;
+  color: var(--text-color-secondary);
+}
+
+.markdown-section table {
+  display: table;
+  width: 100%;
+}
+
+.markdown-section table th,
+.markdown-section table td {
+  border: 1px solid var(--border-color);
+}
+
+.markdown-section table tr:nth-child(2n) {
+  background-color: #efe9dd;
+}
+
+.markdown-section table th {
+  background-color: var(--code-bg);
+}
+
+.markdown-section hr {
+  border-bottom-color: var(--border-color);
+}
+
+.cover {
+  background: linear-gradient(135deg, #f5f0e6 0%, #ebe4d8 50%, #e8e0d0 100%) !important;
+  color: #3d3a33 !important;
+}
+
+.cover h1 {
+  color: #2c2a24 !important;
+  text-shadow: none !important;
+}
+
+.cover .cover-main > p {
+  color: #6b6558 !important;
+}
+
+.cover .cover-main > p:last-child a {
+  display: inline-block;
+  margin: 0.35rem 0.5rem;
+  padding: 0.45rem 1rem;
+  border: 1px solid #c9bfa8;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.35);
+  color: #5c7a4a !important;
+  text-decoration: none !important;
+}
+
+.cover .cover-main > p:last-child a:hover {
+  background: rgba(255, 255, 255, 0.65);
+}
+
+.app-name-link img {
+  max-width: 120px;
+}
+
+.search {
+  border-bottom: 1px solid var(--border-color);
+}
+
+.search input {
+  background: #faf7f1;
+  color: var(--text-color-base);
+}
+
+.search .clear-button svg circle {
+  fill: #6b6558;
+}
+
+.pagination-item-title {
+  color: var(--theme-color);
+}
+
+@media screen and (max-width: 768px) {
+  .markdown-section {
+    padding: 1rem 1.25rem 3rem;
+  }
+}

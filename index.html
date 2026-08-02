@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
+  <meta name="description" content="赵晨宇 · Java / 数据与中间件 / AI / C++ 嵌入式 学习知识库" />
+  <title>学习知识库</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css" />
+  <link rel="stylesheet" href="site/beige.css" />
+</head>
+<body>
+  <div id="app">加载中…</div>
+  <script>
+    (function () {
+      var repoName = "learning-knowledge-base";
+      var isGhPages =
+        location.hostname.indexOf("github.io") > -1 &&
+        location.pathname.indexOf("/" + repoName + "/") === 0;
+
+      window.$docsify = {
+        name: "学习知识库",
+        repo: "Valentine-8/" + repoName,
+        basePath: isGhPages ? "/" + repoName + "/" : "./",
+        homepage: "技术成长/00-通用/01-阅读指南.md",
+        loadSidebar: true,
+        loadNavbar: true,
+        coverpage: "_coverpage.md",
+        onlyCover: false,
+        auto2top: true,
+        subMaxLevel: 3,
+        maxLevel: 4,
+        mergeNavbar: true,
+        relativePath: false,
+        alias: {
+          "/.*/_sidebar.md": "/_sidebar.md",
+          "/.*/_navbar.md": "/_navbar.md",
+          "/.*/_coverpage.md": "/_coverpage.md",
+        },
+        search: {
+          maxAge: 86400000,
+          paths: "auto",
+          placeholder: "搜索文档…",
+          noData: "没有匹配结果",
+          depth: 4,
+          hideOtherSidebarContent: false,
+        },
+        copyCode: {
+          buttonText: "复制",
+          errorText: "复制失败",
+          successText: "已复制",
+        },
+        pagination: {
+          previousText: "上一页",
+          nextText: "下一页",
+          crossChapter: true,
+          crossChapterText: true,
+        },
+      };
+    })();
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/docsify.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify-copy-code@2/dist/docsify-copy-code.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-java.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-sql.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-yaml.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-python.min.js"></script>
+</body>
+</html>

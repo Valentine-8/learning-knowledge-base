@@ -9,6 +9,9 @@
 | [奥林巴斯ep7/](./奥林巴斯ep7/) | 相机指南 |
 | [规范文档/](./规范文档/) | 仓库规范（可选阅读，日常不用看） |
 
+**在线阅读（GitHub Pages）**：https://valentine-8.github.io/learning-knowledge-base/  
+（需在 GitHub 仓库 Settings → Pages 启用，见 [site/README.md](./site/README.md)）
+
 ---
 
 ## 从这里开始
