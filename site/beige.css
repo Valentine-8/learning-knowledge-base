@@ -149,6 +149,32 @@ body {
 
 @media screen and (max-width: 768px) {
   .markdown-section {
-    padding: 1rem 1.25rem 3rem;
+    padding: 1rem 1rem 3.5rem;
+    font-size: 15px;
+    line-height: 1.75;
+  }
+
+  .sidebar-toggle {
+    padding: 0.65rem;
+  }
+
+  .sidebar {
+    width: 280px;
+  }
+
+  .markdown-section pre {
+    font-size: 13px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .markdown-section table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .app-sub-sidebar {
+    display: none;
   }
 }
